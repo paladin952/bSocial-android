@@ -11,10 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.clpstudio.bsocial.core.persistance.SharedPreferencesConstants.USER_SPECIFIC_FILE_NAME_PLACEHOLDER;
-
 /**
- * Created by DealDash
  * Concrete implementation for interacting with shared preferences
  */
 public class SharedPreferencesUtils implements ISharedPreferencesUtils {
@@ -171,7 +168,7 @@ public class SharedPreferencesUtils implements ISharedPreferencesUtils {
      * @return The name of the sharedPreferences for the current logged in user
      */
     public String getSharedPreferencesUserSpecificName() {
-        return mContext.getPackageName() + USER_SPECIFIC_FILE_NAME_PLACEHOLDER
+        return mContext.getPackageName() + SharedPreferencesConstants.INSTANCE.getUSER_SPECIFIC_FILE_NAME_PLACEHOLDER()
                 + mSession.getUser().getId();
     }
 
