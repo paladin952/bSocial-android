@@ -1,7 +1,6 @@
 package com.clpstudio.bsocial.core.dagger;
 
 import com.clpstudio.bsocial.presentation.MainActivity;
-import com.dealdash.http.ApiClientFactory;
 
 import javax.inject.Singleton;
 
@@ -18,5 +17,5 @@ public interface DIComponent {
 //    ApiClientFactory provideApiClientFactory();
 
     // injects
-    inject(MainActivity inject);
+    MainActivity inject(MainActivity inject);
 }
