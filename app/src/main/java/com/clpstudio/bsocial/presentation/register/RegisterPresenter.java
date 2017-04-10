@@ -21,7 +21,6 @@ public class RegisterPresenter extends BaseMvpPresenter<RegisterPresenter.View> 
     }
 
     public void register(String username, String password, String retryPassword) {
-
         if (Validator.isEmpty(username)) {
             view().showValidationError(context.getString(R.string.validation_empty_username));
         } else if (Validator.isEmpty(password) || Validator.isEmpty(retryPassword)) {

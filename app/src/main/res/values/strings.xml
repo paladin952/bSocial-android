@@ -9,4 +9,5 @@
     <string name="validation_password_mismatch">Password mismatch</string>
     <string name="register">REGISTER</string>
     <string name="password_retry_hint">Re-enter password</string>
+    <string name="register_title">Register</string>
 </resources>
