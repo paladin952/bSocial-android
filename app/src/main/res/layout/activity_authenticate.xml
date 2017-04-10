@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_dark"
+    android:background="@color/orange_light"
     android:orientation="vertical"
     tools:context="com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity">
 
@@ -41,14 +41,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/login"/>
+            android:text="@string/login"
+            android:textColor="@color/red"/>
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/register"/>
+            android:text="@string/register"
+            android:textColor="@color/red"/>
 
     </LinearLayout>
 
