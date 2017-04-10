@@ -16,4 +16,7 @@ public interface ApiService {
     @POST("/api/v1/authenticate/password")
     Single<UserAuthenticatedModel> authenticatePassword(@Body LoginModel model);
 
+    @POST("/api/v1/authenticate/token")
+    Single<UserAuthenticatedModel> authenticateToken(String token);
+
 }

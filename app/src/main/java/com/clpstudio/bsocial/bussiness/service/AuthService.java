@@ -17,4 +17,8 @@ public class AuthService {
     public void login(LoginModel loginModel) {
         apiService.authenticatePassword(loginModel);
     }
+
+    public void loginFromApiToken(String token) {
+        apiService.authenticateToken(token);
+    }
 }
