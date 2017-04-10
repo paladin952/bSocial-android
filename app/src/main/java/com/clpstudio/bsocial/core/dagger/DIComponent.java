@@ -3,6 +3,7 @@ package com.clpstudio.bsocial.core.dagger;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.SplashScreen;
 import com.clpstudio.bsocial.presentation.login.LoginActivity;
+import com.clpstudio.bsocial.presentation.register.RegisterActivity;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,6 @@ public interface DIComponent {
     void inject(SplashScreen splashScreen);
 
     void inject(LoginActivity loginActivity);
+
+    void inject(RegisterActivity registerActivity);
 }

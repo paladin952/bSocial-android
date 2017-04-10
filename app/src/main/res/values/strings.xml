@@ -6,4 +6,7 @@
     <string name="login">LOGIN</string>
     <string name="validation_empty_password">The password must not be empty</string>
     <string name="validation_empty_username">The username must not be empty</string>
+    <string name="validation_password_mismatch">Password mismatch</string>
+    <string name="register">REGISTER</string>
+    <string name="password_retry_hint">Re-enter password</string>
 </resources>
