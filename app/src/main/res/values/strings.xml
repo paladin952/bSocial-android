@@ -10,4 +10,5 @@
     <string name="register">REGISTER</string>
     <string name="password_retry_hint">Re-enter password</string>
     <string name="register_title">Register</string>
+    <string name="register_or_login">Are you new to bSocial or do you already have an account?</string>
 </resources>

@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".presentation.register.RegisterActivity">
         </activity>
+        <activity android:name=".presentation.authenticate.AuthenticateActivity">
+        </activity>
     </application>
 
 </manifest>

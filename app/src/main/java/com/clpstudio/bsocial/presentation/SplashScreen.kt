@@ -3,6 +3,7 @@ package com.clpstudio.bsocial.presentation
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.clpstudio.bsocial.R
+import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity
 import com.clpstudio.bsocial.presentation.register.RegisterActivity
 
 class SplashScreen : AppCompatActivity() {
@@ -11,7 +12,7 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        RegisterActivity.startActivity(this)
+        AuthenticateActivity.startActivity(this)
         finish()
     }
 }
