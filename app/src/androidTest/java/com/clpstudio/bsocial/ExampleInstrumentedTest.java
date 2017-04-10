@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.clpstudio.bsocial", appContext.getPackageName());
+        assertEquals("com.clpstudio.bsocial_logo", appContext.getPackageName());
     }
 }

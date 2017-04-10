@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">bSocial</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="backend_hostname"/>
+    <string name="login">LOGIN</string>
+    <string name="validation_empty_password">The password must not be empty</string>
+    <string name="validation_empty_username">The username must not be empty</string>
 </resources>
