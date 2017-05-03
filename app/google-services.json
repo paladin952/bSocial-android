@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "195489989221",
+    "firebase_url": "https://bsocial-53596.firebaseio.com",
+    "project_id": "bsocial-53596",
+    "storage_bucket": "bsocial-53596.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195489989221:android:b945a649e2b758b5",
+        "android_client_info": {
+          "package_name": "com.clpstudio.bsocial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195489989221-kvqoak3irearhn44uga0h54lihupg5gq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqK4qn8ob7IK7RwJnHEKcPR_ejOFpjiII"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.conversations.ConversationsActivity;
 
 import javax.inject.Inject;
 
@@ -18,19 +20,21 @@ import butterknife.OnClick;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterPresenter.View {
 
-    @BindView(R.id.username)
-    EditText usernameEditText;
+    @BindView(R.id.email)
+    EditText emailEditText;
     @BindView(R.id.password)
     EditText passwordEditText;
     @BindView(R.id.retryPassword)
     EditText retryPasswordEditText;
+    @BindView(R.id.progressBar)
+    View progressBar;
 
     @Inject
     RegisterPresenter registerPresenter;
 
     @OnClick(R.id.registerButton)
     public void onRegisterClick() {
-        String username = usernameEditText.getText().toString().trim();
+        String username = emailEditText.getText().toString().trim();
         String passwowrd = passwordEditText.getText().toString().trim();
         String retryPasword = retryPasswordEditText.getText().toString().trim();
         registerPresenter.register(username, passwowrd, retryPasword);
@@ -51,12 +55,27 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
     }
 
     @Override
-    public void showRegisterError() {
-
+    public void showRegisterError(String err) {
+        Toast.makeText(this, err, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showValidationError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void gotoMainScreen() {
+        ConversationsActivity.startActivity(this);
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 }

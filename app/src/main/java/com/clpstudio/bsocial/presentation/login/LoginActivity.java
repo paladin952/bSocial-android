@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.LoginModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.conversations.ConversationsActivity;
 
 import javax.inject.Inject;
 
@@ -20,10 +22,12 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View{
 
-    @BindView(R.id.username)
+    @BindView(R.id.email)
     EditText usernameEditText;
     @BindView(R.id.password)
     EditText passwordEditText;
+    @BindView(R.id.progressBar)
+    View progressBar;
 
     @Inject
     LoginPresenter presenter;
@@ -48,17 +52,27 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     }
 
     @Override
-    public void showLoginError() {
-
+    public void showLoginError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void goToMainActivity() {
-
+        ConversationsActivity.startActivity(this);
     }
 
     @Override
     public void showValidationError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 }

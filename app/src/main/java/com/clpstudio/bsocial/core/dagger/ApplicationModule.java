@@ -52,27 +52,7 @@ public class ApplicationModule {
 //        return new SharedPreferencesUtils(context, session);
 //    }
 
-    /**
-     * The list of activities that are allowed to be shown even if the user is logged out
-     *
-     * @return The list of anonymous activities
-     */
-//    @Provides
-//    @Singleton
-//    @Named("anonymous_activities")
-//    List<Class> providesAnonymousActivitiesList() {
-//        List<Class> list = new ArrayList<>();
-//        list.add(SplashScreen.class);
-//        list.add(AuthenticateActivity.class);
-//        list.add(LogoutActivity.class);
-//        list.add(LoginActivity.class);
-//        list.add(ForgotPasswordActivity.class);
-//        list.add(SignupActivity.class);
-//        list.add(LearnActivity.class);
-//        list.add(FacebookActivity.class);
-//        list.add(MaintenanceModeActivity.class);
-//        return list;
-//    }
+
 
     @Provides
     @Singleton
