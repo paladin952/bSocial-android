@@ -8,12 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
 
 import javax.inject.Inject;
-
-/**
- * Created by clapalucian on 5/4/17.
- */
 
 public class ConversationsActivity extends AppCompatActivity implements ConversationsPresenter.View{
 
@@ -31,5 +28,7 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
 
         presenter.bindView(this);
+
+        ProfilePageActivity.startActivity(this);
     }
 }

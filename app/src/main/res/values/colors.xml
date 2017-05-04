@@ -6,4 +6,10 @@
 
     <color name="orange_light">#FE7124</color>
     <color name="red">@android:color/holo_red_dark</color>
+    <item name="action_bar_background" type="color">@color/colorPrimary</item>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="avatar_background">#01579B</color>
+    <color name="overlay_semi_transparent_bg">#8C000000</color>
 </resources>

@@ -11,9 +11,6 @@ import io.reactivex.Single;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 
-/**
- * This is a wrapper around RxJava2CallAdapterFactory adding scheduling and DealDash specific errors parsing.
- */
 public class BSRxJava2CallAdapterFactory extends CallAdapter.Factory {
     private final CallAdapter.Factory delegate;
 

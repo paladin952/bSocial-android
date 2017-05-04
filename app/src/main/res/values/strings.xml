@@ -12,4 +12,20 @@
     <string name="register_title">Register</string>
     <string name="register_or_login">Are you new to bSocial or do you already have an account?</string>
     <string name="unknown_error">Unknown error</string>
+
+    <string name="edit_avatar_take_photo">Take Photo</string>
+    <string name="edit_avatar_select">Upload Picture</string>
+    <string name="edit_avatar_remove">Remove Picture</string>
+    <string name="edit_avatar_dialog_title">Edit Profile Picture</string>
+    <string name="edit_avatar_uploading">Uploading…</string>
+    <string name="edit_avatar_remove_error">Error removing Profile Picture</string>
+    <string name="edit_avatar_removed">Profile Picture removed</string>
+    <string name="edit_avatar_canceled">Canceled editing Profile Picture</string>
+    <string name="edit_avatar_camera_permission_error">Camera permission is required to take a picture. You can grant it in the Settings.</string>
+    <string name="edit_avatar_uploaded">Profile Picture updated!</string>
+    <string name="edit_avatar_upload_error">Error updating Profile Picture. Please try again later.</string>
+    <string name="edit_avatar_edit">Edit</string>
+    <string name="edit_avatar_loading">Loading…</string>
+    <string name="edit_avatar_pending_approval">Profile Picture pending approval</string>
+
 </resources>
