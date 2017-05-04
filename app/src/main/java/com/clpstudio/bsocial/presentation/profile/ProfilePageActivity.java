@@ -21,7 +21,7 @@ import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.avatar;
 
-public class ProfilePageActivity extends AppCompatActivity implements ProfilePagePresenter.View {
+public class ProfilePageActivity extends AppCompatActivity implements ProfilePagePresenter.View, EditAvatarFragment.OnUploadFinishedListener {
 
     @Inject
     ProfilePagePresenter presenter;
@@ -33,7 +33,7 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
 
     @OnClick(R.id.avatar)
     public void onAvatarClick() {
-
+        EditAvatarFragment.show(getSupportFragmentManager());
     }
 
     public static void startActivity(Activity activity) {
@@ -48,18 +48,30 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
 
         avatarEditText.getBackground().setLevel(3000);
-
         presenter.bindView(this);
     }
 
     @Override
-    public void downloadProfileImage(String url) {
+    protected void onResume() {
+        super.onResume();
+        presenter.refreshImage();
+    }
+
+    @Override
+    public void downloadProfileImage(String storageReference) {
+
         Glide.with(this)
-                .load(url)
+                .load(storageReference)
                 .asBitmap()
                 .placeholder(R.drawable.default_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
                 .into(new GlideRoundedImageTarget(avatarImage));
 
+    }
+
+    @Override
+    public void refreshProfileImage() {
+        presenter.refreshImage();
     }
 }

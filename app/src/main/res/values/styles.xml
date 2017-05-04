@@ -12,4 +12,17 @@
         <item name="colorControlActivated">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.BottomSheetListItem">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:drawableTint">@color/secondary</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:drawablePadding">32dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

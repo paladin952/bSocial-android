@@ -7,6 +7,7 @@ package com.clpstudio.bsocial.presentation.profile;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,17 +18,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.BuildConfig;
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.bussiness.service.UploadProfilePhotoService;
 import com.clpstudio.bsocial.bussiness.utils.IOUtils;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,8 +49,26 @@ public class EditAvatarFragment extends Fragment {
     private static final String IMAGE_TYPE_WILDCARD = "image/*";
     public static final String FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
+    @Inject
+    UploadProfilePhotoService uploadProfilePhotoService;
+
     private Uri imageToCrop;
     private Uri imageToUpload;
+    private OnUploadFinishedListener onUploadFinishedListener;
+
+    public interface OnUploadFinishedListener {
+        void refreshProfileImage();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnUploadFinishedListener){
+            ((OnUploadFinishedListener)getActivity()).refreshProfileImage();
+        } else {
+            throw new RuntimeException("Activity not instance of OnUploadFinishedListener");
+        }
+    }
 
     public static void show(FragmentManager fragmentManager) {
         Fragment fragment = new EditAvatarFragment();
@@ -164,10 +185,6 @@ public class EditAvatarFragment extends Fragment {
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 finishWithMessage(R.string.edit_avatar_canceled);
             } else {
-                if (data != null) {
-                    final Throwable error = UCrop.getError(data);
-                    exceptionTracker.track(error);
-                }
                 finishWithError(R.string.unknown_error);
             }
         }
@@ -188,7 +205,6 @@ public class EditAvatarFragment extends Fragment {
                             }
                         },
                         t -> {
-                            exceptionTracker.track(t);
                             if (isAdded()) {
                                 progressDialog.dismiss();
                                 finishWithError(R.string.unknown_error);
@@ -213,25 +229,18 @@ public class EditAvatarFragment extends Fragment {
         if (!imageToUpload.getScheme().equals("file")) {
             //TODO: copy uri to file
         }
-//        userService.uploadAvatar(new File(imageToUpload.getPath())).subscribe(
-//                () -> {
-//                    if (isAdded()) {
-//                        progressDialog.dismiss();
-//                        finishWithMessage(R.string.edit_avatar_uploaded);
-//                    }
-//                },
-//                t -> {
-//                    exceptionTracker.track(t);
-//                    if (isAdded()) {
-//                        progressDialog.dismiss();
-//                        if (t instanceof ApiException && t.getMessage() != null) {
-//                            finishWithError(t.getMessage());
-//                        } else {
-//                            finishWithError(R.string.edit_avatar_upload_error);
-//                        }
-//                    }
-//                }
-//        );
+
+        uploadProfilePhotoService.upload(new File(imageToUpload.getPath())).subscribe(() -> {
+            if (isAdded()) {
+                progressDialog.dismiss();
+                finishWithMessage(R.string.edit_avatar_uploaded);
+            }
+        }, err -> {
+            if (isAdded()) {
+                progressDialog.dismiss();
+                finishWithError(R.string.edit_avatar_upload_error);
+            }
+        });
     }
 
     private void finishWithMessage(int messageRes) {
@@ -252,14 +261,6 @@ public class EditAvatarFragment extends Fragment {
         Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
         finish();
     }
-
-    private View getViewForToast() {
-//        return (getActivity() instanceof DealDashFragmentActivity)
-//                ? ((DealDashFragmentActivity) getActivity()).getToolbar()
-//                : null;
-        return null;
-    }
-
 
     private void finish() {
         getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();

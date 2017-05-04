@@ -12,4 +12,10 @@
     <color name="black">#000000</color>
     <color name="avatar_background">#01579B</color>
     <color name="overlay_semi_transparent_bg">#8C000000</color>
+
+    <item name="dark_bar_background" type="color">#01579B</item>
+    <item name="light_bar_background" type="color">#0277BD</item>
+    <color name="primary">#333333</color>
+    <color name="secondary">#666666</color>
+    <color name="tertiary">#767676</color>
 </resources>
