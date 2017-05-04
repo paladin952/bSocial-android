@@ -69,6 +69,8 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
         if (firebaseUser != null) {
             if (firebaseUser.getPhotoUrl() != null) {
                 view().downloadProfileImage(firebaseUser.getPhotoUrl().toString());
+            } else {
+                view().downloadProfileImage("");
             }
         }
     }

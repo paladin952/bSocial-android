@@ -75,12 +75,6 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.refreshImage();
-    }
-
-    @Override
     public void downloadProfileImage(String storageReference) {
         Glide.with(this)
                 .load(storageReference)

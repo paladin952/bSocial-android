@@ -63,8 +63,8 @@ public class EditAvatarFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUploadFinishedListener){
-            onUploadFinishedListener = ((OnUploadFinishedListener)getActivity());
+        if (context instanceof OnUploadFinishedListener) {
+            onUploadFinishedListener = ((OnUploadFinishedListener) getActivity());
         } else {
             throw new RuntimeException("Activity not instance of OnUploadFinishedListener");
         }
@@ -101,23 +101,18 @@ public class EditAvatarFragment extends Fragment {
     }
 
     public void removeAvatar() {
-//        userService.removeAvatar().subscribe(
-//                () -> {
-//                    if (isAdded()) {
-//                        finishWithMessage(R.string.edit_avatar_removed);
-//                    }
-//                },
-//                t -> {
-//                    exceptionTracker.track(t);
-//                    if (isAdded()) {
-//                        if (t instanceof ApiException && t.getMessage() != null) {
-//                            finishWithError(t.getMessage());
-//                        } else {
-//                            finishWithError(R.string.edit_avatar_remove_error);
-//                        }
-//                    }
-//                }
-//        );
+        profileService.removeProfilePicture()
+                .subscribe(() -> {
+                    if (isAdded()) {
+                        onUploadFinishedListener.refreshProfileImage();
+                        finishWithMessage(R.string.edit_avatar_removed);
+                    }
+                }, err -> {
+                    if (isAdded()) {
+                        finishWithError(R.string.edit_avatar_remove_error);
+                        onUploadFinishedListener.refreshProfileImage();
+                    }
+                });
     }
 
     public void dialogCancelled() {

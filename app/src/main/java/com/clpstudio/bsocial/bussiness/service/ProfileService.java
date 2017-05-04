@@ -56,7 +56,7 @@ public class ProfileService {
 
     public Completable upload(File file) {
         return firebaseUpload(file)
-                .andThen(uploadUrlToProfile());
+                .andThen(updateProfileImageUrl());
     }
 
     private Completable firebaseUpload(File file) {
@@ -80,7 +80,7 @@ public class ProfileService {
         });
     }
 
-    private Completable uploadUrlToProfile() {
+    private Completable updateProfileImageUrl() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {
             return Completable.complete();
@@ -108,5 +108,26 @@ public class ProfileService {
                 }
             });
         });
+    }
+
+    public Completable removeProfilePicture() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            return Completable.create(e -> {
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setPhotoUri(null)
+                        .build();
+                firebaseUser.updateProfile(profileUpdates)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                e.onComplete();
+                            } else {
+                                e.onError(task.getException());
+                            }
+                        });
+            });
+        } else {
+            return Completable.error(new RuntimeException("User logged out!"));
+        }
     }
 }
