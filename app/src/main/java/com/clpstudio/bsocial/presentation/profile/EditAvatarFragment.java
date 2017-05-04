@@ -64,7 +64,7 @@ public class EditAvatarFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnUploadFinishedListener){
-            ((OnUploadFinishedListener)getActivity()).refreshProfileImage();
+            onUploadFinishedListener = ((OnUploadFinishedListener)getActivity());
         } else {
             throw new RuntimeException("Activity not instance of OnUploadFinishedListener");
         }
@@ -234,6 +234,7 @@ public class EditAvatarFragment extends Fragment {
             if (isAdded()) {
                 progressDialog.dismiss();
                 finishWithMessage(R.string.edit_avatar_uploaded);
+                onUploadFinishedListener.refreshProfileImage();
             }
         }, err -> {
             if (isAdded()) {

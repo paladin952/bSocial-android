@@ -71,9 +71,16 @@ public class UploadProfilePhotoService {
             storageReference.getDownloadUrl().addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setPhotoUri(task.getResult()).build();
-                    firebaseUser.updateProfile(profileUpdates);
-                    e.onComplete();
+                            .setPhotoUri(task.getResult())
+                            .build();
+                    firebaseUser.updateProfile(profileUpdates)
+                    .addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            e.onComplete();
+                        } else {
+                            e.onError(task.getException());
+                        }
+                    });
                 } else {
                     e.onError(new RuntimeException(task.getException()));
                 }
