@@ -33,5 +33,10 @@
     <string name="profile_no_status_yet">You don\'t have a status yet. Tap to set one!</string>
     <string name="profile_nickname_empty">Tap to set one!</string>
     <string name="profile_nickname">Nickname</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_your_nickname">Enter your Nickname</string>
+    <string name="nickname_updated_successfuly">Nickname updated</string>
+    <string name="nickname_updated_failed">Nickname coudn\'t be updated. Try again!</string>
 
 </resources>

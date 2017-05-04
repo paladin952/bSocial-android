@@ -21,7 +21,7 @@ import io.reactivex.Completable;
  * Created by clapalucian on 5/4/17.
  */
 
-public class UploadProfilePhotoService {
+public class ProfileService {
 
     @Inject
     FirebaseStorage firebaseStorage;
@@ -29,7 +29,29 @@ public class UploadProfilePhotoService {
     FirebaseAuth firebaseAuth;
 
     @Inject
-    public UploadProfilePhotoService() {
+    public ProfileService() {
+    }
+
+    public Completable updateNickname(String nickname) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            return Completable.create(e -> {
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(nickname)
+                        .build();
+
+                user.updateProfile(profileUpdates)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                e.onComplete();
+                            } else {
+                                e.onError(task.getException());
+                            }
+                        });
+            });
+        } else {
+            return Completable.error(new RuntimeException("User logged out"));
+        }
     }
 
     public Completable upload(File file) {
@@ -69,18 +91,18 @@ public class UploadProfilePhotoService {
             StorageReference storageReference = firebaseStorage.getReference();
             storageReference = storageReference.child(url);
             storageReference.getDownloadUrl().addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setPhotoUri(task.getResult())
                             .build();
                     firebaseUser.updateProfile(profileUpdates)
-                    .addOnCompleteListener(task1 -> {
-                        if (task1.isSuccessful()) {
-                            e.onComplete();
-                        } else {
-                            e.onError(task.getException());
-                        }
-                    });
+                            .addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    e.onComplete();
+                                } else {
+                                    e.onError(task.getException());
+                                }
+                            });
                 } else {
                     e.onError(new RuntimeException(task.getException()));
                 }

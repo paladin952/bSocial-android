@@ -3,9 +3,12 @@ package com.clpstudio.bsocial.presentation.profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,6 +35,24 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     TextView avatarEditText;
     @BindView(R.id.email)
     TextView emailText;
+    @BindView(R.id.nickname)
+    TextView nicknameText;
+
+    @OnClick(R.id.nickname_container)
+    public void onNicknameClick() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(this);
+        edittext.setText(nicknameText.getText().toString());
+        edittext.requestFocus();
+        alert.setMessage(getString(R.string.enter_your_nickname))
+                .setView(edittext)
+                .setPositiveButton(getString(R.string.save), (dialog, whichButton) -> {
+                    String nickname = edittext.getText().toString();
+                    presenter.updateNickname(nickname);
+                })
+                .setNegativeButton(getString(R.string.cancel), (dialog, whichButton) -> dialog.dismiss())
+                .show();
+    }
 
     @OnClick(R.id.avatar)
     public void onAvatarClick() {
@@ -74,6 +95,16 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     @Override
     public void setEmail(String email) {
         emailText.setText(email);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setNickname(String nickname) {
+        nicknameText.setText(nickname);
     }
 
     @Override

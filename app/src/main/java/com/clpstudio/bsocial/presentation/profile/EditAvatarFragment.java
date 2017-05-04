@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.clpstudio.bsocial.BuildConfig;
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.service.UploadProfilePhotoService;
+import com.clpstudio.bsocial.bussiness.service.ProfileService;
 import com.clpstudio.bsocial.bussiness.utils.IOUtils;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.yalantis.ucrop.UCrop;
@@ -50,7 +50,7 @@ public class EditAvatarFragment extends Fragment {
     public static final String FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
     @Inject
-    UploadProfilePhotoService uploadProfilePhotoService;
+    ProfileService profileService;
 
     private Uri imageToCrop;
     private Uri imageToUpload;
@@ -230,7 +230,7 @@ public class EditAvatarFragment extends Fragment {
             //TODO: copy uri to file
         }
 
-        uploadProfilePhotoService.upload(new File(imageToUpload.getPath())).subscribe(() -> {
+        profileService.upload(new File(imageToUpload.getPath())).subscribe(() -> {
             if (isAdded()) {
                 progressDialog.dismiss();
                 finishWithMessage(R.string.edit_avatar_uploaded);
