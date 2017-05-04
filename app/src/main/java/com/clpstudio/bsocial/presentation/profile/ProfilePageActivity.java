@@ -30,6 +30,8 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     ImageView avatarImage;
     @BindView(R.id.avatar_edit)
     TextView avatarEditText;
+    @BindView(R.id.email)
+    TextView emailText;
 
     @OnClick(R.id.avatar)
     public void onAvatarClick() {
@@ -59,7 +61,6 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
 
     @Override
     public void downloadProfileImage(String storageReference) {
-
         Glide.with(this)
                 .load(storageReference)
                 .asBitmap()
@@ -68,6 +69,11 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
                 .dontAnimate()
                 .into(new GlideRoundedImageTarget(avatarImage));
 
+    }
+
+    @Override
+    public void setEmail(String email) {
+        emailText.setText(email);
     }
 
     @Override
