@@ -3,7 +3,7 @@ Bachelor project, the android part
 
 This project tries to use the latest technologies, libraries and architectures:
   - kotlin
-  - RxJava
+  - RxJava2
   - RxKotlin
   - MVP
   - MVVM
@@ -12,6 +12,7 @@ This project tries to use the latest technologies, libraries and architectures:
   - Auto-Factory
   - Glide
   - Dart/Hensone
+  - IcePick
   - Gson
   - LeakCanary
   - espresso
