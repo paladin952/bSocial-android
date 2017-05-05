@@ -12,8 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
@@ -27,14 +26,13 @@ import butterknife.ButterKnife;
  * Created by clapalucian on 5/6/17.
  */
 
-public class GifHorizontalListView extends RelativeLayout {
+public class GifHorizontalListView extends FrameLayout {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
     private GifHorizontalListAdapter adapter;
     private Context context;
-    private ClickListener<String> clickListener;
 
     public GifHorizontalListView(@NonNull Context context) {
         super(context);
@@ -62,11 +60,7 @@ public class GifHorizontalListView extends RelativeLayout {
     }
 
     private void init() {
-        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.layout_gif_horizontal_list_view, this, true);
 
         ButterKnife.bind(this, view);
@@ -77,7 +71,6 @@ public class GifHorizontalListView extends RelativeLayout {
     }
 
     public void setClickListener(ClickListener<String> clickListener) {
-        this.clickListener = clickListener;
         adapter.setClickListener(clickListener);
     }
 
