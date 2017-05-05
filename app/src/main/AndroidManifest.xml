@@ -19,7 +19,6 @@
         android:name="android.hardware.camera.flash"
         android:required="false"/>
 
-
     <application
         android:name=".presentation.BSocialApplication"
         android:allowBackup="true"
@@ -29,11 +28,9 @@
         android:largeHeap="true"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.clpstudio.bsocial.core.glide.GlideConfiguration"
             android:value="GlideModule"/>
-
 
         <activity
             android:name=".presentation.splashscreen.SplashScreen"
@@ -62,7 +59,6 @@
             android:name=".presentation.profile.ProfilePageActivity"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -78,6 +74,8 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
+        <activity android:name=".presentation.gifs.GifTestActivity">
+        </activity>
     </application>
 
 </manifest>

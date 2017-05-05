@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
+import com.clpstudio.bsocial.presentation.gifs.GifTestActivity;
 
 import javax.inject.Inject;
 
@@ -29,6 +29,7 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
 
         presenter.bindView(this);
 
-        ProfilePageActivity.startActivity(this);
+//        ProfilePageActivity.startActivity(this);
+        GifTestActivity.startActivity(this);
     }
 }

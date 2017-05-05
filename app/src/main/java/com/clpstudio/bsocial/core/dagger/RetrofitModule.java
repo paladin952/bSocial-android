@@ -2,8 +2,7 @@ package com.clpstudio.bsocial.core.dagger;
 
 import android.content.Context;
 
-import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.api.ApiService;
+import com.clpstudio.bsocial.bussiness.api.RetrofitGiphyApiService;
 import com.clpstudio.bsocial.core.retrofit.BSRxJava2CallAdapterFactory;
 import com.clpstudio.bsocial.core.retrofit.StringConverterFactory;
 import com.google.gson.Gson;
@@ -26,11 +25,12 @@ public class RetrofitModule {
 
     private static final String PROTOCOL = "https://";
     private static final int DEFAULT_TIMEOUT_SECONDS = 10;
+    private static final String GIPHY_ENDPOINT = "api.giphy.com";
 
     @Provides
     @Singleton
-    public ApiService provideApiService(Retrofit retrofit) {
-        return retrofit.create(ApiService.class);
+    public RetrofitGiphyApiService provideApiService(Retrofit retrofit) {
+        return retrofit.create(RetrofitGiphyApiService.class);
     }
 
     @Provides
@@ -58,12 +58,12 @@ public class RetrofitModule {
 
     @Provides
     @Singleton
-    public Retrofit.Builder provideRetrofitBuilder(Gson gson, Context context) {
+    public Retrofit.Builder provideRetrofitGiphyBuilder(Gson gson, Context context) {
         return new Retrofit.Builder()
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(BSRxJava2CallAdapterFactory.create(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())))
-                .baseUrl(PROTOCOL + context.getString(R.string.backend_hostname));
+                .baseUrl(PROTOCOL + GIPHY_ENDPOINT);
     }
 }
 

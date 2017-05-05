@@ -2,6 +2,7 @@ package com.clpstudio.bsocial.core.dagger;
 
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversations.ConversationsActivity;
+import com.clpstudio.bsocial.presentation.gifs.GifTestActivity;
 import com.clpstudio.bsocial.presentation.profile.EditAvatarFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
 import com.clpstudio.bsocial.presentation.splashscreen.SplashScreen;
@@ -15,7 +16,8 @@ import dagger.Component;
 @Component(
         modules = {
                 ApplicationModule.class,
-                FirebaseModule.class
+                FirebaseModule.class,
+                RetrofitModule.class
         }
 )
 @Singleton
@@ -33,4 +35,6 @@ public interface DIComponent {
     void inject(ProfilePageActivity activity);
 
     void inject(EditAvatarFragment editAvatarFragment);
+
+    void inject(GifTestActivity gifTestActivity);
 }
