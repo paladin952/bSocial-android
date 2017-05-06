@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -30,6 +32,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     RecyclerView recyclerView;
     @BindView(R.id.background)
     ImageView background;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private ConversationAdapter adapter;
 
@@ -45,7 +49,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         ButterKnife.bind(this);
 
         Glide.with(this).load(R.drawable.bg_default_conversation).into(background);
-
+        setupToolbar();
         adapter = new ConversationAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -53,6 +57,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
 //        ProfilePageActivity.startActivity(this);
 //        GifTestActivity.startActivity(this);
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     @Override
