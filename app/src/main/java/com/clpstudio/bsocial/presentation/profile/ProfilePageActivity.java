@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity;
 
 import javax.inject.Inject;
 
@@ -57,6 +58,11 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     @OnClick(R.id.avatar)
     public void onAvatarClick() {
         EditAvatarFragment.show(getSupportFragmentManager());
+    }
+
+    @OnClick(R.id.logout)
+    public void onLogoutClick() {
+        presenter.logout();
     }
 
     public static void startActivity(Activity activity) {
@@ -104,5 +110,11 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     @Override
     public void refreshProfileImage() {
         presenter.refreshImage();
+    }
+
+    @Override
+    public void gotoAuthenticatePage() {
+        AuthenticateActivity.startActivity(this);
+        finishAffinity();
     }
 }

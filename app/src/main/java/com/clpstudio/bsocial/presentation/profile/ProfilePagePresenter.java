@@ -75,6 +75,11 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
         }
     }
 
+    public void logout() {
+        firebaseAuth.signOut();
+        view().gotoAuthenticatePage();
+    }
+
     public interface View extends IBaseMvpPresenter.View {
 
         void downloadProfileImage(String url);
@@ -84,6 +89,8 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
         void showToast(String message);
 
         void setNickname(String nickname);
+
+        void gotoAuthenticatePage();
     }
 
 }

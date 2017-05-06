@@ -113,5 +113,19 @@
             tools:text="clapalucian10@gmail.com"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:paddingBottom="20dp"
+        android:paddingLeft="16dp"
+        android:clickable="true"
+        android:paddingRight="16dp"
+        android:paddingTop="20dp"
+        android:text="@string/logout"
+        android:textColor="@color/black"/>
 
 </LinearLayout>
