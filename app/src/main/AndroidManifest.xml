@@ -54,6 +54,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.conversation.ConversationActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.profile.ProfilePageActivity"
@@ -74,7 +75,8 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name=".presentation.gifs.GifTestActivity">
+        <activity android:name=".presentation.gifs.GifTestActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

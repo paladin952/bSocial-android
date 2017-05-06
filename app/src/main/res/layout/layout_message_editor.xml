@@ -4,7 +4,6 @@
               android:layout_height="wrap_content"
               android:background="@drawable/bg_message_editor"
               android:orientation="vertical"
-              android:paddingBottom="12dp"
               android:paddingLeft="16dp"
               android:paddingRight="16dp"
               android:paddingTop="12dp">
@@ -15,6 +14,7 @@
         android:id="@+id/messageEditText"
         android:layout_gravity="center_vertical"
         android:background="@android:color/transparent"
+        android:paddingBottom="12dp"
         android:hint="@string/hint_type_a_message"/>
 
 
