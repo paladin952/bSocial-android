@@ -70,6 +70,8 @@ public class GifHorizontalListView extends FrameLayout {
         recyclerView.setAdapter(adapter);
     }
 
+
+
     public void setClickListener(ClickListener<String> clickListener) {
         adapter.setClickListener(clickListener);
     }

@@ -10,6 +10,7 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.service.GiphyService;
 import com.clpstudio.bsocial.data.models.gifs.Data;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.views.MessageEditorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class GifTestActivity extends AppCompatActivity {
 
     @BindView(R.id.horizontalView)
     GifHorizontalListView horizontalListView;
+
+    @BindView(R.id.messageEditor)
+    MessageEditorView messageEditorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class GifTestActivity extends AppCompatActivity {
                 }, err -> {
 
                 });
+
+
 
     }
 }

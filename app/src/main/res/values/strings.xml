@@ -38,5 +38,6 @@
     <string name="enter_your_nickname">Enter your Nickname</string>
     <string name="nickname_updated_successfuly">Nickname updated</string>
     <string name="nickname_updated_failed">Nickname coudn\'t be updated. Try again!</string>
+    <string name="hint_type_a_message">Type a message</string>
 
 </resources>

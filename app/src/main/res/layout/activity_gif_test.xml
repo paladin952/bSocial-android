@@ -14,4 +14,13 @@
 
     </com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView>
 
+
+    <com.clpstudio.bsocial.presentation.views.MessageEditorView
+        android:id="@+id/messageEditor"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_height="wrap_content">
+
+    </com.clpstudio.bsocial.presentation.views.MessageEditorView>
+
 </LinearLayout>
