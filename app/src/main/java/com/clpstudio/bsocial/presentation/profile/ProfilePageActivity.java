@@ -81,9 +81,9 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     }
 
     @Override
-    public void downloadProfileImage(String storageReference) {
+    public void downloadProfileImage(String url) {
         Glide.with(this)
-                .load(storageReference)
+                .load(url)
                 .asBitmap()
                 .placeholder(R.drawable.default_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

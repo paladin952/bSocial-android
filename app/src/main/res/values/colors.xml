@@ -18,4 +18,6 @@
     <color name="primary">#333333</color>
     <color name="secondary">#666666</color>
     <color name="tertiary">#767676</color>
+
+    <color name="whatsapp_bg_green">#E7FFD2</color>
 </resources>

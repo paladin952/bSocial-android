@@ -24,10 +24,14 @@ public class ConversationService {
             List<ConversationModel> data = new ArrayList<ConversationModel>();
             data.add(new ConversationModel("luci", "ce faci?"));
             data.add(new ConversationModel("ioana", "bine"));
-            data.add(new ConversationModel("luci", "tu"));
+            data.add(new ConversationModel("luci", "tu?"));
             data.add(new ConversationModel("ioana", "si eu"));
             data.add(new ConversationModel("luci", "ai mancat?"));
-            data.add(new ConversationModel("ioana", "la livada"));
+            data.add(new ConversationModel("ioana", "la livada si sunt smechera"));
+            data.add(new ConversationModel("luci", "ai mancat?"));
+            data.add(new ConversationModel("luci", "Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
+            data.add(new ConversationModel("luci", "Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
+            data.add(new ConversationModel("ioana", "lAndroid charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
             e.onNext(data);
         });
     }

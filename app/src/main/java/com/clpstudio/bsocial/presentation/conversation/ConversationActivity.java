@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
@@ -26,6 +28,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     @BindView(R.id.conversationsRecyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.background)
+    ImageView background;
 
     private ConversationAdapter adapter;
 
@@ -39,6 +43,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         setContentView(R.layout.activity_conversations);
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
         ButterKnife.bind(this);
+
+        Glide.with(this).load(R.drawable.bg_default_conversation).into(background);
 
         adapter = new ConversationAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
