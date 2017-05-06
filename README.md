@@ -1,4 +1,7 @@
 # bSocial-android
+
+bSocial is a realtime chat app.
+
 Bachelor project, the android part
 
 This project tries to use the latest technologies, libraries and architectures:
