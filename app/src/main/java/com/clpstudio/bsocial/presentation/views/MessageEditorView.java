@@ -10,6 +10,7 @@ import android.support.annotation.StyleRes;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -59,6 +60,17 @@ public class MessageEditorView extends FrameLayout {
     private void init() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_message_editor, this, true);
         ButterKnife.bind(this, view);
+
+        editText.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (onTextSubmitedListener != null) {
+                    onTextSubmitedListener.onTextSubmited(editText.getText().toString());
+                    editText.setText("");
+                }
+                return true;
+            }
+            return false;
+        });
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override

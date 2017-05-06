@@ -46,9 +46,17 @@ public class ConversationPresenter extends BaseMvpPresenter<ConversationPresente
                 });
     }
 
+    public void onTextSubmited(String text) {
+        //todo add real username and stuff
+        ConversationModel model = new ConversationModel("luci", text);
+        view().appendData(model);
+    }
+
     public interface View extends IBaseMvpPresenter.View {
 
         void showData(List<ConversationModel> data);
+
+        void appendData(ConversationModel data);
 
     }
 

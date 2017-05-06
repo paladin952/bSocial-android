@@ -9,13 +9,14 @@
               android:paddingTop="12dp">
 
     <EditText
+        android:id="@+id/messageEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/messageEditText"
         android:layout_gravity="center_vertical"
         android:background="@android:color/transparent"
-        android:paddingBottom="12dp"
-        android:hint="@string/hint_type_a_message"/>
+        android:hint="@string/hint_type_a_message"
+        android:imeOptions="actionDone"
+        android:paddingBottom="12dp"/>
 
 
 </LinearLayout>
