@@ -53,7 +53,7 @@
             android:name=".presentation.authenticate.AuthenticateActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".presentation.conversations.ConversationsActivity"
+            android:name=".presentation.conversation.ConversationActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.profile.ProfilePageActivity"

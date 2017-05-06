@@ -1,11 +1,9 @@
 package com.clpstudio.bsocial.presentation.register;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
-import com.clpstudio.bsocial.data.models.RegisterModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,8 +47,6 @@ public class RegisterPresenter extends BaseMvpPresenter<RegisterPresenter.View> 
                     });
 
 
-            RegisterModel registerModel = new RegisterModel(email, password);
-            Log.d("luci", registerModel.toString());
         }
     }
 

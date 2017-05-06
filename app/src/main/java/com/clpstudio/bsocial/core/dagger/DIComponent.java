@@ -1,7 +1,7 @@
 package com.clpstudio.bsocial.core.dagger;
 
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.conversations.ConversationsActivity;
+import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
 import com.clpstudio.bsocial.presentation.gifs.GifTestActivity;
 import com.clpstudio.bsocial.presentation.profile.EditAvatarFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
@@ -30,7 +30,7 @@ public interface DIComponent {
 
     void inject(RegisterActivity registerActivity);
 
-    void inject(ConversationsActivity conversationsActivity);
+    void inject(ConversationActivity conversationActivity);
 
     void inject(ProfilePageActivity activity);
 

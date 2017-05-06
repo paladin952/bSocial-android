@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity;
-import com.clpstudio.bsocial.presentation.conversations.ConversationsActivity;
+import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
 
 import javax.inject.Inject;
 
@@ -38,7 +38,7 @@ public class SplashScreen extends AppCompatActivity implements SplashScreenPrese
 
     @Override
     public void gotoMainScreen() {
-        ConversationsActivity.startActivity(this);
+        ConversationActivity.startActivity(this);
         finish();
     }
 }

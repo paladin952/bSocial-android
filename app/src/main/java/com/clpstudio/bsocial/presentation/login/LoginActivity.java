@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.LoginModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.conversations.ConversationsActivity;
+import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
 
 import javax.inject.Inject;
 
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
     @Override
     public void goToMainActivity() {
-        ConversationsActivity.startActivity(this);
+        ConversationActivity.startActivity(this);
     }
 
     @Override
