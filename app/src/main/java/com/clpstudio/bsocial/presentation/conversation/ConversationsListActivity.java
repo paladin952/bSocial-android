@@ -20,7 +20,7 @@ public class ConversationsListActivity extends AppCompatActivity{
 
     @OnClick(R.id.call_button)
     public void callButtonClick() {
-        PlaceCallSinchActivity.startActivity(this, "lucian@dealdash.com", false);
+        PlaceCallSinchActivity.startActivity(this, "clapalucian10@gmail.com", false);
     }
 
     public static void startActivity(Activity activity) {

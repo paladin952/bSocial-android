@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.sinch.SinchService;
+import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 import com.sinch.android.rtc.MissingPermissionException;
 import com.sinch.android.rtc.calling.Call;
@@ -35,6 +36,7 @@ public class PlaceCallSinchActivity extends BaseSinchActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_call_sinch);
+        Dart.inject(this);
     }
 
     @Override

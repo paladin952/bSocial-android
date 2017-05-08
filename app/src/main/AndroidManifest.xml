@@ -105,6 +105,8 @@
         <service android:name=".core.sinch.SinchService"/>
 
         <activity android:name=".presentation.calling.VideoCallScreenActivity"/>
+        <activity android:name=".presentation.conversation.ConversationsListActivity"/>
+        <activity android:name=".presentation.calling.IncomingVideoCallSinchActivity"/>
     </application>
 
 </manifest>

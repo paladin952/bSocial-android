@@ -157,10 +157,12 @@ public class VideoCallScreenActivity extends BaseSinchActivity {
 
     private void addLocalView() {
         if (mLocalVideoViewAdded || getSinchServiceInterface() == null) {
+            Log.d("luci", "return //early local");
             return; //early
         }
         final VideoController vc = getSinchServiceInterface().getVideoController();
         if (vc != null) {
+            Log.d("luci", "here local");
             RelativeLayout localView = (RelativeLayout) findViewById(R.id.localVideo);
             localView.addView(vc.getLocalView());
             localView.setOnClickListener(v -> vc.toggleCaptureDevicePosition());
@@ -169,10 +171,12 @@ public class VideoCallScreenActivity extends BaseSinchActivity {
     }
     private void addRemoteView() {
         if (mRemoteVideoViewAdded || getSinchServiceInterface() == null) {
+            Log.d("luci", "return //early remove");
             return; //early
         }
         final VideoController vc = getSinchServiceInterface().getVideoController();
         if (vc != null) {
+            Log.d("luci", "here remove");
             LinearLayout view = (LinearLayout) findViewById(R.id.remoteVideo);
             view.addView(vc.getRemoteView());
             mRemoteVideoViewAdded = true;
@@ -182,11 +186,13 @@ public class VideoCallScreenActivity extends BaseSinchActivity {
 
     private void removeVideoViews() {
         if (getSinchServiceInterface() == null) {
+            Log.d("luci", "return early");
             return; // early
         }
 
         VideoController vc = getSinchServiceInterface().getVideoController();
         if (vc != null) {
+            Log.d("luci", "add video");
             LinearLayout view = (LinearLayout) findViewById(R.id.remoteVideo);
             view.removeView(vc.getRemoteView());
 
@@ -241,7 +247,7 @@ public class VideoCallScreenActivity extends BaseSinchActivity {
 
         @Override
         public void onVideoTrackPaused(Call call) {
-
+            call.pauseVideo();
         }
 
         @Override

@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.clpstudio.bsocial.presentation.calling.IncomingCallScreenSinchActivity;
+import com.clpstudio.bsocial.presentation.calling.IncomingVideoCallSinchActivity;
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
@@ -190,7 +191,7 @@ public class SinchService extends Service {
 
         @Override
         public void onRegistrationCredentialsRequired(SinchClient client,
-                ClientRegistration clientRegistration) {
+                                                      ClientRegistration clientRegistration) {
         }
     }
 
@@ -198,8 +199,13 @@ public class SinchService extends Service {
 
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
-            Log.d(TAG, "Incoming call");
-            Intent intent = new Intent(SinchService.this, IncomingCallScreenSinchActivity.class);
+            Intent intent;
+            if (call.getDetails().isVideoOffered()) {
+                intent = new Intent(SinchService.this, IncomingVideoCallSinchActivity.class);
+            } else {
+                Log.d(TAG, "Incoming video call");
+                intent = new Intent(SinchService.this, IncomingCallScreenSinchActivity.class);
+            }
             intent.putExtra(CALL_ID, call.getCallId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SinchService.this.startActivity(intent);
