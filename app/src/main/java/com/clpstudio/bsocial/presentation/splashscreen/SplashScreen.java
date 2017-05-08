@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.core.sinch.LoginSinchActivity;
+import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity;
 

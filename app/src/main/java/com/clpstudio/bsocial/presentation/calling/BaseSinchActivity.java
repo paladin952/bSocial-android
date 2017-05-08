@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.core.sinch;
+package com.clpstudio.bsocial.presentation.calling;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+
+import com.clpstudio.bsocial.core.sinch.SinchService;
 
 public abstract class BaseSinchActivity extends Activity implements ServiceConnection {
 

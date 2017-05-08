@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.core.sinch;
+package com.clpstudio.bsocial.presentation.calling;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
+import com.clpstudio.bsocial.core.sinch.SinchService;
+import com.clpstudio.bsocial.presentation.conversation.ConversationsListActivity;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 import com.sinch.android.rtc.SinchError;
@@ -57,12 +58,12 @@ public class LoginSinchActivity extends BaseSinchActivity implements SinchServic
         if (!getSinchServiceInterface().isStarted()) {
             getSinchServiceInterface().startClient(userEmail);
         } else {
-            ConversationActivity.startActivity(this);
+            openMainActivity();
         }
     }
 
     private void openMainActivity() {
-        ConversationActivity.startActivity(this);
+        ConversationsListActivity.startActivity(this);
         finishAffinity();
     }
 

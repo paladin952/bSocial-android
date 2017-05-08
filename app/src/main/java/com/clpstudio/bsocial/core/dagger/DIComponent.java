@@ -1,7 +1,7 @@
 package com.clpstudio.bsocial.core.dagger;
 
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
+import com.clpstudio.bsocial.presentation.conversation.details.ConversationActivity;
 import com.clpstudio.bsocial.presentation.gifs.GifTestActivity;
 import com.clpstudio.bsocial.presentation.profile.EditAvatarFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;

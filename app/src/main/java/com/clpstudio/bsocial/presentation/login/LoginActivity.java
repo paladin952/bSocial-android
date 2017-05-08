@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.core.sinch.LoginSinchActivity;
+import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;
 import com.clpstudio.bsocial.data.models.LoginModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 

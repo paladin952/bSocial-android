@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.core.sinch;
+package com.clpstudio.bsocial.presentation.calling;
 
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.core.sinch.AudioPlayer;
+import com.clpstudio.bsocial.core.sinch.SinchService;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallEndCause;

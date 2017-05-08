@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.presentation.conversation;
+package com.clpstudio.bsocial.presentation.conversation.details;
 
 import android.view.View;
 import android.widget.ImageView;
