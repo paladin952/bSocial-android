@@ -1,13 +1,13 @@
 package com.clpstudio.bsocial.presentation;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.clpstudio.bsocial.core.dagger.ApplicationModule;
 import com.clpstudio.bsocial.core.dagger.DIComponent;
 import com.clpstudio.bsocial.core.dagger.DaggerDIComponent;
 import com.google.firebase.FirebaseApp;
 
-public class BSocialApplication extends Application {
+public class BSocialApplication extends MultiDexApplication {
 
     private DIComponent diComponent;
 

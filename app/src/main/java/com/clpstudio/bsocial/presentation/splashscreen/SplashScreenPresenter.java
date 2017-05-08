@@ -21,7 +21,7 @@ public class SplashScreenPresenter extends BaseMvpPresenter<SplashScreenPresente
 
     public void checkLoginStatus() {
         if (firebaseAuth.getCurrentUser() != null) {
-            view().gotoMainScreen();
+            view().gotoSinchLogin(firebaseAuth.getCurrentUser().getEmail());
         } else {
             view().gotoAuthenticateActivity();
         }
@@ -30,7 +30,7 @@ public class SplashScreenPresenter extends BaseMvpPresenter<SplashScreenPresente
     public interface View extends IBaseMvpPresenter.View {
         void gotoAuthenticateActivity();
 
-        void gotoMainScreen();
+        void gotoSinchLogin(String userEmail);
     }
 
 }

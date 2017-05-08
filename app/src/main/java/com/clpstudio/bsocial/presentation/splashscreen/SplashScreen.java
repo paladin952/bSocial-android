@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.core.sinch.LoginSinchActivity;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity;
-import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
 
 import javax.inject.Inject;
 
@@ -33,12 +33,12 @@ public class SplashScreen extends AppCompatActivity implements SplashScreenPrese
     @Override
     public void gotoAuthenticateActivity() {
         AuthenticateActivity.startActivity(this);
-        finish();
+        finishAffinity();
     }
 
     @Override
-    public void gotoMainScreen() {
-        ConversationActivity.startActivity(this);
-        finish();
+    public void gotoSinchLogin(String email) {
+        LoginSinchActivity.startActivity(this, email);
+        finishAffinity();
     }
 }

@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.core.sinch.LoginSinchActivity;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
 
 import javax.inject.Inject;
 
@@ -65,8 +65,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
     }
 
     @Override
-    public void gotoMainScreen() {
-        ConversationActivity.startActivity(this);
+    public void gotoSinchLoginActivity(String userEmail) {
+        LoginSinchActivity.startActivity(this, userEmail);
     }
 
     @Override

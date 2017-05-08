@@ -9,9 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.core.sinch.LoginSinchActivity;
 import com.clpstudio.bsocial.data.models.LoginModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.conversation.ConversationActivity;
 
 import javax.inject.Inject;
 
@@ -57,8 +57,8 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     }
 
     @Override
-    public void goToMainActivity() {
-        ConversationActivity.startActivity(this);
+    public void gotoSinchLoginActivity(String userEmail) {
+        LoginSinchActivity.startActivity(this, userEmail);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.clpstudio.bsocial.presentation.login;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
@@ -35,7 +34,7 @@ public class LoginPresenter extends BaseMvpPresenter<LoginPresenter.View> {
                     .addOnCompleteListener(task -> {
                         view().hideProgress();
                         if (task.isSuccessful()) {
-                            view().goToMainActivity();
+                            view().gotoSinchLoginActivity(model.getEmail());
                         } else {
                             if (task.getException() != null) {
                                 view().showLoginError(task.getException().getMessage());
@@ -44,7 +43,6 @@ public class LoginPresenter extends BaseMvpPresenter<LoginPresenter.View> {
                             }
                         }
                     });
-            Log.d("luci", model.toString());
         }
     }
 
@@ -53,7 +51,7 @@ public class LoginPresenter extends BaseMvpPresenter<LoginPresenter.View> {
 
         void showLoginError(String error);
 
-        void goToMainActivity();
+        void gotoSinchLoginActivity(String userEmail);
 
         void showValidationError(String error);
 

@@ -36,7 +36,7 @@ public class RegisterPresenter extends BaseMvpPresenter<RegisterPresenter.View> 
                     .addOnCompleteListener(task -> {
                         view().hideProgress();
                         if (task.isSuccessful()) {
-                            view().gotoMainScreen();
+                            view().gotoSinchLoginActivity(email);
                         } else {
                             if (task.getException() != null) {
                                 view().showRegisterError(task.getException().getMessage());
@@ -57,7 +57,7 @@ public class RegisterPresenter extends BaseMvpPresenter<RegisterPresenter.View> 
 
         void showValidationError(String error);
 
-        void gotoMainScreen();
+        void gotoSinchLoginActivity(String userEmail);
 
         void showProgress();
 
