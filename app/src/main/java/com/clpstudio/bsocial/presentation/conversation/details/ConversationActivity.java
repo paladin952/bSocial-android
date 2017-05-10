@@ -100,9 +100,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     private void setupMessageEditor() {
-        messageEditorView.setOnTextSubmitedListener(new MessageEditorView.OnTextSubmited() {
+        messageEditorView.setOnTextListenerListener(new MessageEditorView.OnTextListener() {
             @Override
-            public void onTextSubmited(String text) {
+            public void onTextSubmitted(String text) {
                 presenter.onTextSubmited(text);
             }
 

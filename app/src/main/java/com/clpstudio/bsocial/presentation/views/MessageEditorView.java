@@ -12,17 +12,16 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.utils.MessageTypedResolver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by clapalucian on 5/6/17.
@@ -30,16 +29,24 @@ import butterknife.ButterKnife;
 
 public class MessageEditorView extends FrameLayout {
 
-    private OnTextSubmited onTextSubmitedListener;
+    private OnTextListener onTextListenerListener;
 
-    public interface OnTextSubmited {
-        void onTextSubmited(String text);
+    public interface OnTextListener {
+        void onTextSubmitted(String text);
 
         void onGifSelected(String gifText);
     }
 
     @BindView(R.id.messageEditText)
     EditText editText;
+
+    @OnClick(R.id.send_button)
+    public void onSendClick() {
+        if (onTextListenerListener != null && !editText.getText().toString().isEmpty()) {
+            onTextListenerListener.onTextSubmitted(editText.getText().toString());
+            editText.setText("");
+        }
+    }
 
     public MessageEditorView(@NonNull Context context) {
         super(context);
@@ -66,26 +73,6 @@ public class MessageEditorView extends FrameLayout {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_message_editor, this, true);
         ButterKnife.bind(this, view);
 
-        editText.setOnKeyListener((v, keyCode, event) -> {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                if (onTextSubmitedListener != null) {
-                    String text = editText.getText().toString();
-                    if (!TextUtils.isEmpty(text)) {
-                        switch (MessageTypedResolver.getMessageType(text)) {
-                            case MessageTypedResolver.TYPE_GIF_MESSAGE:
-                                //nothing
-                                break;
-                            default:
-                                onTextSubmitedListener.onTextSubmited(text);
-                        }
-                        editText.setText("");
-                    }
-                }
-                return true;
-            }
-            return false;
-        });
-
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence text, int i, int i1, int i2) {
@@ -100,7 +87,7 @@ public class MessageEditorView extends FrameLayout {
                         String tokens[] = textStr.split("@gif ");
                         if (tokens.length > 0) {
                             Log.d("luci", "gif token = " + tokens[1]);
-                            onTextSubmitedListener.onGifSelected(tokens[1]);
+                            onTextListenerListener.onGifSelected(tokens[1]);
                         }
                     }
                 }
@@ -113,7 +100,7 @@ public class MessageEditorView extends FrameLayout {
         });
     }
 
-    public void setOnTextSubmitedListener(OnTextSubmited onTextSubmitedListener) {
-        this.onTextSubmitedListener = onTextSubmitedListener;
+    public void setOnTextListenerListener(OnTextListener onTextListenerListener) {
+        this.onTextListenerListener = onTextListenerListener;
     }
 }

@@ -1,5 +1,6 @@
 package com.clpstudio.bsocial.core.glide;
 
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -26,15 +27,20 @@ public class GlideGifTarget extends SimpleTarget<byte[]> {
     @Override
     public void onResourceReady(final byte[] resource,
                                 final GlideAnimation<? super byte[]> glideAnimation) {
-        // Load gif
         final GifDrawable gifDrawable;
         try {
-            gifDrawable = new GifDrawableBuilder().from(resource)
+            gifDrawable = new GifDrawableBuilder()
+                    .from(resource)
                     .build();
             imageView.setImageDrawable(gifDrawable);
         } catch (final IOException e) {
-            imageView.setImageResource(R.mipmap.ic_launcher);
+            imageView.setImageResource(R.drawable.ic_loading);
         }
     }
 
+    @Override
+    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+        super.onLoadFailed(e, errorDrawable);
+        imageView.setImageResource(R.drawable.ic_loading);
+    }
 }

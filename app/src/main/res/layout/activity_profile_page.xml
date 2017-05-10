@@ -32,7 +32,9 @@
             android:paddingBottom="12dp"
             android:text="@string/edit_avatar_edit"
             android:textColor="@color/white"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"/>
     </RelativeLayout>
 
     <LinearLayout

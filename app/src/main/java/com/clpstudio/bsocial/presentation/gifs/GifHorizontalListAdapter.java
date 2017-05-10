@@ -81,11 +81,11 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
                             .load(url)
                             .asGif()
                             .toBytes()
-                            .placeholder(R.mipmap.ic_launcher)
                             .thumbnail(0.1f)
+                            .placeholder(R.drawable.ic_loading)
                             .override(image.getWidth(), image.getHeight())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .error(R.mipmap.ic_launcher)
+                            .error(R.drawable.ic_loading)
                             .into(new GlideGifTarget(image));
                     image.getViewTreeObserver().removeOnPreDrawListener(this);
                     return true;
