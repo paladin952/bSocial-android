@@ -15,7 +15,10 @@ import com.bumptech.glide.Glide;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.c.Henson;
 import com.clpstudio.bsocial.presentation.views.MessageEditorView;
+import com.f2prateek.dart.Dart;
+import com.f2prateek.dart.InjectExtra;
 
 import java.util.List;
 
@@ -31,6 +34,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Inject
     ConversationPresenter presenter;
 
+    @InjectExtra("name")
+    String conversationName;
+
     @BindView(R.id.conversationsRecyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.background)
@@ -42,8 +48,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private ConversationAdapter adapter;
 
-    public static void startActivity(Activity activity) {
-        activity.startActivity(new Intent(activity, ConversationActivity.class));
+    public static void startActivity(Activity activity, String name) {
+        Intent intent = Henson.with(activity)
+                .gotoConversationActivity()
+                .name(name)
+                .build();
+
+        activity.startActivity(intent);
     }
 
     @Override
@@ -52,6 +63,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         setContentView(R.layout.activity_conversations);
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
         ButterKnife.bind(this);
+        Dart.inject(this);
 
         Glide.with(this).load(R.drawable.bg_default_conversation).into(background);
         setupToolbar();
@@ -71,8 +83,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(conversationName);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 

@@ -61,7 +61,7 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
         setupToolbar();
         gridLayoutManager = new GridLayoutManager(this, 2);
         adapter = new ConversationsListAdapter();
-        adapter.setClickListener(element -> ConversationActivity.startActivity(this));
+        adapter.setClickListener(element -> ConversationActivity.startActivity(this, element.getName()));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         presenter.bindView(this);
