@@ -78,4 +78,10 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        registerPresenter.unbindView();
+    }
 }

@@ -75,4 +75,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.unbindView();
+    }
 }

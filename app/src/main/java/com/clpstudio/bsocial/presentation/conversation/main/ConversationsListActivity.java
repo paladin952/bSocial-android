@@ -74,6 +74,18 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.showAvatar();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.unbindView();
+    }
+
+    @Override
     public void showProgress() {
 
     }

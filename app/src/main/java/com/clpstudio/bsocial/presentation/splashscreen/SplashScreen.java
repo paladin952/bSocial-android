@@ -31,6 +31,12 @@ public class SplashScreen extends AppCompatActivity implements SplashScreenPrese
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.unbindView();
+    }
+
+    @Override
     public void gotoAuthenticateActivity() {
         AuthenticateActivity.startActivity(this);
         finishAffinity();

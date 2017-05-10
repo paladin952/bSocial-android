@@ -32,7 +32,6 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     public void bindView(@NonNull View view) {
         super.bindView(view);
         showData();
-        showAvatar();
     }
 
     private void showData() {
@@ -44,7 +43,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
                 });
     }
 
-    private void showAvatar() {
+    public void showAvatar() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             if (firebaseUser.getPhotoUrl() != null) {

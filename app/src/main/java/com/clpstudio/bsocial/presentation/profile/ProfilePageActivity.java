@@ -130,4 +130,10 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
         AuthenticateActivity.startActivity(this);
         finishAffinity();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.unbindView();
+    }
 }

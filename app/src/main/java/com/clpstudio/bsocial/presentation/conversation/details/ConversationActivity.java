@@ -101,5 +101,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.unbindView();
+    }
 }
