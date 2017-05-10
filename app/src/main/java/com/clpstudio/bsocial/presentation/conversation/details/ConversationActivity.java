@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +19,8 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.c.Henson;
+import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
+import com.clpstudio.bsocial.presentation.gifs.GifPresenter;
 import com.clpstudio.bsocial.presentation.views.MessageEditorView;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
@@ -31,10 +35,12 @@ import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.messageEditor;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationPresenter.View {
+public class ConversationActivity extends AppCompatActivity implements ConversationPresenter.View, GifPresenter.View {
 
     @Inject
     ConversationPresenter presenter;
+    @Inject
+    GifPresenter gifPresenter;
 
     @InjectExtra("name")
     String conversationName;
@@ -47,6 +53,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     Toolbar toolbar;
     @BindView(messageEditor)
     MessageEditorView messageEditorView;
+    @BindView(R.id.gif_list)
+    GifHorizontalListView gifList;
 
     @OnClick(R.id.toolbar_call)
     public void onCallClick() {
@@ -80,11 +88,29 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+        setupGifList();
         presenter.bindView(this);
+        gifPresenter.bindView(this);
+    }
+
+    private void setupGifList() {
+        gifList.setClickListener(element -> {
+            presenter.onGifSelected(element);
+        });
     }
 
     private void setupMessageEditor() {
-        messageEditorView.setOnTextSubmitedListener(text -> presenter.onTextSubmited(text));
+        messageEditorView.setOnTextSubmitedListener(new MessageEditorView.OnTextSubmited() {
+            @Override
+            public void onTextSubmited(String text) {
+                presenter.onTextSubmited(text);
+            }
+
+            @Override
+            public void onGifSelected(String gifText) {
+                gifPresenter.getGifs(gifText);
+            }
+        });
     }
 
     private void setupToolbar() {
@@ -112,5 +138,29 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     protected void onDestroy() {
         super.onDestroy();
         presenter.unbindView();
+        gifPresenter.unbindView();
+    }
+
+    @Override
+    public void showGifs(List<String> urls) {
+        gifList.addData(urls);
+        gifList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (gifList.getVisibility() == View.VISIBLE) {
+            gifList.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

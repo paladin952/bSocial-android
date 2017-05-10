@@ -32,8 +32,6 @@ public class ConversationPresenter extends BaseMvpPresenter<ConversationPresente
     @Override
     public void bindView(@NonNull View view) {
         super.bindView(view);
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
         getConversations("");
     }
 
@@ -50,6 +48,15 @@ public class ConversationPresenter extends BaseMvpPresenter<ConversationPresente
         //todo add real username and stuff
         ConversationModel model = new ConversationModel("luci", text);
         view().appendData(model);
+    }
+
+    public void onGifSelected(String url) {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String email = firebaseUser.getEmail();
+            //todo change to email
+            view().appendData(new ConversationModel("luci", url));
+        }
     }
 
     public interface View extends IBaseMvpPresenter.View {

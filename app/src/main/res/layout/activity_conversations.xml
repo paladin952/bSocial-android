@@ -17,9 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/messageEditor"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"/>
 
-    </android.support.v7.widget.RecyclerView>
+    <com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView
+        android:id="@+id/gif_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/messageEditor"
+        android:visibility="gone"/>
 
     <com.clpstudio.bsocial.presentation.views.MessageEditorView
         android:id="@+id/messageEditor"

@@ -81,6 +81,7 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
                             .load(url)
                             .asGif()
                             .toBytes()
+                            .placeholder(R.mipmap.ic_launcher)
                             .thumbnail(0.1f)
                             .override(image.getWidth(), image.getHeight())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
