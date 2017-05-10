@@ -16,6 +16,7 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.conversation.details.ConversationActivity;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
         setupToolbar();
         gridLayoutManager = new GridLayoutManager(this, 2);
         adapter = new ConversationsListAdapter();
+        adapter.setClickListener(element -> ConversationActivity.startActivity(this));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         presenter.bindView(this);

@@ -62,9 +62,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
         presenter.bindView(this);
-
-//        ProfilePageActivity.startActivity(this);
-//        GifTestActivity.startActivity(this);
     }
 
     private void setupMessageEditor() {

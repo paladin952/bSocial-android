@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
+import com.clpstudio.bsocial.core.listeners.ClickListener;
 import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 public class ConversationsListAdapter extends RecyclerView.Adapter<ConversationsListAdapter.ViewHolder> {
 
     private List<ConversationNameModel> data = new ArrayList<>();
+    private ClickListener<ConversationNameModel> clickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,6 +38,10 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(data.get(position));
+
+        if (clickListener != null) {
+            holder.itemView.setOnClickListener(v -> clickListener.click(data.get(position)));
+        }
     }
 
     @Override
@@ -47,6 +53,10 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public void setClickListener(ClickListener<ConversationNameModel> clickListener) {
+        this.clickListener = clickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
