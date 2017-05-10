@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pl.droidsonroids.gif.GifImageView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   android:id="@+id/image"
-                                   android:layout_width="150dp"
-                                   android:layout_height="150dp"
-                                   android:adjustViewBounds="true"
-                                   android:background="@color/white"
-                                   android:scaleType="centerCrop"
-    />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="150dp"
+             android:layout_height="150dp">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:background="@color/white"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageView
+        android:id="@+id/loading_cover"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_loading"/>
+</FrameLayout>

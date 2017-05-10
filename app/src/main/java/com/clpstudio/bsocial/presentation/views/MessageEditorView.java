@@ -100,6 +100,10 @@ public class MessageEditorView extends FrameLayout {
         });
     }
 
+    public void clear() {
+        editText.setText("");
+    }
+
     public void setOnTextListenerListener(OnTextListener onTextListenerListener) {
         this.onTextListenerListener = onTextListenerListener;
     }

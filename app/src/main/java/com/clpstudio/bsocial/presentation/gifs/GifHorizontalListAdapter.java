@@ -8,6 +8,8 @@ import android.view.ViewTreeObserver;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideGifTarget;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
@@ -50,6 +52,7 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
 
     public void addAll(List<String> data) {
         this.data.clear();
+        notifyDataSetChanged();
         this.data.addAll(data);
         notifyDataSetChanged();
     }
@@ -67,6 +70,8 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
 
         @BindView(R.id.image)
         GifImageView image;
+        @BindView(R.id.loading_cover)
+        View coverLoading;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -74,6 +79,7 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
         }
 
         public void bind(String url) {
+            coverLoading.setVisibility(View.VISIBLE);
             image.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -82,10 +88,20 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
                             .asGif()
                             .toBytes()
                             .thumbnail(0.1f)
-                            .placeholder(R.drawable.ic_loading)
                             .override(image.getWidth(), image.getHeight())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .error(R.drawable.ic_loading)
+                            .listener(new RequestListener<String, byte[]>() {
+                                @Override
+                                public boolean onException(Exception e, String model, Target<byte[]> target, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(byte[] resource, String model, Target<byte[]> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    coverLoading.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
                             .into(new GlideGifTarget(image));
                     image.getViewTreeObserver().removeOnPreDrawListener(this);
                     return true;

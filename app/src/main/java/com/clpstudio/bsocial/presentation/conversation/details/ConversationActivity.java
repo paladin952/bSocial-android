@@ -151,6 +151,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     public void onBackPressed() {
         if (gifList.getVisibility() == View.VISIBLE) {
             gifList.setVisibility(View.GONE);
+            messageEditorView.clear();
         } else {
             super.onBackPressed();
         }
