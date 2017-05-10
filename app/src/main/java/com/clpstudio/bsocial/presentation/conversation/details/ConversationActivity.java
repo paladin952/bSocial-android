@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.messageEditor;
 
@@ -45,6 +47,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     Toolbar toolbar;
     @BindView(messageEditor)
     MessageEditorView messageEditorView;
+
+    @OnClick(R.id.toolbar_call)
+    public void onCallClick() {
+        Log.d("luci", "call clicked!");
+    }
 
     private ConversationAdapter adapter;
 

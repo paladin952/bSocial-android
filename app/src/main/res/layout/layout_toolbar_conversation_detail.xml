@@ -15,7 +15,7 @@
                                    tools:targetApi="lollipop">
 
     <ImageView
-        android:id="@+id/avatar"
+        android:id="@+id/toolbar_call"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
