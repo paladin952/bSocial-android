@@ -3,8 +3,10 @@ package com.clpstudio.bsocial.presentation.profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +40,8 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     TextView emailText;
     @BindView(R.id.nickname)
     TextView nicknameText;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @OnClick(R.id.nickname_container)
     public void onNicknameClick() {
@@ -76,8 +80,17 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
         ButterKnife.bind(this);
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
 
+        setupToolbar();
         avatarEditText.getBackground().setLevel(3000);
         presenter.bindView(this);
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     @Override
