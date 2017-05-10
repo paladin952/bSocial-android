@@ -35,10 +35,13 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     }
 
     private void showData() {
+        view().showProgress();
         conversationService.getListOfConversations()
                 .subscribe(conversationNameModels -> {
+                    view().hideProgress();
                     view().showData(conversationNameModels);
                 }, err -> {
+                    view().hideProgress();
                     //todo
                 });
     }

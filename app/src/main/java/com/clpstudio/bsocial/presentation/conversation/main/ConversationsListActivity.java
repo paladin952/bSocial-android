@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +43,8 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.progressBar)
+    View progressBar;
 
     private ImageView avatarImageView;
     private GridLayoutManager gridLayoutManager;
@@ -87,12 +90,12 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
