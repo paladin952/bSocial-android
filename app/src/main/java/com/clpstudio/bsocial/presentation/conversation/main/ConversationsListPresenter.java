@@ -1,11 +1,15 @@
-package com.clpstudio.bsocial.presentation.conversation;
+package com.clpstudio.bsocial.presentation.conversation.main;
 
 import android.support.annotation.NonNull;
 
+import com.clpstudio.bsocial.bussiness.service.ConversationService;
+import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,6 +21,8 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
 
     @Inject
     FirebaseAuth firebaseAuth;
+    @Inject
+    ConversationService conversationService;
 
     @Inject
     public ConversationsListPresenter() {
@@ -25,7 +31,17 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     @Override
     public void bindView(@NonNull View view) {
         super.bindView(view);
+        showData();
         showAvatar();
+    }
+
+    private void showData() {
+        conversationService.getListOfConversations()
+                .subscribe(conversationNameModels -> {
+                    view().showData(conversationNameModels);
+                }, err -> {
+                    //todo
+                });
     }
 
     private void showAvatar() {
@@ -42,6 +58,8 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     public interface View extends IProgressView {
 
         void showAvatar(String url);
+
+        void showData(List<ConversationNameModel> data);
 
     }
 }

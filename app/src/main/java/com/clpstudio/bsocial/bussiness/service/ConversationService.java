@@ -1,6 +1,7 @@
 package com.clpstudio.bsocial.bussiness.service;
 
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Created by clapalucian on 5/6/17.
@@ -33,6 +35,19 @@ public class ConversationService {
             data.add(new ConversationModel("luci", "Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
             data.add(new ConversationModel("ioana", "lAndroid charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
             e.onNext(data);
+        });
+    }
+
+    public Single<List<ConversationNameModel>> getListOfConversations() {
+        return Single.create(e -> {
+            List<ConversationNameModel> data = new ArrayList<>();
+            data.add(new ConversationNameModel("Lucian Clapa", ""));
+            data.add(new ConversationNameModel("Lucian", ""));
+            data.add(new ConversationNameModel("Clapa", ""));
+            data.add(new ConversationNameModel("Ioana minzat", ""));
+            data.add(new ConversationNameModel("blabla", ""));
+
+            e.onSuccess(data);
         });
     }
 }
