@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.bussiness.utils.MessageTypedResolver;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<BaseConversationVi
 
     private static final int TYPE_MESSAGE_MINE = 0;
     private static final int TYPE_MESSAGE_OTHERS = 1;
+    private static final int TYPE_GIF_MINE = 2;
+    private static final int TYPE_GIF_OTHERS = 3;
 
     private List<ConversationModel> data = new ArrayList<>();
 
@@ -49,11 +52,25 @@ public class ConversationAdapter extends RecyclerView.Adapter<BaseConversationVi
 
     @Override
     public int getItemViewType(int position) {
-        if (data.get(position) != null && data.get(position).getUserName().equals("luci")) {
-            return TYPE_MESSAGE_MINE;
+        String message = data.get(position).getMessage();
+        String username = data.get(position).getUserName();
+        if (MessageTypedResolver.isGifMessage(message)) {
+            if (isMine(username)) {
+                return TYPE_GIF_MINE;
+            } else {
+                return TYPE_GIF_OTHERS;
+            }
         } else {
-            return TYPE_MESSAGE_OTHERS;
+            if (isMine(username)) {
+                return TYPE_MESSAGE_MINE;
+            } else {
+                return TYPE_MESSAGE_OTHERS;
+            }
         }
+    }
+
+    private boolean isMine(String username) {
+        return username.equals("luci");
     }
 
     @Override
@@ -61,15 +78,27 @@ public class ConversationAdapter extends RecyclerView.Adapter<BaseConversationVi
         View view;
         if (viewType == TYPE_MESSAGE_MINE) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_mine, parent, false);
-        } else {
+        } else if (viewType == TYPE_MESSAGE_OTHERS) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_others, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_gif, parent, false);
+            boolean isOthers = false;
+            if (viewType == TYPE_GIF_OTHERS) {
+                isOthers = true;
+            }
+            return new GifMessageViewHolder(view, isOthers);
         }
         return new NormalMessageViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(BaseConversationViewHolder holder, int position) {
-        holder.bindMessage(data.get(position).getMessage());
+        String message = data.get(position).getMessage();
+        if (holder instanceof NormalMessageViewHolder) {
+            holder.bindMessage(message);
+        } else if (holder instanceof GifMessageViewHolder) {
+            holder.bindGiphyView(message);
+        }
     }
 
     @Override

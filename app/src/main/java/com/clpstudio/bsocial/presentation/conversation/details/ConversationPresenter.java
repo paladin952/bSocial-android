@@ -56,6 +56,7 @@ public class ConversationPresenter extends BaseMvpPresenter<ConversationPresente
             String email = firebaseUser.getEmail();
             //todo change to email
             view().appendData(new ConversationModel("luci", url));
+            view().clearInput();
         }
     }
 
@@ -64,6 +65,8 @@ public class ConversationPresenter extends BaseMvpPresenter<ConversationPresente
         void showData(List<ConversationModel> data);
 
         void appendData(ConversationModel data);
+
+        void clearInput();
 
     }
 

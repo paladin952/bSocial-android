@@ -96,6 +96,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private void setupGifList() {
         gifList.setClickListener(element -> {
             presenter.onGifSelected(element);
+            gifPresenter.onGifSelected();
         });
     }
 
@@ -148,6 +149,12 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     @Override
+    public void hideGifs() {
+        gifList.setVisibility(View.GONE);
+        gifList.clear();
+    }
+
+    @Override
     public void onBackPressed() {
         if (gifList.getVisibility() == View.VISIBLE) {
             gifList.setVisibility(View.GONE);
@@ -155,6 +162,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void clearInput() {
+        messageEditorView.clear();
     }
 
     @Override

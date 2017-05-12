@@ -48,9 +48,15 @@ public class GifPresenter extends BaseMvpPresenter<GifPresenter.View> {
 
     }
 
+    public void onGifSelected() {
+        view().hideGifs();
+    }
+
     public interface View extends IBaseMvpPresenter.View {
 
         void showGifs(List<String> urls);
+
+        void hideGifs();
 
     }
 

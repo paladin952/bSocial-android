@@ -85,4 +85,8 @@ public class GifHorizontalListView extends FrameLayout {
     public void addData(List<String> data) {
         adapter.addAll(data);
     }
+
+    public void clear() {
+        adapter.clear();
+    }
 }

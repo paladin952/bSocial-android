@@ -66,6 +66,10 @@ public class GifHorizontalListAdapter extends RecyclerView.Adapter<GifHorizontal
         this.clickListener = clickListener;
     }
 
+    public void clear() {
+        this.data.clear();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.image)

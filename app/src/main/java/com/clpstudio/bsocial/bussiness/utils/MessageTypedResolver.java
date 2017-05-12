@@ -1,19 +1,20 @@
 package com.clpstudio.bsocial.bussiness.utils;
 
+import android.net.Uri;
+
 /**
  * Created by clapalucian on 5/10/17.
  */
 
 public class MessageTypedResolver {
 
-    public static final int TYPE_NORMAL_MESSAGE = 0;
-    public static final int TYPE_GIF_MESSAGE = 1;
-
-    public static int getMessageType(String message) {
-        if (message.startsWith("https://media0.giphy.com")) {
-            return TYPE_GIF_MESSAGE;
+    public static boolean isGifMessage(String url) {
+        Uri uri = Uri.parse(url);
+        String host = uri.getHost();
+        if (host != null) {
+            return host.contains("giphy.com") && url.contains(".gif");
+        } else {
+            return false;
         }
-        return TYPE_NORMAL_MESSAGE;
     }
-
 }

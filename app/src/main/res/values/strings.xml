@@ -40,5 +40,6 @@
     <string name="nickname_updated_failed">Nickname coudn\'t be updated. Try again!</string>
     <string name="hint_type_a_message">Type a message</string>
     <string name="logout">Log out</string>
+    <string name="via_gif">via @gif</string>
 
 </resources>
