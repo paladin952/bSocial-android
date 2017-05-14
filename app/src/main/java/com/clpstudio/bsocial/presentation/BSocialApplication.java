@@ -6,6 +6,7 @@ import com.clpstudio.bsocial.core.dagger.ApplicationModule;
 import com.clpstudio.bsocial.core.dagger.DIComponent;
 import com.clpstudio.bsocial.core.dagger.DaggerDIComponent;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class BSocialApplication extends MultiDexApplication {
 
@@ -19,6 +20,7 @@ public class BSocialApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         FirebaseApp.initializeApp(this); // keep it before dagger initialization
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         diComponent = DaggerDIComponent.builder().applicationModule(new ApplicationModule(this)).build();
         diComponent.inject(this);
 

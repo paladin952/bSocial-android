@@ -3,10 +3,10 @@ package com.clpstudio.bsocial.presentation.register;
 import android.content.Context;
 
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.bussiness.service.LoginService;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
-import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
 
@@ -16,7 +16,7 @@ public class RegisterPresenter extends BaseMvpPresenter<RegisterPresenter.View> 
     Context context;
 
     @Inject
-    FirebaseAuth firebaseAuth;
+    LoginService loginService;
 
     @Inject
     public RegisterPresenter() {
@@ -32,18 +32,13 @@ public class RegisterPresenter extends BaseMvpPresenter<RegisterPresenter.View> 
         } else {
             //TODO the call
             view().showProgress();
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
+            loginService.register(email, password)
+                    .subscribe(() -> {
                         view().hideProgress();
-                        if (task.isSuccessful()) {
-                            view().gotoSinchLoginActivity(email);
-                        } else {
-                            if (task.getException() != null) {
-                                view().showRegisterError(task.getException().getMessage());
-                            } else {
-                                view().showValidationError(context.getString(R.string.unknown_error));
-                            }
-                        }
+                        view().gotoSinchLoginActivity(email);
+                    }, err -> {
+                        view().hideProgress();
+                        view().showRegisterError(err.getMessage());
                     });
 
 

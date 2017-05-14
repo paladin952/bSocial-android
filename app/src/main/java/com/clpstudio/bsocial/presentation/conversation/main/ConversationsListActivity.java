@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.bussiness.service.DatabaseService;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
@@ -35,7 +36,8 @@ import static com.clpstudio.bsocial.R.id.avatar;
 
 public class ConversationsListActivity extends AppCompatActivity implements ConversationsListPresenter.View {
 
-
+    @Inject
+    DatabaseService databaseService;
     @Inject
     ConversationsListPresenter presenter;
 
@@ -68,6 +70,8 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         presenter.bindView(this);
+
+        databaseService.getData();
     }
 
     private void setupToolbar() {
