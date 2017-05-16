@@ -16,7 +16,7 @@ import java.util.List;
  * Created by clapalucian on 5/6/17.
  */
 
-public class ConversationAdapter extends RecyclerView.Adapter<BaseConversationViewHolder> {
+public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversationViewHolder> {
 
     private static final int TYPE_MESSAGE_MINE = 0;
     private static final int TYPE_MESSAGE_OTHERS = 1;
@@ -25,7 +25,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<BaseConversationVi
 
     private List<ConversationModel> data = new ArrayList<>();
 
-    public ConversationAdapter() {
+    public ConversationDetailAdapter() {
     }
 
     public void clear() {

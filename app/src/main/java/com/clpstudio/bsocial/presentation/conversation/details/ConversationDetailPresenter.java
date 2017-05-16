@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * Created by clapalucian on 5/4/17.
  */
 
-public class ConversationPresenter extends BaseMvpPresenter<ConversationPresenter.View> {
+public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDetailPresenter.View> {
 
     @Inject
     FirebaseAuth firebaseAuth;
@@ -26,7 +26,7 @@ public class ConversationPresenter extends BaseMvpPresenter<ConversationPresente
     ConversationService conversationService;
 
     @Inject
-    public ConversationPresenter() {
+    public ConversationDetailPresenter() {
     }
 
     @Override

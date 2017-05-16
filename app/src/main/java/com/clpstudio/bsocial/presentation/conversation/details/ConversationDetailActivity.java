@@ -35,10 +35,10 @@ import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.messageEditor;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationPresenter.View, GifPresenter.View {
+public class ConversationDetailActivity extends AppCompatActivity implements ConversationDetailPresenter.View, GifPresenter.View {
 
     @Inject
-    ConversationPresenter presenter;
+    ConversationDetailPresenter presenter;
     @Inject
     GifPresenter gifPresenter;
 
@@ -61,11 +61,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         Log.d("luci", "call clicked!");
     }
 
-    private ConversationAdapter adapter;
+    private ConversationDetailAdapter adapter;
 
     public static void startActivity(Activity activity, String name) {
         Intent intent = Henson.with(activity)
-                .gotoConversationActivity()
+                .gotoConversationDetailActivity()
                 .name(name)
                 .build();
 
@@ -75,7 +75,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_conversations);
+        setContentView(R.layout.fragment_conversations);
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
         ButterKnife.bind(this);
         Dart.inject(this);
@@ -83,7 +83,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         Glide.with(this).load(R.drawable.bg_default_conversation).into(background);
         setupToolbar();
         setupMessageEditor();
-        adapter = new ConversationAdapter();
+        adapter = new ConversationDetailAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);

@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.presentation.conversation.main;
+package com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
