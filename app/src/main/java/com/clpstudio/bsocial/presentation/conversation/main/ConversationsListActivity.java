@@ -71,7 +71,6 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
         recyclerView.setAdapter(adapter);
         presenter.bindView(this);
 
-        databaseService.getData();
     }
 
     private void setupToolbar() {
@@ -84,6 +83,7 @@ public class ConversationsListActivity extends AppCompatActivity implements Conv
     protected void onStart() {
         super.onStart();
         presenter.showAvatar();
+        databaseService.hasUser();
     }
 
     @Override
