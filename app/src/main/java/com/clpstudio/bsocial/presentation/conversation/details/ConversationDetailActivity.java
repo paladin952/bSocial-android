@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.c.Henson;
 import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
@@ -104,7 +104,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         messageEditorView.setOnTextListenerListener(new MessageEditorView.OnTextListener() {
             @Override
             public void onTextSubmitted(String text) {
-                presenter.onTextSubmited(text);
+                presenter.onTextSubmited("one", text);
             }
 
             @Override
@@ -124,13 +124,13 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     }
 
     @Override
-    public void showData(List<ConversationModel> data) {
+    public void showData(List<Message> data) {
         adapter.addAll(data);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override
-    public void appendData(ConversationModel data) {
+    public void appendData(Message data) {
         adapter.append(data);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }

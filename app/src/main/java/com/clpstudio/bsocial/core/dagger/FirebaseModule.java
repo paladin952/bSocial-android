@@ -54,6 +54,12 @@ public class FirebaseModule {
         return database.getReference("friends");
     }
 
+    @Provides
+    @Messages
+    DatabaseReference providesMessagesRef(FirebaseDatabase database) {
+        return database.getReference("messages");
+    }
+
     @Qualifier
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
@@ -64,6 +70,12 @@ public class FirebaseModule {
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Friends {
+    }
+
+    @Qualifier
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Messages {
     }
 
 }

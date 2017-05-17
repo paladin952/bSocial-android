@@ -1,13 +1,18 @@
 package com.clpstudio.bsocial.bussiness.service;
 
-import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.core.dagger.FirebaseModule;
+import com.clpstudio.bsocial.core.firebase.AddValueEventSuccessListener;
 import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
+import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -17,25 +22,74 @@ import io.reactivex.Single;
 
 public class ConversationService {
 
+    private static final String DB_FIELD_TIMESTAMP = "timestamp";
+
+    @Inject
+    @FirebaseModule.Messages
+    DatabaseReference messagesRef;
+
     @Inject
     public ConversationService() {
     }
 
-    public Observable<List<ConversationModel>> getMessages(String conversationId) {
-        return Observable.create(e -> {
-            List<ConversationModel> data = new ArrayList<ConversationModel>();
-            data.add(new ConversationModel("luci", "ce faci?"));
-            data.add(new ConversationModel("ioana", "bine"));
-            data.add(new ConversationModel("luci", "tu?"));
-            data.add(new ConversationModel("ioana", "si eu"));
-            data.add(new ConversationModel("luci", "ai mancat?"));
-            data.add(new ConversationModel("ioana", "la livada si sunt smechera"));
-            data.add(new ConversationModel("luci", "ai mancat?"));
-            data.add(new ConversationModel("luci", "Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
-            data.add(new ConversationModel("luci", "Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
-            data.add(new ConversationModel("ioana", "lAndroid charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."));
-            e.onNext(data);
-        });
+    private List<Message> collectMessages(DataSnapshot dataSnapshot) {
+        List<Message> data = new ArrayList<>();
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            Message message = ds.getValue(Message.class);
+            data.add(message);
+        }
+        return data;
+    }
+
+    private Single<List<Message>> getInitialMessages(String conversationId) {
+        return Single.create(e -> messagesRef.child(conversationId).orderByChild(DB_FIELD_TIMESTAMP).addValueEventListener(new AddValueEventSuccessListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                e.onSuccess(collectMessages(dataSnapshot));
+            }
+        }));
+    }
+
+    public Observable<List<Message>> getMessages(String conversationId) {
+//        Observable<List<Message>> observable = Observable.create(e -> messagesRef.child(conversationId).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                List<Message> data = collectMessages(conversationId, dataSnapshot);
+//                e.onNext(data);
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        }));
+        return getInitialMessages(conversationId).toObservable();
+//        return observable;
+    }
+
+    public Completable sendMessage(String conversationId, Message message) {
+        return Completable.create(e -> messagesRef.child(conversationId).push().setValue(message, (databaseError, databaseReference) -> {
+            if (databaseError != null) {
+                e.onError(databaseError.toException());
+            } else {
+                e.onComplete();
+            }
+        }));
     }
 
     public Single<List<ConversationNameModel>> getListOfConversations() {

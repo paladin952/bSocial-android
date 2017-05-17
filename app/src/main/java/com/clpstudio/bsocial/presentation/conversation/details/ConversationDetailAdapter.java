@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.MessageTypedResolver;
-import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.conversations.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     private static final int TYPE_GIF_MINE = 2;
     private static final int TYPE_GIF_OTHERS = 3;
 
-    private List<ConversationModel> data = new ArrayList<>();
+    private List<Message> data = new ArrayList<>();
 
     public ConversationDetailAdapter() {
     }
@@ -33,17 +33,17 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
         notifyDataSetChanged();
     }
 
-    public void addAll(List<ConversationModel> data) {
+    public void addAll(List<Message> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void append(ConversationModel model) {
+    public void append(Message model) {
         this.data.add(model);
         notifyItemInserted(this.data.size() - 1);
     }
 
-    public void append(List<ConversationModel> newData) {
+    public void append(List<Message> newData) {
         int start = this.data.size();
         int end = start + newData.size() - 1;
         this.data.addAll(newData);

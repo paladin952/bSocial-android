@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
-import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +32,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     @Override
     public void bindView(@NonNull View view) {
         super.bindView(view);
-        getConversations("");
+        getConversations("one");
     }
 
     public void getConversations(String conversationId) {
@@ -44,10 +44,14 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 });
     }
 
-    public void onTextSubmited(String text) {
+    public void onTextSubmited(String conversationId, String text) {
         //todo add real username and stuff
-        ConversationModel model = new ConversationModel("luci", text);
-        view().appendData(model);
+        conversationService.sendMessage(conversationId, new Message("luci", text, System.currentTimeMillis()))
+                .subscribe(() -> {
+                    getConversations(conversationId);
+                }, err -> {
+
+                });
     }
 
     public void onGifSelected(String url) {
@@ -55,16 +59,16 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         if (firebaseUser != null) {
             String email = firebaseUser.getEmail();
             //todo change to email
-            view().appendData(new ConversationModel("luci", url));
+            view().appendData(new Message("luci", url, System.currentTimeMillis()));
             view().clearInput();
         }
     }
 
     public interface View extends IBaseMvpPresenter.View {
 
-        void showData(List<ConversationModel> data);
+        void showData(List<Message> data);
 
-        void appendData(ConversationModel data);
+        void appendData(Message data);
 
         void clearInput();
 
