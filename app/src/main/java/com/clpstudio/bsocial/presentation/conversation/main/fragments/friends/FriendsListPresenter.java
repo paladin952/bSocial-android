@@ -5,10 +5,12 @@ import android.content.Context;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
 import com.clpstudio.bsocial.bussiness.service.DatabaseService;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.data.models.ui.FriendsListItemModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,9 +33,13 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
     }
 
     public void loadData() {
-        conversationService.getFriends()
+        databaseService.getFriends()
                 .subscribe(friendsListItemModels -> {
-                    view().showData(friendsListItemModels);
+                    List<FriendsListItemModel> friendsUiList = new ArrayList<>();
+                    for (RegisteredUser user : friendsListItemModels) {
+                        friendsUiList.add(new FriendsListItemModel(user.getEmail()));
+                    }
+                    view().showData(friendsUiList);
                 }, err -> {
 
                 });
@@ -50,7 +56,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
                     String successText = context.getString(R.string.friend_added_successfuly);
                     view().hideAddFriendDialog();
                     view().showToast(successText);
-                    view().append(new FriendsListItemModel(email));
+                    view().refreshData();
                 }, err -> {
                     String successText = context.getString(R.string.friend_not_added);
                     view().showToast(successText);
@@ -61,7 +67,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
 
         void showData(List<FriendsListItemModel> data);
 
-        void append(FriendsListItemModel data);
+        void refreshData();
 
         void showAddFriendDialog();
 

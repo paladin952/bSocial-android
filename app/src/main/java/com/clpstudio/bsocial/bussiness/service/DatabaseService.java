@@ -8,6 +8,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
@@ -20,6 +23,7 @@ import io.reactivex.Single;
 public class DatabaseService {
 
     private static final String DB_EMAIL_FIELD = "email";
+    private static final String DB_USERID_FIELD = "userId";
 
     @Inject
     @FirebaseModule.RegisteredUsers
@@ -73,6 +77,21 @@ public class DatabaseService {
     public Completable addFriendToUsersList(String email) {
         return hasUser(email)
                 .flatMapCompletable(this::addFriendToDatabaseUserList);
+    }
+
+    public Single<List<RegisteredUser>> getFriends() {
+        return Single.create(e -> friendsRef.child(firebaseAuth.getCurrentUser().getUid()).orderByChild(DB_USERID_FIELD).addValueEventListener(new AddValueEventSuccessListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<RegisteredUser> data = new ArrayList<>();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    RegisteredUser user = ds.getValue(RegisteredUser.class);
+                    data.add(user);
+                }
+
+                e.onSuccess(data);
+            }
+        }));
     }
 
     private Completable addFriendToDatabaseUserList(RegisteredUser registeredUser) {

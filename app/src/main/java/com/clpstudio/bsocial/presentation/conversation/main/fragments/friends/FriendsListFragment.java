@@ -107,8 +107,8 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
     }
 
     @Override
-    public void append(FriendsListItemModel data) {
-        adapter.append(data);
+    public void refreshData() {
+        presenter.loadData();
     }
 
     @Override
