@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.clpstudio.bsocial.R;
@@ -22,7 +23,6 @@ import butterknife.ButterKnife;
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> {
 
     private List<FriendsListItemModel> data = new ArrayList<>();
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,10 +46,18 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         notifyDataSetChanged();
     }
 
+    public void append(FriendsListItemModel model) {
+        this.data.add(model);
+        notifyItemInserted(this.data.size());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.email)
         TextView emailText;
+
+        @BindView(R.id.avatar)
+        ImageView avatar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -58,6 +66,8 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
 
         public void bind(FriendsListItemModel model) {
             emailText.setText(model.getEmail());
+
+            //TODO load profile image for each user
         }
     }
 

@@ -45,6 +45,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
                 });
     }
 
+
     public interface View extends IProgressView {
 
         void showData(List<ConversationNameModel> data);

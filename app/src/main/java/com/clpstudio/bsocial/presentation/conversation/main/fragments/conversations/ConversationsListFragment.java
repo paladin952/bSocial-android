@@ -28,15 +28,17 @@ import butterknife.ButterKnife;
 
 public class ConversationsListFragment extends Fragment implements ConversationsListPresenter.View {
 
+    private static final int GRID_NR_OF_ITEMS = 2;
+
     @Inject
     DatabaseService databaseService;
     @Inject
     ConversationsListPresenter presenter;
+
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.progressBar)
     View progressBar;
-
 
     private GridLayoutManager gridLayoutManager;
     private ConversationsListAdapter adapter;
@@ -55,7 +57,7 @@ public class ConversationsListFragment extends Fragment implements Conversations
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        gridLayoutManager = new GridLayoutManager(getActivity(), GRID_NR_OF_ITEMS);
         adapter = new ConversationsListAdapter();
         adapter.setClickListener(element -> ConversationDetailActivity.startActivity(getActivity(), element.getName()));
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -72,7 +74,6 @@ public class ConversationsListFragment extends Fragment implements Conversations
     @Override
     public void onStart() {
         super.onStart();
-        databaseService.hasUser("das");
     }
 
     @Override

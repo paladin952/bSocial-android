@@ -6,13 +6,19 @@ package com.clpstudio.bsocial.data.models.firebase;
 
 public class RegisteredUser {
 
+    private String userId;
     private String email;
 
     public RegisteredUser() {
     }
 
-    public RegisteredUser(String email) {
+    public RegisteredUser(String userId, String email) {
         this.email = email;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getEmail() {
@@ -22,7 +28,8 @@ public class RegisteredUser {
     @Override
     public String toString() {
         return "RegisteredUser{" +
-                "email='" + email + '\'' +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 

@@ -41,5 +41,10 @@
     <string name="hint_type_a_message">Type a message</string>
     <string name="logout">Log out</string>
     <string name="via_gif">via @gif</string>
+    <string name="search_friend_hint">Friend\'s email</string>
+    <string name="search_friend_message">Add your friends!</string>
+    <string name="friend_added_successfuly">Friend added successfuly!</string>
+    <string name="friend_not_added">Friend not found! Check email again!</string>
+    <string name="add">Add</string>
 
 </resources>

@@ -48,10 +48,22 @@ public class FirebaseModule {
         return database.getReference("registeredUsers");
     }
 
+    @Provides
+    @Friends
+    DatabaseReference providesFriendsUsersRef(FirebaseDatabase database) {
+        return database.getReference("friends");
+    }
+
     @Qualifier
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
     public @interface RegisteredUsers {
+    }
+
+    @Qualifier
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Friends {
     }
 
 }

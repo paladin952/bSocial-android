@@ -43,13 +43,15 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    private AlertDialog alertDialog;
+
     @OnClick(R.id.nickname_container)
     public void onNicknameClick() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(this);
         edittext.setText(nicknameText.getText().toString());
         edittext.requestFocus();
-        alert.setMessage(getString(R.string.enter_your_nickname))
+        alertDialog = alert.setMessage(getString(R.string.enter_your_nickname))
                 .setView(edittext)
                 .setPositiveButton(getString(R.string.save), (dialog, whichButton) -> {
                     String nickname = edittext.getText().toString();
@@ -102,8 +104,8 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .into(new GlideRoundedImageTarget(avatarImage));
-
     }
+
 
     @Override
     public void setEmail(String email) {
@@ -135,5 +137,8 @@ public class ProfilePageActivity extends AppCompatActivity implements ProfilePag
     protected void onDestroy() {
         super.onDestroy();
         presenter.unbindView();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
     }
 }
