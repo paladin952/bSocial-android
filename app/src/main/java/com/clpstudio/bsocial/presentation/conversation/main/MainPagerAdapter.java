@@ -11,11 +11,13 @@ import com.clpstudio.bsocial.presentation.conversation.main.fragments.friends.Fr
  * Created by clapalucian on 16/05/2017.
  */
 
-public class MainAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
+    public static final int CONVERSATIONS_POSITION = 0;
+    public static final int FRIENDS_POSITION = 1;
     private static final int NR_PAGES = 2;
 
-    public MainAdapter(FragmentManager fm) {
+    public MainPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

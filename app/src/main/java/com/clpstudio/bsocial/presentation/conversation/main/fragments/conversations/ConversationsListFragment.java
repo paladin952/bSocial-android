@@ -1,5 +1,6 @@
 package com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import com.clpstudio.bsocial.bussiness.service.DatabaseService;
 import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
+import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
+import com.clpstudio.bsocial.presentation.conversation.main.MainPagerAdapter;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by clapalucian on 5/8/17.
@@ -40,11 +44,28 @@ public class ConversationsListFragment extends Fragment implements Conversations
     @BindView(R.id.progressBar)
     View progressBar;
 
+
     private GridLayoutManager gridLayoutManager;
     private ConversationsListAdapter adapter;
+    private GoToPageListener goToPageListener;
 
     public static ConversationsListFragment get() {
         return new ConversationsListFragment();
+    }
+
+    @OnClick(R.id.write_button)
+    public void onWriteButtonClick() {
+        if (goToPageListener != null) {
+            goToPageListener.gotoPage(MainPagerAdapter.FRIENDS_POSITION);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof GoToPageListener) {
+            goToPageListener = (GoToPageListener) context;
+        }
     }
 
     @Nullable

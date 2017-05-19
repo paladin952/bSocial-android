@@ -93,6 +93,17 @@ public class ConversationService {
     }
 
     public Single<List<ConversationNameModel>> getListOfConversations() {
+        //TODO
+//        Single.create(e -> {
+//            messagesRef.orderByValue().addValueEventListener(new AddValueEventSuccessListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                        Log.d("luci", ds.toString());
+//                    }
+//                }
+//            });
+//        }).subscribe();
         return Single.create(e -> {
             List<ConversationNameModel> data = new ArrayList<>();
             data.add(new ConversationNameModel("Lucian Clapa", ""));

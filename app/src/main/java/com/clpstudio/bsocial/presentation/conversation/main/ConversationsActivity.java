@@ -27,7 +27,7 @@ import static com.clpstudio.bsocial.R.id.avatar;
  * Created by clapalucian on 16/05/2017.
  */
 
-public class ConversationsActivity extends AppCompatActivity implements ConversationsActivityPresenter.View {
+public class ConversationsActivity extends AppCompatActivity implements ConversationsActivityPresenter.View, GoToPageListener {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
@@ -37,7 +37,7 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
     @Inject
     ConversationsActivityPresenter presenter;
 
-    private MainAdapter adapter;
+    private MainPagerAdapter adapter;
     private ImageView avatarImageView;
 
     public static void startActivity(Activity activity) {
@@ -76,7 +76,7 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
     }
 
     private void setupViewPager() {
-        adapter = new MainAdapter(getSupportFragmentManager());
+        adapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
     }
 
@@ -90,5 +90,19 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .into(new GlideRoundedImageTarget(avatarImageView));
+    }
+
+    @Override
+    public void gotoPage(int num) {
+        viewPager.setCurrentItem(num, true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == MainPagerAdapter.FRIENDS_POSITION) {
+            viewPager.setCurrentItem(MainPagerAdapter.CONVERSATIONS_POSITION);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

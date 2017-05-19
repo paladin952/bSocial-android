@@ -43,6 +43,7 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
     private FriendsListAdapter adapter;
     private AlertDialog alertDialog;
 
+
     public static FriendsListFragment get() {
         return new FriendsListFragment();
     }
