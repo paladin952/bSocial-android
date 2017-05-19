@@ -1,17 +1,23 @@
 package com.clpstudio.bsocial.data.models.firebase;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
+
 /**
  * Created by clapalucian on 16/05/2017.
  */
 
+@Parcel
 public class RegisteredUser {
 
-    private String userId;
-    private String email;
+    String userId;
+    String email;
 
     public RegisteredUser() {
+
     }
 
+    @ParcelConstructor
     public RegisteredUser(String userId, String email) {
         this.email = email;
         this.userId = userId;

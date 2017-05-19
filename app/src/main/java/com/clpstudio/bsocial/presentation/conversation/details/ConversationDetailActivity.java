@@ -16,7 +16,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.c.Henson;
 import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
@@ -24,6 +26,7 @@ import com.clpstudio.bsocial.presentation.gifs.GifPresenter;
 import com.clpstudio.bsocial.presentation.views.MessageEditorView;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -41,9 +44,19 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     ConversationDetailPresenter presenter;
     @Inject
     GifPresenter gifPresenter;
+    @Inject
+    FirebaseAuth firebaseAuth;
 
-    @InjectExtra("name")
-    String conversationName;
+    @Nullable
+    @InjectExtra
+    ConversationModel conversationModel;
+    @Nullable
+    @InjectExtra("user")
+    RegisteredUser user;
+
+    @Nullable
+    @InjectExtra
+    boolean isNewConversation;
 
     @BindView(R.id.conversationsRecyclerView)
     RecyclerView recyclerView;
@@ -63,10 +76,20 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     private ConversationDetailAdapter adapter;
 
-    public static void startActivity(Activity activity, String name) {
+    public static void startActivity(Activity activity, ConversationModel conversationModel) {
         Intent intent = Henson.with(activity)
                 .gotoConversationDetailActivity()
-                .name(name)
+                .conversationModel(conversationModel)
+                .build();
+
+        activity.startActivity(intent);
+    }
+
+    public static void startActivity(Activity activity, RegisteredUser user) {
+        Intent intent = Henson.with(activity)
+                .gotoConversationDetailActivity()
+                .user(user)
+                .isNewConversation(true)
                 .build();
 
         activity.startActivity(intent);
@@ -83,14 +106,20 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         Glide.with(this).load(R.drawable.bg_default_conversation).into(background);
         setupToolbar();
         setupMessageEditor();
-        adapter = new ConversationDetailAdapter();
+        setupList();
+        setupGifList();
+
+        presenter.setConversationId(conversationModel.getId()); // set this before bindView(this)
+        presenter.bindView(this);
+        gifPresenter.bindView(this);
+    }
+
+    private void setupList() {
+        adapter = new ConversationDetailAdapter(firebaseAuth.getCurrentUser().getEmail());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        setupGifList();
-        presenter.bindView(this);
-        gifPresenter.bindView(this);
     }
 
     private void setupGifList() {
@@ -104,7 +133,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         messageEditorView.setOnTextListenerListener(new MessageEditorView.OnTextListener() {
             @Override
             public void onTextSubmitted(String text) {
-                presenter.onTextSubmited("one", text);
+                presenter.onTextSubmited(text);
             }
 
             @Override
@@ -119,7 +148,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(conversationName);
+        actionBar.setTitle(conversationModel.getTitle());
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 

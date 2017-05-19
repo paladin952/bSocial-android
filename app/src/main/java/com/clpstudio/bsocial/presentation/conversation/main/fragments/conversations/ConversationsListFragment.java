@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.service.DatabaseService;
-import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
+import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
@@ -80,7 +80,7 @@ public class ConversationsListFragment extends Fragment implements Conversations
         ButterKnife.bind(this, view);
         gridLayoutManager = new GridLayoutManager(getActivity(), GRID_NR_OF_ITEMS);
         adapter = new ConversationsListAdapter();
-        adapter.setClickListener(element -> ConversationDetailActivity.startActivity(getActivity(), element.getName()));
+        adapter.setClickListener(element -> ConversationDetailActivity.startActivity(getActivity(), element));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         presenter.bindView(this);
@@ -114,7 +114,7 @@ public class ConversationsListFragment extends Fragment implements Conversations
     }
 
     @Override
-    public void showData(List<ConversationNameModel> data) {
+    public void showData(List<ConversationModel> data) {
         adapter.addAll(data);
     }
 }

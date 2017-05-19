@@ -72,7 +72,7 @@ public class BSRxJava2CallAdapter implements CallAdapter<Object> {
 //            Log.w(TAG, "HTTP error: " + ((HttpException) throwable).code() + " " + message);
 //            return new ApiException(message, errorBody, throwable);
 //        } else if (throwable instanceof IOException) {
-//            Log.w(TAG, throwable.getClass().getName());
+//            Log.w(TAG, throwable.getClass().getTitle());
 //        } else {
 //            Log.e(TAG, "Error caught by Rx", throwable);
 //        }

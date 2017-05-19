@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
-import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
+import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ import butterknife.ButterKnife;
 
 public class ConversationsListAdapter extends RecyclerView.Adapter<ConversationsListAdapter.ViewHolder> {
 
-    private List<ConversationNameModel> data = new ArrayList<>();
-    private ClickListener<ConversationNameModel> clickListener;
+    private List<ConversationModel> data = new ArrayList<>();
+    private ClickListener<ConversationModel> clickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,13 +49,13 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
         return data.size();
     }
 
-    public void addAll(List<ConversationNameModel> data) {
+    public void addAll(List<ConversationModel> data) {
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void setClickListener(ClickListener<ConversationNameModel> clickListener) {
+    public void setClickListener(ClickListener<ConversationModel> clickListener) {
         this.clickListener = clickListener;
     }
 
@@ -63,8 +63,8 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
 
         @BindView(R.id.image)
         ImageView imageView;
-        @BindView(R.id.name)
-        TextView nameText;
+        @BindView(R.id.title)
+        TextView titleText;
 
 
         public ViewHolder(View itemView) {
@@ -72,8 +72,8 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(ConversationNameModel model) {
-            nameText.setText(model.getName());
+        public void bind(ConversationModel model) {
+            titleText.setText(model.getTitle());
 
             Glide.with(itemView.getContext())
                     .load(model.getImageUrl())

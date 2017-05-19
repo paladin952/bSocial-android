@@ -42,22 +42,6 @@ public class MainActivity extends AppCompatActivity implements ConversationsActi
 
     private MainPagerAdapter adapter;
     private ImageView avatarImageView;
-    private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-
-        }
-    };
 
     public static void startActivity(Activity activity) {
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -85,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements ConversationsActi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        slidingTabLayout.removeOnTabSelectedListener(onTabSelectedListener);
         presenter.unbindView();
     }
 
@@ -93,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements ConversationsActi
         setSupportActionBar(toolbar);
         avatarImageView = (ImageView) toolbar.findViewById(avatar);
         avatarImageView.setOnClickListener(v -> ProfilePageActivity.startActivity(this));
-        slidingTabLayout.addOnTabSelectedListener(onTabSelectedListener);
     }
 
     private void setupViewPager() {

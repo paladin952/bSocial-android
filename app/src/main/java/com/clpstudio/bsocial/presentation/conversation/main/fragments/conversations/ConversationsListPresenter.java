@@ -3,7 +3,7 @@ package com.clpstudio.bsocial.presentation.conversation.main.fragments.conversat
 import android.support.annotation.NonNull;
 
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
-import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
+import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +48,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
 
     public interface View extends IProgressView {
 
-        void showData(List<ConversationNameModel> data);
+        void showData(List<ConversationModel> data);
 
     }
 }

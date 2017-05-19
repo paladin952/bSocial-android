@@ -6,7 +6,6 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
 import com.clpstudio.bsocial.bussiness.service.DatabaseService;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
-import com.clpstudio.bsocial.data.models.ui.FriendsListItemModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
 
@@ -35,10 +34,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
     public void loadData() {
         databaseService.getFriends()
                 .subscribe(friendsListItemModels -> {
-                    List<FriendsListItemModel> friendsUiList = new ArrayList<>();
-                    for (RegisteredUser user : friendsListItemModels) {
-                        friendsUiList.add(new FriendsListItemModel(user.getEmail()));
-                    }
+                    List<RegisteredUser> friendsUiList = new ArrayList<>();
                     view().showData(friendsUiList);
                 }, err -> {
 
@@ -65,7 +61,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
 
     public interface View extends IProgressView {
 
-        void showData(List<FriendsListItemModel> data);
+        void showData(List<RegisteredUser> data);
 
         void refreshData();
 

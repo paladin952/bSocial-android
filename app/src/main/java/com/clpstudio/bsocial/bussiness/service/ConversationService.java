@@ -1,8 +1,11 @@
 package com.clpstudio.bsocial.bussiness.service;
 
+import android.util.Log;
+
 import com.clpstudio.bsocial.core.dagger.FirebaseModule;
 import com.clpstudio.bsocial.core.firebase.AddValueEventSuccessListener;
-import com.clpstudio.bsocial.data.models.conversations.ConversationNameModel;
+import com.clpstudio.bsocial.core.firebase.FirebaseOdChildAddedListener;
+import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +26,7 @@ import io.reactivex.Single;
 public class ConversationService {
 
     private static final String DB_FIELD_TIMESTAMP = "timestamp";
+    private static final String LOG_TAG = ConversationService.class.getSimpleName();
 
     @Inject
     @FirebaseModule.Messages
@@ -51,68 +55,48 @@ public class ConversationService {
     }
 
     public Observable<List<Message>> getMessages(String conversationId) {
-//        Observable<List<Message>> observable = Observable.create(e -> messagesRef.child(conversationId).addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                List<Message> data = collectMessages(conversationId, dataSnapshot);
-//                e.onNext(data);
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        }));
         return getInitialMessages(conversationId).toObservable();
-//        return observable;
     }
 
     public Completable sendMessage(String conversationId, Message message) {
         return Completable.create(e -> messagesRef.child(conversationId).push().setValue(message, (databaseError, databaseReference) -> {
             if (databaseError != null) {
+                Log.d(LOG_TAG, "Send message successful!");
                 e.onError(databaseError.toException());
             } else {
+                Log.d(LOG_TAG, "Send message failed!");
                 e.onComplete();
             }
         }));
     }
 
-    public Single<List<ConversationNameModel>> getListOfConversations() {
-        //TODO
-//        Single.create(e -> {
-//            messagesRef.orderByValue().addValueEventListener(new AddValueEventSuccessListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                        Log.d("luci", ds.toString());
-//                    }
-//                }
-//            });
-//        }).subscribe();
+    public Single<List<ConversationModel>> getListOfConversations() {
         return Single.create(e -> {
-            List<ConversationNameModel> data = new ArrayList<>();
-            data.add(new ConversationNameModel("Lucian Clapa", ""));
-            data.add(new ConversationNameModel("Lucian", ""));
-            data.add(new ConversationNameModel("Clapa", ""));
-            data.add(new ConversationNameModel("Ioana minzat", ""));
-            data.add(new ConversationNameModel("blabla", ""));
+            List<ConversationModel> data = new ArrayList<>();
+            data.add(new ConversationModel("zxz", "Lucian Clapa", ""));
+            data.add(new ConversationModel("adsadsa", "Lucian", ""));
+            data.add(new ConversationModel("Asdsa", "Clapa", ""));
+            data.add(new ConversationModel("dsadsadsa", "Ioana minzat", ""));
+            data.add(new ConversationModel("asdasdsa", "blabla", ""));
             e.onSuccess(data);
         });
+    }
+
+    public Observable<Message> subscribeMessageAdded(String conversationId) {
+        return Observable.create(e -> messagesRef.child(conversationId).addChildEventListener(new FirebaseOdChildAddedListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(LOG_TAG, "New message received!");
+                Message message;
+                message = dataSnapshot.getValue(Message.class);
+                if (message != null) {
+                    Log.d(LOG_TAG, "New message = " + message.toString());
+                    e.onNext(message);
+                } else {
+                    e.onError(new RuntimeException("Something went wrong"));
+                }
+            }
+        }));
     }
 
 }

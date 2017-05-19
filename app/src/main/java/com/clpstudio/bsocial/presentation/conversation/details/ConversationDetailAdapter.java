@@ -24,8 +24,10 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     private static final int TYPE_GIF_OTHERS = 3;
 
     private List<Message> data = new ArrayList<>();
+    private String loggedUsername;
 
-    public ConversationDetailAdapter() {
+    public ConversationDetailAdapter(String loggedUsername) {
+        this.loggedUsername = loggedUsername;
     }
 
     public void clear() {
@@ -70,7 +72,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     }
 
     private boolean isMine(String username) {
-        return username.equals("luci");
+        return username.equals(loggedUsername);
     }
 
     @Override

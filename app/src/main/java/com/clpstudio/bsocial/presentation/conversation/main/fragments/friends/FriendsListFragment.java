@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.data.models.ui.FriendsListItemModel;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 
 import java.util.List;
@@ -71,6 +71,10 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
         ButterKnife.bind(this, view);
 
         adapter = new FriendsListAdapter();
+        adapter.setOnClickListener(element -> {
+//            ConversationDetailActivity.startActivity(getActivity(), FriendsItemModel);
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
@@ -103,7 +107,7 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
     }
 
     @Override
-    public void showData(List<FriendsListItemModel> data) {
+    public void showData(List<RegisteredUser> data) {
         adapter.addAll(data);
     }
 

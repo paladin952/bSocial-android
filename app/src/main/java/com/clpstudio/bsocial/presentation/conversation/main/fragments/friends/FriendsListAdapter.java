@@ -8,7 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.data.models.ui.FriendsListItemModel;
+import com.clpstudio.bsocial.core.listeners.ClickListener;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ import butterknife.ButterKnife;
 
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> {
 
-    private List<FriendsListItemModel> data = new ArrayList<>();
+    private List<RegisteredUser> data = new ArrayList<>();
+    private ClickListener<RegisteredUser> onClickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,6 +35,9 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(data.get(position));
+        if (onClickListener != null) {
+            holder.itemView.setOnClickListener(v -> onClickListener.click(data.get(position)));
+        }
     }
 
     @Override
@@ -40,15 +45,19 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         return data.size();
     }
 
-    public void addAll(List<FriendsListItemModel> data) {
+    public void addAll(List<RegisteredUser> data) {
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void append(FriendsListItemModel model) {
+    public void append(RegisteredUser model) {
         this.data.add(model);
         notifyItemInserted(this.data.size());
+    }
+
+    public void setOnClickListener(ClickListener<RegisteredUser> onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +73,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(FriendsListItemModel model) {
+        public void bind(RegisteredUser model) {
             emailText.setText(model.getEmail());
 
             //TODO load profile image for each user
