@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,21 +28,39 @@ import static com.clpstudio.bsocial.R.id.avatar;
  * Created by clapalucian on 16/05/2017.
  */
 
-public class ConversationsActivity extends AppCompatActivity implements ConversationsActivityPresenter.View, GoToPageListener {
+public class MainActivity extends AppCompatActivity implements ConversationsActivityPresenter.View, GoToPageListener {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.sliding_tabs)
+    TabLayout slidingTabLayout;
 
     @Inject
     ConversationsActivityPresenter presenter;
 
     private MainPagerAdapter adapter;
     private ImageView avatarImageView;
+    private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    };
 
     public static void startActivity(Activity activity) {
-        activity.startActivity(new Intent(activity, ConversationsActivity.class));
+        activity.startActivity(new Intent(activity, MainActivity.class));
     }
 
     @Override
@@ -66,6 +85,7 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        slidingTabLayout.removeOnTabSelectedListener(onTabSelectedListener);
         presenter.unbindView();
     }
 
@@ -73,11 +93,13 @@ public class ConversationsActivity extends AppCompatActivity implements Conversa
         setSupportActionBar(toolbar);
         avatarImageView = (ImageView) toolbar.findViewById(avatar);
         avatarImageView.setOnClickListener(v -> ProfilePageActivity.startActivity(this));
+        slidingTabLayout.addOnTabSelectedListener(onTabSelectedListener);
     }
 
     private void setupViewPager() {
         adapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        slidingTabLayout.setupWithViewPager(viewPager);
     }
 
 

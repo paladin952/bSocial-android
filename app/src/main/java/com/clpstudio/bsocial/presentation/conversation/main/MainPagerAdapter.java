@@ -17,6 +17,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public static final int FRIENDS_POSITION = 1;
     private static final int NR_PAGES = 2;
 
+    private static final String[] titles = {"Conversations", "Friends"};
+
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -33,5 +35,10 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NR_PAGES;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles[position];
     }
 }

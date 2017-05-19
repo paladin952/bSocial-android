@@ -2,7 +2,7 @@ package com.clpstudio.bsocial.core.dagger;
 
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
-import com.clpstudio.bsocial.presentation.conversation.main.ConversationsActivity;
+import com.clpstudio.bsocial.presentation.conversation.main.MainActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations.ConversationsListFragment;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.friends.FriendsListFragment;
 import com.clpstudio.bsocial.presentation.gifs.GifTestActivity;
@@ -45,5 +45,5 @@ public interface DIComponent {
 
     void inject(FriendsListFragment friendsListFragment);
 
-    void inject(ConversationsActivity activity);
+    void inject(MainActivity activity);
 }
