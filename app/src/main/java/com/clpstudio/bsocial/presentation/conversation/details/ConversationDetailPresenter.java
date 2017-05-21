@@ -1,6 +1,7 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
+import com.clpstudio.bsocial.bussiness.service.MessagesService;
 import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
@@ -21,6 +22,8 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     FirebaseAuth firebaseAuth;
     @Inject
     ConversationService conversationService;
+    @Inject
+    MessagesService messagesService;
 
     private String conversationId;
 
@@ -29,7 +32,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     private void subscribeMessageAdded() {
-        conversationService.subscribeMessageAdded(conversationId)
+        messagesService.subscribeMessageAdded(conversationId)
                 .subscribe(message -> {
                     view().appendData(message);
                     view().clearInput();
@@ -43,7 +46,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void getConversations(String conversationId) {
-        conversationService.getMessages(conversationId).subscribe();
+        messagesService.getMessages(conversationId).subscribe();
     }
 
     public void onTextSubmited(String text) {
@@ -56,7 +59,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     private void sendMessage(String text) {
         Message message = new Message(firebaseAuth.getCurrentUser().getEmail(), text, System.currentTimeMillis());
-        conversationService.sendMessage(conversationId, message).subscribe();
+        messagesService.sendMessage(conversationId, message).subscribe();
     }
 
     public void subscribeToOldConversation() {
