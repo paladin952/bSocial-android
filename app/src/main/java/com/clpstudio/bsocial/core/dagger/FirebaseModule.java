@@ -60,6 +60,18 @@ public class FirebaseModule {
         return database.getReference("messages");
     }
 
+    @Provides
+    @Conversations
+    DatabaseReference providesConversationsRef(FirebaseDatabase database) {
+        return database.getReference("conversations");
+    }
+
+    @Provides
+    @Members
+    DatabaseReference providesMembersRef(FirebaseDatabase database) {
+        return database.getReference("members");
+    }
+
     @Qualifier
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
@@ -76,6 +88,18 @@ public class FirebaseModule {
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Messages {
+    }
+
+    @Qualifier
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Conversations {
+    }
+
+    @Qualifier
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Members {
     }
 
 }

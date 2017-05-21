@@ -9,7 +9,6 @@ import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,8 +33,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
     public void loadData() {
         databaseService.getFriends()
                 .subscribe(friendsListItemModels -> {
-                    List<RegisteredUser> friendsUiList = new ArrayList<>();
-                    view().showData(friendsUiList);
+                    view().showData(friendsListItemModels);
                 }, err -> {
 
                 });

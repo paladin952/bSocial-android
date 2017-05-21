@@ -1,9 +1,8 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
-import android.support.annotation.NonNull;
-
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
 import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,13 +26,6 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     @Inject
     public ConversationDetailPresenter() {
-    }
-
-    @Override
-    public void bindView(@NonNull View view) {
-        super.bindView(view);
-        subscribeMessageAdded();
-        getConversations(conversationId);
     }
 
     private void subscribeMessageAdded() {
@@ -65,6 +57,19 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     private void sendMessage(String text) {
         Message message = new Message(firebaseAuth.getCurrentUser().getEmail(), text, System.currentTimeMillis());
         conversationService.sendMessage(conversationId, message).subscribe();
+    }
+
+    public void subscribeToOldConversation() {
+        subscribeMessageAdded();
+        getConversations(conversationId);
+    }
+
+    public void subscribeToNewConversation(RegisteredUser friend) {
+        conversationService.createConversation(friend)
+                .subscribe(s -> {
+                    conversationId = s;
+                    subscribeMessageAdded();
+                });
     }
 
     public interface View extends IBaseMvpPresenter.View {

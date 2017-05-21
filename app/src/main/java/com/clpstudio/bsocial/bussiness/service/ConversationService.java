@@ -7,6 +7,9 @@ import com.clpstudio.bsocial.core.firebase.AddValueEventSuccessListener;
 import com.clpstudio.bsocial.core.firebase.FirebaseOdChildAddedListener;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.data.models.firebase.MemberActive;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
@@ -26,11 +29,23 @@ import io.reactivex.Single;
 public class ConversationService {
 
     private static final String DB_FIELD_TIMESTAMP = "timestamp";
+    private static final String DB_FIELD_EMAIL = "email";
     private static final String LOG_TAG = ConversationService.class.getSimpleName();
 
     @Inject
     @FirebaseModule.Messages
     DatabaseReference messagesRef;
+
+    @Inject
+    @FirebaseModule.Conversations
+    DatabaseReference conversationsRef;
+
+    @Inject
+    @FirebaseModule.Members
+    DatabaseReference membersRef;
+
+    @Inject
+    FirebaseAuth firebaseAuth;
 
     @Inject
     public ConversationService() {
@@ -70,15 +85,63 @@ public class ConversationService {
         }));
     }
 
-    public Single<List<ConversationModel>> getListOfConversations() {
+    public Single<String> createConversation(RegisteredUser friend) {
         return Single.create(e -> {
-            List<ConversationModel> data = new ArrayList<>();
-            data.add(new ConversationModel("zxz", "Lucian Clapa", ""));
-            data.add(new ConversationModel("adsadsa", "Lucian", ""));
-            data.add(new ConversationModel("Asdsa", "Clapa", ""));
-            data.add(new ConversationModel("dsadsadsa", "Ioana minzat", ""));
-            data.add(new ConversationModel("asdasdsa", "blabla", ""));
-            e.onSuccess(data);
+            String conversationId = conversationsRef.push().getKey();
+            ConversationModel conversationModel = new ConversationModel(conversationId, "", "");
+            conversationsRef.child(conversationId).setValue(conversationModel);
+
+            RegisteredUser currentUser = new RegisteredUser(firebaseAuth.getCurrentUser().getUid(), firebaseAuth.getCurrentUser().getEmail());
+            membersRef.child(conversationId).child(currentUser.getUserId()).setValue(new MemberActive(true));
+            membersRef.child(conversationId).child(friend.getUserId()).setValue(new MemberActive(true));
+            e.onSuccess(conversationId);
+        });
+    }
+
+    public Single<List<ConversationModel>> getListOfConversations() {
+        return getConversationIdsOfCurrentUser()
+                .toObservable()
+                .flatMap(strings -> {
+                    List<Observable<ConversationModel>> conversationsSingles = new ArrayList<>();
+                    for (String id : strings) {
+                        conversationsSingles.add(getConversation(id));
+                    }
+
+                    return Observable.fromIterable(conversationsSingles)
+                            .flatMap(conversationModelObservable -> conversationModelObservable);
+                })
+                .toList();
+    }
+
+    private Observable<ConversationModel> getConversation(String id) {
+        return Observable.create(e -> conversationsRef.child(id).addValueEventListener(new AddValueEventSuccessListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ConversationModel model = dataSnapshot.getValue(ConversationModel.class);
+                e.onNext(model);
+                e.onComplete();
+            }
+        }));
+    }
+
+    private Single<List<String>> getConversationIdsOfCurrentUser() {
+        return Single.create(e -> {
+            String userId = firebaseAuth.getCurrentUser().getUid();
+            membersRef.orderByKey().addValueEventListener(new AddValueEventSuccessListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<String> data = new ArrayList<>();
+                    for (DataSnapshot conversationsSnapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot userIdsSnapshot : conversationsSnapshot.getChildren()) {
+                            String key = userIdsSnapshot.getKey();
+                            if (key.equals(userId)) {
+                                data.add(conversationsSnapshot.getKey());
+                            }
+                        }
+                    }
+                    e.onSuccess(data);
+                }
+            });
         });
     }
 
@@ -88,12 +151,11 @@ public class ConversationService {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(LOG_TAG, "New message received!");
                 Message message;
+
                 message = dataSnapshot.getValue(Message.class);
                 if (message != null) {
                     Log.d(LOG_TAG, "New message = " + message.toString());
                     e.onNext(message);
-                } else {
-                    e.onError(new RuntimeException("Something went wrong"));
                 }
             }
         }));

@@ -109,8 +109,14 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         setupList();
         setupGifList();
 
-        presenter.setConversationId(conversationModel.getId()); // set this before bindView(this)
         presenter.bindView(this);
+        if (isNewConversation) {
+            presenter.subscribeToNewConversation(user);
+        } else {
+            presenter.subscribeToOldConversation();
+            presenter.setConversationId(conversationModel.getId());
+
+        }
         gifPresenter.bindView(this);
     }
 
@@ -148,7 +154,13 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(conversationModel.getTitle());
+
+        if (isNewConversation) {
+            String title = user.getEmail();
+            actionBar.setTitle(title);
+        } else {
+            actionBar.setTitle(conversationModel.getTitle());
+        }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 

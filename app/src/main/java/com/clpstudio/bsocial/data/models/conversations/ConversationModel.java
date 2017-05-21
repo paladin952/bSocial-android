@@ -13,6 +13,8 @@ public class ConversationModel {
     String id;
     String title;
     String imageUrl;
+    Member member;
+    long timestamp;
 
     public ConversationModel() {
     }
@@ -22,6 +24,10 @@ public class ConversationModel {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public String getTitle() {
@@ -35,4 +41,9 @@ public class ConversationModel {
     public String getId() {
         return id;
     }
+
+    public Member getMember() {
+        return member;
+    }
+
 }

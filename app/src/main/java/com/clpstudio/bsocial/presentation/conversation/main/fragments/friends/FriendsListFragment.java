@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
 
         adapter = new FriendsListAdapter();
         adapter.setOnClickListener(element -> {
-//            ConversationDetailActivity.startActivity(getActivity(), FriendsItemModel);
+            ConversationDetailActivity.startActivity(getActivity(), element);
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
