@@ -45,7 +45,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         this.conversationId = id;
     }
 
-    public void getConversations(String conversationId) {
+    public void getMessages(String conversationId) {
         messagesService.getMessages(conversationId).subscribe();
     }
 
@@ -64,7 +64,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     public void subscribeToOldConversation() {
         subscribeMessageAdded();
-        getConversations(conversationId);
+        getMessages(conversationId);
     }
 
     public void subscribeToNewConversation(RegisteredUser friend) {

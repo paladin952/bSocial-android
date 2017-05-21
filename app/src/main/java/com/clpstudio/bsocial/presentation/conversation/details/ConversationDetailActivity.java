@@ -113,8 +113,8 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         if (isNewConversation) {
             presenter.subscribeToNewConversation(user);
         } else {
-            presenter.subscribeToOldConversation();
             presenter.setConversationId(conversationModel.getId());
+            presenter.subscribeToOldConversation();
 
         }
         gifPresenter.bindView(this);
