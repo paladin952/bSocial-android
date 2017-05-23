@@ -97,7 +97,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     public void onBindViewHolder(BaseConversationViewHolder holder, int position) {
         String message = data.get(position).getMessage();
         if (holder instanceof NormalMessageViewHolder) {
-            holder.bindMessage(message);
+            holder.bindMessage(data.get(position));
         } else if (holder instanceof GifMessageViewHolder) {
             holder.bindGiphyView(message);
         }

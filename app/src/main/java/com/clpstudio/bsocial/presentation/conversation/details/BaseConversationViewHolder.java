@@ -3,6 +3,8 @@ package com.clpstudio.bsocial.presentation.conversation.details;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.clpstudio.bsocial.data.models.conversations.Message;
+
 /**
  * Created by clapalucian on 5/6/17.
  */
@@ -17,7 +19,7 @@ public class BaseConversationViewHolder extends RecyclerView.ViewHolder {
      *
      * @param message The message's text
      */
-    public void bindMessage(String message) {
+    public void bindMessage(Message message) {
         //override when needed
     }
 

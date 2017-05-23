@@ -8,8 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.clpstudio.bsocial.data.models.conversations.Message;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,20 +30,11 @@ public class NormalMessageViewHolder extends BaseConversationViewHolder {
     }
 
     @Override
-    public void bindMessage(String message) {
-        messageText.setText(message);
+    public void bindMessage(Message message) {
+        messageText.setText(message.getMessage());
 
-
-        //todo replace with real user's profile picture
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String url = "";
-        if (firebaseUser != null) {
-            if (firebaseUser.getPhotoUrl() != null) {
-                url = firebaseUser.getPhotoUrl().toString();
-            }
-        }
         Glide.with(itemView.getContext())
-                .load(url)
+                .load(message.getImageUrl())
                 .asBitmap()
                 .placeholder(R.drawable.default_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

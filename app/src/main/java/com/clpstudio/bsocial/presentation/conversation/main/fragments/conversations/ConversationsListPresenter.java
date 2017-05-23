@@ -1,7 +1,5 @@
 package com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations;
 
-import android.support.annotation.NonNull;
-
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
@@ -27,13 +25,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     public ConversationsListPresenter() {
     }
 
-    @Override
-    public void bindView(@NonNull View view) {
-        super.bindView(view);
-        showData();
-    }
-
-    private void showData() {
+    public void showData() {
         view().showProgress();
         conversationService.getListOfConversations()
                 .subscribe(conversationNameModels -> {

@@ -78,8 +78,12 @@ public class ConversationService {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ConversationModel model = dataSnapshot.getValue(ConversationModel.class);
-                e.onNext(model);
-                e.onComplete();
+                if (model != null) {
+                    e.onNext(model);
+                    e.onComplete();
+                } else {
+                    e.onComplete();
+                }
             }
         }));
     }

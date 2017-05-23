@@ -99,6 +99,7 @@ public class DatabaseService {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 friendsRef.child(user.getUid()).push().setValue(registeredUser);
+                friendsRef.child(registeredUser.getUserId()).push().setValue(new RegisteredUser(user.getUid(), user.getEmail()));
                 e.onComplete();
             } else {
                 e.onError(new RuntimeException("UserId missing"));

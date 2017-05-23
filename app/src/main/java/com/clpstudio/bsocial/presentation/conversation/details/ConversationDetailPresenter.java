@@ -58,7 +58,10 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     private void sendMessage(String text) {
-        Message message = new Message(firebaseAuth.getCurrentUser().getEmail(), text, System.currentTimeMillis());
+        String avatarUrl = firebaseAuth.getCurrentUser().getPhotoUrl() != null ? firebaseAuth.getCurrentUser().getPhotoUrl().toString() : "";
+
+        Message message = new Message(firebaseAuth.getCurrentUser().getEmail(),
+                text, System.currentTimeMillis(), avatarUrl);
         messagesService.sendMessage(conversationId, message).subscribe();
     }
 

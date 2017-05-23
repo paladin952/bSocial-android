@@ -6,17 +6,23 @@ package com.clpstudio.bsocial.data.models.conversations;
 
 public class Message {
 
-    private String userName;
-    private String message;
-    private long timestamp;
+    String userName;
+    String message;
+    long timestamp;
+    String imageUrl;
 
     public Message() {
     }
 
-    public Message(String userName, String message, long timestamp) {
+    public Message(String userName, String message, long timestamp, String imageUrl) {
         this.userName = userName;
         this.message = message;
         this.timestamp = timestamp;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public long getTimestamp() {
@@ -37,6 +43,7 @@ public class Message {
                 "userName='" + userName + '\'' +
                 ", message='" + message + '\'' +
                 ", timestamp=" + timestamp +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }
