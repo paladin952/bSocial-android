@@ -43,7 +43,8 @@ public class DatabaseService {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 String userId = user.getUid();
-                registeredUsersRef.child(userId).setValue(new RegisteredUser(userId, email), (databaseError, databaseReference) -> {
+                String photo = user.getPhotoUrl() != null ? user.getPhotoUrl().toString(): "";
+                registeredUsersRef.child(userId).setValue(new RegisteredUser(userId, email, photo), (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         e.onError(databaseError.toException());
                     } else {
@@ -98,8 +99,9 @@ public class DatabaseService {
         return Completable.create(e -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
+                String photo = user.getPhotoUrl() != null ? user.getPhotoUrl().toString(): "";
                 friendsRef.child(user.getUid()).push().setValue(registeredUser);
-                friendsRef.child(registeredUser.getUserId()).push().setValue(new RegisteredUser(user.getUid(), user.getEmail()));
+                friendsRef.child(registeredUser.getUserId()).push().setValue(new RegisteredUser(user.getUid(), user.getEmail(), photo));
                 e.onComplete();
             } else {
                 e.onError(new RuntimeException("UserId missing"));

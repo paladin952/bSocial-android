@@ -12,15 +12,21 @@ public class RegisteredUser {
 
     String userId;
     String email;
+    String imageUrl;
 
     public RegisteredUser() {
 
     }
 
     @ParcelConstructor
-    public RegisteredUser(String userId, String email) {
+    public RegisteredUser(String userId, String email, String imageUrl) {
         this.email = email;
         this.userId = userId;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getUserId() {
@@ -36,6 +42,7 @@ public class RegisteredUser {
         return "RegisteredUser{" +
                 "userId='" + userId + '\'' +
                 ", email='" + email + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 

@@ -1,9 +1,11 @@
 package com.clpstudio.bsocial.bussiness.service;
 
 import com.clpstudio.bsocial.bussiness.utils.FirebaseStorageContants;
+import com.clpstudio.bsocial.core.dagger.FirebaseModule;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -27,6 +29,10 @@ public class ProfileService {
     FirebaseStorage firebaseStorage;
     @Inject
     FirebaseAuth firebaseAuth;
+
+    @Inject
+    @FirebaseModule.RegisteredUsers
+    DatabaseReference registeredUserRef;
 
     @Inject
     public ProfileService() {
@@ -92,6 +98,7 @@ public class ProfileService {
             storageReference = storageReference.child(url);
             storageReference.getDownloadUrl().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+                    registeredUserRef.child(firebaseUser.getUid()).child("imageUrl").setValue(task.getResult().toString());
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setPhotoUri(task.getResult())
                             .build();

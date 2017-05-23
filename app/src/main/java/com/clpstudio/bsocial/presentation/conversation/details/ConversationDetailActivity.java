@@ -74,6 +74,11 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         Log.d("luci", "call clicked!");
     }
 
+    @OnClick(R.id.avatar)
+    public void onAvatarClick(ImageView imageView) {
+        presenter.onAvatarImageClick();
+    }
+
     private ConversationDetailAdapter adapter;
 
     public static void startActivity(Activity activity, ConversationModel conversationModel) {
@@ -98,7 +103,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_conversations);
+        setContentView(R.layout.activity_conversations_detail);
         ((BSocialApplication) getApplicationContext()).getDiComponent().inject(this);
         ButterKnife.bind(this);
         Dart.inject(this);

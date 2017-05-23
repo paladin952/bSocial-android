@@ -78,6 +78,10 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 });
     }
 
+    public void onAvatarImageClick() {
+
+    }
+
     public interface View extends IBaseMvpPresenter.View {
 
         void showData(List<Message> data);

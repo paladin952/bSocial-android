@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                       xmlns:tools="http://schemas.android.com/tools"
+                                       android:id="@+id/toolbar"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="?attr/actionBarSize"
+                                       android:background="@color/action_bar_background"
+                                       android:elevation="2dp"
+                                       android:minHeight="?attr/actionBarSize"
+                                       android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                                       android:theme="@style/ActionBarTheme"
+                                       app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                                       app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                                       tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:layout_marginRight="8dp"
+            >
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_avatar"
+                android:clickable="true"
+                android:src="@drawable/default_avatar"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/toolbar_call"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/auction_card_list_selector"
+            android:clickable="true"
+            android:src="@drawable/ic_action_call"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/conversationsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/messageEditor"
+        android:layout_below="@+id/toolbar"/>
+
+    <com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView
+        android:id="@+id/gif_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/messageEditor"
+        android:visibility="gone"/>
+
+    <com.clpstudio.bsocial.presentation.views.MessageEditorView
+        android:id="@+id/messageEditor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="2dp"/>
+
+</RelativeLayout>

@@ -48,10 +48,10 @@ public class ConversationService {
     public Single<String> createConversation(RegisteredUser friend) {
         return Single.create(e -> {
             String conversationId = conversationsRef.push().getKey();
-            ConversationModel conversationModel = new ConversationModel(conversationId, "", "");
+            ConversationModel conversationModel = new ConversationModel(conversationId, "Test", "");
             conversationsRef.child(conversationId).setValue(conversationModel);
-
-            RegisteredUser currentUser = new RegisteredUser(firebaseAuth.getCurrentUser().getUid(), firebaseAuth.getCurrentUser().getEmail());
+            String photo = firebaseAuth.getCurrentUser().getPhotoUrl() != null ? firebaseAuth.getCurrentUser().getPhotoUrl().toString() : "";
+            RegisteredUser currentUser = new RegisteredUser(firebaseAuth.getCurrentUser().getUid(), firebaseAuth.getCurrentUser().getEmail(), photo);
             membersRef.child(conversationId).child(currentUser.getUserId()).setValue(new MemberActive(true));
             membersRef.child(conversationId).child(friend.getUserId()).setValue(new MemberActive(true));
             e.onSuccess(conversationId);
