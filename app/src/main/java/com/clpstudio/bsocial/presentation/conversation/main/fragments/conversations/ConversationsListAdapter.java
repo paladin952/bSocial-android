@@ -13,6 +13,7 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,15 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public ConversationModel getConversation(RegisteredUser user) {
+        for (ConversationModel model : data) {
+            if (model.getMembersIds().contains(user.getUserId())) {
+                return model;
+            }
+        }
+        return null;
     }
 
     public void setClickListener(ClickListener<ConversationModel> clickListener) {

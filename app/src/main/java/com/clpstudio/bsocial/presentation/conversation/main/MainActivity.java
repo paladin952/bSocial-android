@@ -14,7 +14,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
+import com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations.ConversationsListFragment;
+import com.clpstudio.bsocial.presentation.conversation.main.fragments.friends.FriendsListFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
 
 import javax.inject.Inject;
@@ -28,7 +32,7 @@ import static com.clpstudio.bsocial.R.id.avatar;
  * Created by clapalucian on 16/05/2017.
  */
 
-public class MainActivity extends AppCompatActivity implements ConversationsActivityPresenter.View, GoToPageListener {
+public class MainActivity extends AppCompatActivity implements ConversationsActivityPresenter.View, GoToPageListener, FriendsListFragment.OnOpenConversationClicked {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements ConversationsActi
     }
 
     private void setupViewPager() {
-        adapter = new MainPagerAdapter(getSupportFragmentManager());
+        adapter = new MainPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(adapter);
         slidingTabLayout.setupWithViewPager(viewPager);
     }
@@ -107,6 +111,15 @@ public class MainActivity extends AppCompatActivity implements ConversationsActi
             viewPager.setCurrentItem(MainPagerAdapter.CONVERSATIONS_POSITION);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void openConversation(RegisteredUser user) {
+        if (adapter.getItem(MainPagerAdapter.CONVERSATIONS_POSITION) instanceof ConversationsListFragment) {
+            ConversationsListFragment fragment = (ConversationsListFragment) adapter.getFragment(MainPagerAdapter.CONVERSATIONS_POSITION);
+            fragment.openConversation(user);
+            viewPager.setCurrentItem(MainPagerAdapter.CONVERSATIONS_POSITION, false);
         }
     }
 }

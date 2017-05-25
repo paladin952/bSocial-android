@@ -3,6 +3,8 @@ package com.clpstudio.bsocial.data.models.conversations;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+import java.util.List;
+
 /**
  * Created by clapalucian on 5/10/17.
  */
@@ -13,7 +15,7 @@ public class ConversationModel {
     String id;
     String title;
     String imageUrl;
-    Member member;
+    List<String> membersIds;
     long timestamp;
 
     public ConversationModel() {
@@ -42,8 +44,12 @@ public class ConversationModel {
         return id;
     }
 
-    public Member getMember() {
-        return member;
+    public List<String> getMembersIds() {
+        return membersIds;
+    }
+
+    public void setMembersIds(List<String> data) {
+        this.membersIds = data;
     }
 
 }

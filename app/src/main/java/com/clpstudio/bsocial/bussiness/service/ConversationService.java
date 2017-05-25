@@ -59,6 +59,20 @@ public class ConversationService {
     }
 
     public Single<List<ConversationModel>> getListOfConversations() {
+        return getListOfConversationsNoMembers()
+                .toObservable()
+                .flatMap(conversationModel -> {
+                    List<Observable<ConversationModel>> streams = new ArrayList<>();
+                    for (ConversationModel model : conversationModel) {
+                        streams.add(getMembersOfConversation(model));
+                    }
+
+                    return Observable.merge(streams);
+                })
+                .toList();
+    }
+
+    private Single<List<ConversationModel>> getListOfConversationsNoMembers() {
         return getConversationIdsOfCurrentUser()
                 .toObservable()
                 .map(strings -> {
@@ -107,5 +121,20 @@ public class ConversationService {
                 }
             });
         });
+    }
+
+    private Observable<ConversationModel> getMembersOfConversation(ConversationModel conversationModel) {
+        return Observable.create(e -> membersRef.child(conversationModel.getId()).orderByKey().addValueEventListener(new AddValueEventSuccessListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> membersIds = new ArrayList<>();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    membersIds.add(ds.getKey());
+                }
+                conversationModel.setMembersIds(membersIds);
+                e.onNext(conversationModel);
+                e.onComplete();
+            }
+        }));
     }
 }

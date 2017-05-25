@@ -1,5 +1,6 @@
 package com.clpstudio.bsocial.presentation.conversation.main.fragments.friends;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 
 import java.util.List;
 
@@ -31,8 +31,6 @@ import butterknife.OnClick;
 
 public class FriendsListFragment extends Fragment implements FriendsListPresenter.View {
 
-    public static final String TAG = FriendsListFragment.class.getSimpleName();
-
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.progressBar)
@@ -43,10 +41,17 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
 
     private FriendsListAdapter adapter;
     private AlertDialog alertDialog;
+    private OnOpenConversationClicked clickListener;
 
+    public FriendsListFragment() {
+    }
 
     public static FriendsListFragment get() {
         return new FriendsListFragment();
+    }
+
+    public interface OnOpenConversationClicked {
+        void openConversation(RegisteredUser user);
     }
 
     @OnClick(R.id.add_friend_fb)
@@ -67,13 +72,23 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnOpenConversationClicked) {
+            clickListener = (OnOpenConversationClicked) context;
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
         adapter = new FriendsListAdapter();
         adapter.setOnClickListener(element -> {
-            ConversationDetailActivity.startActivity(getActivity(), element);
+            if (clickListener != null) {
+                clickListener.openConversation(element);
+            }
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

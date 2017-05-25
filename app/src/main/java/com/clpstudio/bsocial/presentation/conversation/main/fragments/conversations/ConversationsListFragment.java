@@ -13,10 +13,11 @@ import android.view.ViewGroup;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.service.DatabaseService;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
-import com.clpstudio.bsocial.presentation.conversation.main.MainPagerAdapter;
+import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
 
 import java.util.List;
 
@@ -44,14 +45,16 @@ public class ConversationsListFragment extends Fragment implements Conversations
     @BindView(R.id.progressBar)
     View progressBar;
 
-
-    private GridLayoutManager gridLayoutManager;
-    private ConversationsListAdapter adapter;
-    private GoToPageListener goToPageListener;
+    public ConversationsListFragment() {
+    }
 
     public static ConversationsListFragment get() {
         return new ConversationsListFragment();
     }
+
+    private GridLayoutManager gridLayoutManager;
+    private ConversationsListAdapter adapter;
+    private GoToPageListener goToPageListener;
 
     @OnClick(R.id.write_button)
     public void onWriteButtonClick() {
@@ -117,5 +120,14 @@ public class ConversationsListFragment extends Fragment implements Conversations
     @Override
     public void showData(List<ConversationModel> data) {
         adapter.addAll(data);
+    }
+
+    public void openConversation(RegisteredUser user) {
+        ConversationModel exists = adapter.getConversation(user);
+        if (exists != null) {
+            ConversationDetailActivity.startActivity(getActivity(), exists);
+        } else {
+            ConversationDetailActivity.startActivity(getActivity(), user);
+        }
     }
 }
