@@ -74,21 +74,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
-        </provider>
-
-        <activity
-            android:name=".presentation.gifs.GifTestActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
         <activity
             android:name=".presentation.calling.CallScreenSinchActivity"
             android:screenOrientation="portrait"/>
@@ -102,11 +87,30 @@
             android:name=".presentation.calling.PlaceCallSinchActivity"
             android:screenOrientation="portrait"/>
 
-        <service android:name=".core.sinch.SinchService"/>
+        <activity android:name=".presentation.browser.BrowserViewActivity"
+            android:screenOrientation="portrait"
+            />
 
         <activity android:name=".presentation.calling.VideoCallScreenActivity"/>
-        <activity android:name=".presentation.conversation.main.MainActivity"/>
+        <activity android:name=".presentation.conversation.main.MainActivity"
+                  android:screenOrientation="portrait"
+            />
         <activity android:name=".presentation.calling.IncomingVideoCallSinchActivity"/>
+
+        <!--SERVICES-->
+        <service android:name=".core.sinch.SinchService"/>
+
+        <!--PROVIDERS-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.clpstudio.bsocial.presentation.conversation.details.viewholders;
 
-import android.text.util.Linkify;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +7,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.bussiness.utils.ViewHelper;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
 import com.clpstudio.bsocial.data.models.conversations.Message;
@@ -48,8 +48,7 @@ public class NormalMessageViewHolder extends BaseConversationViewHolder {
     public void bindMessage(Message message) {
         messageText.setText(message.getMessage());
         if (isUrl) {
-            Linkify.addLinks(messageText, Linkify.WEB_URLS);
-            messageText.setOnClickListener(v -> {
+            ViewHelper.applyLink(messageText, message.getMessage(), element -> {
                 if (clickUrlListener != null) {
                     clickUrlListener.click(message.getMessage());
                 }

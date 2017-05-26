@@ -86,7 +86,6 @@ public class MessageEditorView extends FrameLayout {
                     if (textStr.startsWith("@gif ")) {
                         String tokens[] = textStr.split("@gif ");
                         if (tokens.length > 0) {
-                            Log.d("luci", "gif token = " + tokens[1]);
                             onTextListenerListener.onGifSelected(tokens[1]);
                         }
                     }

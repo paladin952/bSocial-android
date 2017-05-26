@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.clpstudio.bsocial.Henson;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.sinch.SinchService;
-import com.clpstudio.bsocial.presentation.c.Henson;
 import com.clpstudio.bsocial.presentation.conversation.main.MainActivity;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
@@ -19,7 +19,8 @@ public class LoginSinchActivity extends BaseSinchActivity implements SinchServic
     String userEmail;
 
     public static void startActivity(Activity activity, String userEmail) {
-        Intent intent = Henson.with(activity)
+        Intent intent =
+                Henson.with(activity)
                 .gotoLoginSinchActivity()
                 .userEmail(userEmail)
                 .build();

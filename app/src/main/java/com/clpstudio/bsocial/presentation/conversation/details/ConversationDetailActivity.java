@@ -1,9 +1,7 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -17,12 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.clpstudio.bsocial.Henson;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.bsocial.presentation.c.Henson;
+import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
 import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
 import com.clpstudio.bsocial.presentation.gifs.GifPresenter;
 import com.clpstudio.bsocial.presentation.views.MessageEditorView;
@@ -73,6 +72,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     @OnClick(R.id.toolbar_call)
     public void onCallClick() {
+        //TODO
         Log.d("luci", "call clicked!");
     }
 
@@ -84,12 +84,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     ConversationDetailAdapter.OnConversationMessagesClickListener messagesClickListener = new ConversationDetailAdapter.OnConversationMessagesClickListener() {
         @Override
         public void openLink(String url) {
-            try {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(browserIntent);
-            } catch (ActivityNotFoundException e) {
-                //ignore
-            }
+            BrowserViewActivity.startActivity(ConversationDetailActivity.this, url);
         }
 
         @Override
