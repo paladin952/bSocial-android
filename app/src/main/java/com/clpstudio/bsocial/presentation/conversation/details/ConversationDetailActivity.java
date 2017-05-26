@@ -1,7 +1,9 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -79,6 +81,23 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         presenter.onAvatarImageClick();
     }
 
+    ConversationDetailAdapter.OnConversationMessagesClickListener messagesClickListener = new ConversationDetailAdapter.OnConversationMessagesClickListener() {
+        @Override
+        public void openLink(String url) {
+            try {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(browserIntent);
+            } catch (ActivityNotFoundException e) {
+                //ignore
+            }
+        }
+
+        @Override
+        public void showPhoto(String path) {
+
+        }
+    };
+
     private ConversationDetailAdapter adapter;
 
     public static void startActivity(Activity activity, ConversationModel conversationModel) {
@@ -127,6 +146,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     private void setupList() {
         adapter = new ConversationDetailAdapter(firebaseAuth.getCurrentUser().getEmail());
+        adapter.setClickListener(messagesClickListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);

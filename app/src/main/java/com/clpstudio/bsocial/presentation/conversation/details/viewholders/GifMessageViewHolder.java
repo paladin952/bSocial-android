@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.presentation.conversation.details;
+package com.clpstudio.bsocial.presentation.conversation.details.viewholders;
 
 import android.view.Gravity;
 import android.view.View;
@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideGifTarget;
+import com.clpstudio.bsocial.presentation.conversation.details.viewholders.BaseConversationViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

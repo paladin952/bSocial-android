@@ -2,6 +2,7 @@ package com.clpstudio.bsocial.presentation.conversation.details;
 
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
 import com.clpstudio.bsocial.bussiness.service.MessagesService;
+import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
@@ -50,18 +51,19 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void onTextSubmited(String text) {
-        sendMessage(text);
+        int type = Validator.isUrl(text) ? Message.TYPE_LINK : Message.TYPE_MESSAGE;
+        sendMessage(text, type);
     }
 
     public void onGifSelected(String url) {
-        sendMessage(url);
+        sendMessage(url, Message.TYPE_GIF);
     }
 
-    private void sendMessage(String text) {
+    private void sendMessage(String text, int type) {
         String avatarUrl = firebaseAuth.getCurrentUser().getPhotoUrl() != null ? firebaseAuth.getCurrentUser().getPhotoUrl().toString() : "";
 
         Message message = new Message(firebaseAuth.getCurrentUser().getEmail(),
-                text, System.currentTimeMillis(), avatarUrl);
+                text, System.currentTimeMillis(), avatarUrl, type);
         messagesService.sendMessage(conversationId, message).subscribe();
     }
 

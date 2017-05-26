@@ -6,11 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.utils.MessageTypedResolver;
 import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.presentation.conversation.details.viewholders.BaseConversationViewHolder;
+import com.clpstudio.bsocial.presentation.conversation.details.viewholders.GifMessageViewHolder;
+import com.clpstudio.bsocial.presentation.conversation.details.viewholders.NormalMessageViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.clpstudio.bsocial.data.models.conversations.Message.TYPE_LINK;
 
 /**
  * Created by clapalucian on 5/6/17.
@@ -22,9 +26,18 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     private static final int TYPE_MESSAGE_OTHERS = 1;
     private static final int TYPE_GIF_MINE = 2;
     private static final int TYPE_GIF_OTHERS = 3;
+    private static final int TYPE_LINK_MINE = 4;
+    private static final int TYPE_LINK_OTHERS = 5;
 
     private List<Message> data = new ArrayList<>();
     private String loggedUsername;
+    private OnConversationMessagesClickListener clickListener;
+
+    public interface OnConversationMessagesClickListener {
+        void openLink(String url);
+
+        void showPhoto(String path);
+    }
 
     public ConversationDetailAdapter(String loggedUsername) {
         this.loggedUsername = loggedUsername;
@@ -54,13 +67,19 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
 
     @Override
     public int getItemViewType(int position) {
-        String message = data.get(position).getMessage();
         String username = data.get(position).getUserName();
-        if (MessageTypedResolver.isGifMessage(message)) {
+        int type = data.get(position).getType();
+        if (type == Message.TYPE_GIF) {
             if (isMine(username)) {
                 return TYPE_GIF_MINE;
             } else {
                 return TYPE_GIF_OTHERS;
+            }
+        } else if (type == TYPE_LINK) {
+            if (isMine(username)) {
+                return TYPE_LINK_MINE;
+            } else {
+                return TYPE_LINK_OTHERS;
             }
         } else {
             if (isMine(username)) {
@@ -82,6 +101,12 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_mine, parent, false);
         } else if (viewType == TYPE_MESSAGE_OTHERS) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_others, parent, false);
+        } else if (viewType == TYPE_LINK_MINE) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_mine, parent, false);
+            return new NormalMessageViewHolder(view, true);
+        } else if (viewType == TYPE_LINK_OTHERS) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_others, parent, false);
+            return new NormalMessageViewHolder(view, true);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_gif, parent, false);
             boolean isOthers = false;
@@ -98,6 +123,11 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
         String message = data.get(position).getMessage();
         if (holder instanceof NormalMessageViewHolder) {
             holder.bindMessage(data.get(position));
+            ((NormalMessageViewHolder) holder).setClickUrlListener(element -> {
+                if (clickListener != null) {
+                    clickListener.openLink(element);
+                }
+            });
         } else if (holder instanceof GifMessageViewHolder) {
             holder.bindGiphyView(message);
         }
@@ -106,5 +136,9 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void setClickListener(OnConversationMessagesClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

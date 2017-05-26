@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.presentation.conversation.details;
+package com.clpstudio.bsocial.presentation.conversation.details.viewholders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
