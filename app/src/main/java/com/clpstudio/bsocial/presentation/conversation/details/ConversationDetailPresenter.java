@@ -1,5 +1,7 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
+import android.support.annotation.NonNull;
+
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
 import com.clpstudio.bsocial.bussiness.service.MessagesService;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
@@ -12,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by clapalucian on 5/4/17.
@@ -27,27 +32,44 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     MessagesService messagesService;
 
     private String conversationId;
+    private CompositeDisposable compositeDisposable;
 
     @Inject
     public ConversationDetailPresenter() {
     }
 
+    @Override
+    public void bindView(@NonNull View view) {
+        super.bindView(view);
+        compositeDisposable = new CompositeDisposable();
+    }
+
+    @Override
+    public void unbindView() {
+        super.unbindView();
+        compositeDisposable.dispose();
+    }
+
     private void subscribeMessageAdded() {
-        messagesService.subscribeMessageAdded(conversationId)
+        Disposable disposable = messagesService.subscribeMessageAdded(conversationId)
                 .subscribe(message -> {
                     view().appendData(message);
                     view().clearInput();
                 }, err -> {
                     //TODO
                 });
+        compositeDisposable.add(disposable);
     }
 
     public void setConversationId(String id) {
         this.conversationId = id;
     }
 
-    public void getMessages(String conversationId) {
-        messagesService.getMessages(conversationId).subscribe();
+    public void getMessages() {
+        Disposable disposable = messagesService.getMessages(conversationId).subscribe(messages -> {
+            view().showData(messages);
+        });
+        compositeDisposable.add(disposable);
     }
 
     public void onTextSubmited(String text) {
@@ -64,20 +86,21 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
         Message message = new Message(firebaseAuth.getCurrentUser().getEmail(),
                 text, System.currentTimeMillis(), avatarUrl, type);
-        messagesService.sendMessage(conversationId, message).subscribe();
+        Disposable disposable = messagesService.sendMessage(conversationId, message).subscribe();
+        compositeDisposable.add(disposable);
     }
 
-    public void subscribeToOldConversation() {
+    public void bindToOldConversation() {
         subscribeMessageAdded();
-        getMessages(conversationId);
     }
 
-    public void subscribeToNewConversation(RegisteredUser friend) {
-        conversationService.createConversation(friend)
+    public void bindToNewConversation(RegisteredUser friend) {
+        Disposable disposable = conversationService.createConversation(friend)
                 .subscribe(s -> {
                     conversationId = s;
                     subscribeMessageAdded();
                 });
+        compositeDisposable.add(disposable);
     }
 
     public void onAvatarImageClick() {

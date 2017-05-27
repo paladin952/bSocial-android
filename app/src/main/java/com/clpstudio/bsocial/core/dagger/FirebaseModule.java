@@ -43,21 +43,9 @@ public class FirebaseModule {
     }
 
     @Provides
-    @RegisteredUsers
+    @Users
     DatabaseReference providesRegisteredUsersRef(FirebaseDatabase database) {
-        return database.getReference("registeredUsers");
-    }
-
-    @Provides
-    @Friends
-    DatabaseReference providesFriendsUsersRef(FirebaseDatabase database) {
-        return database.getReference("friends");
-    }
-
-    @Provides
-    @Messages
-    DatabaseReference providesMessagesRef(FirebaseDatabase database) {
-        return database.getReference("messages");
+        return database.getReference("users");
     }
 
     @Provides
@@ -66,29 +54,14 @@ public class FirebaseModule {
         return database.getReference("conversations");
     }
 
-    @Provides
-    @Members
-    DatabaseReference providesMembersRef(FirebaseDatabase database) {
-        return database.getReference("members");
-    }
 
     @Qualifier
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface RegisteredUsers {
+    public @interface Users {
     }
 
-    @Qualifier
-    @Documented
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Friends {
-    }
 
-    @Qualifier
-    @Documented
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Messages {
-    }
 
     @Qualifier
     @Documented
@@ -96,10 +69,5 @@ public class FirebaseModule {
     public @interface Conversations {
     }
 
-    @Qualifier
-    @Documented
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Members {
-    }
 
 }

@@ -31,7 +31,7 @@ public class ProfileService {
     FirebaseAuth firebaseAuth;
 
     @Inject
-    @FirebaseModule.RegisteredUsers
+    @FirebaseModule.Users
     DatabaseReference registeredUserRef;
 
     @Inject

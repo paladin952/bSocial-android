@@ -130,10 +130,10 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
         presenter.bindView(this);
         if (isNewConversation) {
-            presenter.subscribeToNewConversation(user);
+            presenter.bindToNewConversation(user);
         } else {
             presenter.setConversationId(conversationModel.getId());
-            presenter.subscribeToOldConversation();
+            presenter.bindToOldConversation();
 
         }
         gifPresenter.bindView(this);

@@ -45,7 +45,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
 
     public void addFriendIfExists(String email) {
         databaseService
-                .addFriendToUsersList(email)
+                .addFriend(email)
                 .subscribe(() -> {
                     String successText = context.getString(R.string.friend_added_successfuly);
                     view().hideAddFriendDialog();

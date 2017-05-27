@@ -14,7 +14,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+
+import static com.clpstudio.bsocial.core.firebase.FirebaseConstants.DB_EMAIL_FIELD;
+import static com.clpstudio.bsocial.core.firebase.FirebaseConstants.FIELD_FRIENDS;
 
 /**
  * Created by clapalucian on 14/05/2017.
@@ -22,15 +26,10 @@ import io.reactivex.Single;
 
 public class DatabaseService {
 
-    private static final String DB_EMAIL_FIELD = "email";
-    private static final String DB_USERID_FIELD = "userId";
 
     @Inject
-    @FirebaseModule.RegisteredUsers
-    DatabaseReference registeredUsersRef;
-    @Inject
-    @FirebaseModule.Friends
-    DatabaseReference friendsRef;
+    @FirebaseModule.Users
+    DatabaseReference usersRef;
     @Inject
     FirebaseAuth firebaseAuth;
 
@@ -43,8 +42,8 @@ public class DatabaseService {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 String userId = user.getUid();
-                String photo = user.getPhotoUrl() != null ? user.getPhotoUrl().toString(): "";
-                registeredUsersRef.child(userId).setValue(new RegisteredUser(userId, email, photo), (databaseError, databaseReference) -> {
+                String photo = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
+                usersRef.child(userId).setValue(new RegisteredUser(userId, email, photo), (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         e.onError(databaseError.toException());
                     } else {
@@ -58,7 +57,7 @@ public class DatabaseService {
     }
 
     public Single<RegisteredUser> hasUser(String userEmail) {
-        return Single.create(e -> registeredUsersRef.orderByChild(DB_EMAIL_FIELD).equalTo(userEmail).addValueEventListener(new AddValueEventSuccessListener() {
+        return Single.create(e -> usersRef.orderByChild(DB_EMAIL_FIELD).equalTo(userEmail).addValueEventListener(new AddValueEventSuccessListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 RegisteredUser user = null;
@@ -75,19 +74,50 @@ public class DatabaseService {
         }));
     }
 
-    public Completable addFriendToUsersList(String email) {
+    public Single<List<RegisteredUser>> getFriends() {
+
+        return getFriendIds()
+                .toObservable()
+                .map(strings -> {
+                    List<Observable<RegisteredUser>> conversationsSingles = new ArrayList<>();
+                    for (String id : strings) {
+                        conversationsSingles.add(getUserDetails(id));
+                    }
+                    return conversationsSingles;
+                })
+                .flatMap(observables -> Observable.fromIterable(observables)
+                        .flatMap(conversationModelObservable -> conversationModelObservable))
+                .toList();
+    }
+
+    private Observable<RegisteredUser> getUserDetails(String userId) {
+        return Observable.create(e -> usersRef.child(userId).addValueEventListener(new AddValueEventSuccessListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                RegisteredUser model = dataSnapshot.getValue(RegisteredUser.class);
+                if (model != null) {
+                    e.onNext(model);
+                    e.onComplete();
+                } else {
+                    e.onComplete();
+                }
+            }
+        }));
+    }
+
+    public Completable addFriend(String email) {
         return hasUser(email)
                 .flatMapCompletable(this::addFriendToDatabaseUserList);
     }
 
-    public Single<List<RegisteredUser>> getFriends() {
-        return Single.create(e -> friendsRef.child(firebaseAuth.getCurrentUser().getUid()).orderByChild(DB_USERID_FIELD).addValueEventListener(new AddValueEventSuccessListener() {
+
+    private Single<List<String>> getFriendIds() {
+        return Single.create(e -> usersRef.child(firebaseAuth.getCurrentUser().getUid()).child(FIELD_FRIENDS).orderByKey().addValueEventListener(new AddValueEventSuccessListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<RegisteredUser> data = new ArrayList<>();
+                List<String> data = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    RegisteredUser user = ds.getValue(RegisteredUser.class);
-                    data.add(user);
+                    data.add(ds.getKey());
                 }
 
                 e.onSuccess(data);
@@ -95,17 +125,20 @@ public class DatabaseService {
         }));
     }
 
-    private Completable addFriendToDatabaseUserList(RegisteredUser registeredUser) {
+    private Completable addFriendToDatabaseUserList(RegisteredUser friendUser) {
         return Completable.create(e -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                String photo = user.getPhotoUrl() != null ? user.getPhotoUrl().toString(): "";
-                friendsRef.child(user.getUid()).push().setValue(registeredUser);
-                friendsRef.child(registeredUser.getUserId()).push().setValue(new RegisteredUser(user.getUid(), user.getEmail(), photo));
-                e.onComplete();
-            } else {
-                e.onError(new RuntimeException("UserId missing"));
-            }
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            usersRef
+                    .child(currentUser.getUid())
+                    .child(FIELD_FRIENDS)
+                    .child(friendUser.getUserId())
+                    .setValue(true);
+            usersRef
+                    .child(friendUser.getUserId())
+                    .child(FIELD_FRIENDS)
+                    .child(currentUser.getUid())
+                    .setValue(true);
+            e.onComplete();
         });
     }
 

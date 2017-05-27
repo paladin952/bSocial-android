@@ -39,8 +39,6 @@ public interface DIComponent {
 
     void inject(EditAvatarFragment editAvatarFragment);
 
-    void inject(GifTestActivity gifTestActivity);
-
     void inject(ConversationsListFragment conversationsListFragment);
 
     void inject(FriendsListFragment friendsListFragment);

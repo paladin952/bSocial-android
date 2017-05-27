@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseError;
  * Created by clapalucian on 19/05/2017.
  */
 
-public abstract class FirebaseOdChildAddedListener implements ChildEventListener {
+public abstract class FirebaseAddChildAddedListener implements ChildEventListener {
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         //override if needed

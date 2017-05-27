@@ -76,7 +76,6 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
         @BindView(R.id.title)
         TextView titleText;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

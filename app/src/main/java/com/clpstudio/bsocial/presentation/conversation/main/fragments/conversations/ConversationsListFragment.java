@@ -98,7 +98,7 @@ public class ConversationsListFragment extends Fragment implements Conversations
     @Override
     public void onStart() {
         super.onStart();
-        presenter.showData();
+        presenter.onStart();
     }
 
     @Override

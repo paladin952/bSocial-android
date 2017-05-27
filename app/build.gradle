@@ -101,7 +101,6 @@ dependencies {
 
     //sinch for calls
     compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
-
 }
 
 android {

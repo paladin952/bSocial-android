@@ -34,6 +34,5 @@ public class ConversationsActivityPresenter extends BaseMvpPresenter<Conversatio
     public interface View extends IBaseMvpPresenter.View {
 
         void showAvatar(String url);
-
     }
 }
