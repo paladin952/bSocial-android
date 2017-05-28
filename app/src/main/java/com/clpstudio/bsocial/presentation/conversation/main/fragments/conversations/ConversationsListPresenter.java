@@ -49,10 +49,12 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     private void showData(boolean progress) {
         if (progress) {
             view().showProgress();
+            Log.d("bSocial", "Refresh conversation list, with progress!");
+        } else {
+            Log.d("bSocial", "Refresh conversation list, no progress!");
         }
         Disposable disposable = conversationService.getListOfConversations()
                 .subscribe(conversationNameModels -> {
-                    Log.d("luci", "GOT CONVERSATIONS");
                     view().hideProgress();
                     view().showData(conversationNameModels);
                 }, err -> {

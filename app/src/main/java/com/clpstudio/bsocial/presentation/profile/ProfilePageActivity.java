@@ -27,7 +27,7 @@ import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.avatar;
 
-public class ProfilePageActivity extends AppCompatActivity implements ProfilePagePresenter.View, EditAvatarFragment.OnUploadFinishedListener {
+public class ProfilePageActivity extends AppCompatActivity implements ProfilePagePresenter.View, EditAvatarFragment.RefreshImageListener {
 
     @Inject
     ProfilePagePresenter presenter;

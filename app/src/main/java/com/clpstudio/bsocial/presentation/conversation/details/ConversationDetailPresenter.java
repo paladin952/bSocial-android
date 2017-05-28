@@ -1,8 +1,10 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.clpstudio.bsocial.bussiness.service.ConversationService;
+import com.clpstudio.bsocial.bussiness.service.FirebaseStorageService;
 import com.clpstudio.bsocial.bussiness.service.MessagesService;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.data.models.conversations.Message;
@@ -30,6 +32,8 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     ConversationService conversationService;
     @Inject
     MessagesService messagesService;
+    @Inject
+    FirebaseStorageService firebaseStorageService;
 
     private String conversationId;
     private CompositeDisposable compositeDisposable;
@@ -105,6 +109,15 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     public void onAvatarImageClick() {
 
+    }
+
+    public void uploadImage(String filename, Uri path) {
+        firebaseStorageService.uploadConversationDataAndGetLink(filename, path, conversationId)
+                .subscribe(link -> {
+                    sendMessage(link, Message.TYPE_PHOTO);
+                }, err -> {
+                    //TODO
+                });
     }
 
     public interface View extends IBaseMvpPresenter.View {

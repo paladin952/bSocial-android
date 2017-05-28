@@ -2,7 +2,9 @@ package com.clpstudio.bsocial.presentation.conversation.details;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.clpstudio.bsocial.Henson;
@@ -22,6 +25,7 @@ import com.clpstudio.bsocial.data.models.conversations.Message;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
+import com.clpstudio.bsocial.presentation.conversation.main.TakePhotoPresenter;
 import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
 import com.clpstudio.bsocial.presentation.gifs.GifPresenter;
 import com.clpstudio.bsocial.presentation.views.MessageEditorView;
@@ -39,12 +43,14 @@ import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.messageEditor;
 
-public class ConversationDetailActivity extends AppCompatActivity implements ConversationDetailPresenter.View, GifPresenter.View {
+public class ConversationDetailActivity extends AppCompatActivity implements ConversationDetailPresenter.View, GifPresenter.View, TakePhotoPresenter.View {
 
     @Inject
     ConversationDetailPresenter presenter;
     @Inject
     GifPresenter gifPresenter;
+    @Inject
+    TakePhotoPresenter takePhotoPresenter;
     @Inject
     FirebaseAuth firebaseAuth;
 
@@ -137,6 +143,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
         }
         gifPresenter.bindView(this);
+        takePhotoPresenter.bindView(this);
     }
 
     private void setupList() {
@@ -156,7 +163,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     }
 
     private void setupMessageEditor() {
-        messageEditorView.setOnTextListenerListener(new MessageEditorView.OnTextListener() {
+        messageEditorView.setEventListener(new MessageEditorView.OnTextListener() {
             @Override
             public void onTextSubmitted(String text) {
                 presenter.onTextSubmited(text);
@@ -165,6 +172,12 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
             @Override
             public void onGifSelected(String gifText) {
                 gifPresenter.getGifs(gifText);
+            }
+
+            @Override
+            public void onTapAttachment() {
+                Log.d("luci", "attachment tapped!");
+                takePhotoPresenter.selectPhoto(ConversationDetailActivity.this);
             }
         });
     }
@@ -201,6 +214,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         super.onDestroy();
         presenter.unbindView();
         gifPresenter.unbindView();
+        takePhotoPresenter.unbindView();
     }
 
     @Override
@@ -226,6 +240,18 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        takePhotoPresenter.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        takePhotoPresenter.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    @Override
     public void clearInput() {
         messageEditorView.clear();
     }
@@ -236,5 +262,15 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void imagePhotoTaken(String filename, Uri path) {
+        presenter.uploadImage(filename, path);
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

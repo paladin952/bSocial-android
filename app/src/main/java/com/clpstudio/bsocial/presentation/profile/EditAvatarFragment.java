@@ -54,19 +54,19 @@ public class EditAvatarFragment extends Fragment {
 
     private Uri imageToCrop;
     private Uri imageToUpload;
-    private OnUploadFinishedListener onUploadFinishedListener;
+    private RefreshImageListener refreshImageListener;
 
-    public interface OnUploadFinishedListener {
+    public interface RefreshImageListener {
         void refreshProfileImage();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUploadFinishedListener) {
-            onUploadFinishedListener = ((OnUploadFinishedListener) getActivity());
+        if (context instanceof RefreshImageListener) {
+            refreshImageListener = ((RefreshImageListener) getActivity());
         } else {
-            throw new RuntimeException("Activity not instance of OnUploadFinishedListener");
+            throw new RuntimeException("Activity not instance of RefreshImageListener");
         }
     }
 
@@ -104,13 +104,13 @@ public class EditAvatarFragment extends Fragment {
         profileService.removeProfilePicture()
                 .subscribe(() -> {
                     if (isAdded()) {
-                        onUploadFinishedListener.refreshProfileImage();
+                        refreshImageListener.refreshProfileImage();
                         finishWithMessage(R.string.edit_avatar_removed);
                     }
                 }, err -> {
                     if (isAdded()) {
                         finishWithError(R.string.edit_avatar_remove_error);
-                        onUploadFinishedListener.refreshProfileImage();
+                        refreshImageListener.refreshProfileImage();
                     }
                 });
     }
@@ -229,7 +229,7 @@ public class EditAvatarFragment extends Fragment {
             if (isAdded()) {
                 progressDialog.dismiss();
                 finishWithMessage(R.string.edit_avatar_uploaded);
-                onUploadFinishedListener.refreshProfileImage();
+                refreshImageListener.refreshProfileImage();
             }
         }, err -> {
             if (isAdded()) {

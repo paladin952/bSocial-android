@@ -11,11 +11,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.clpstudio.bsocial.R;
 
@@ -29,21 +29,30 @@ import butterknife.OnClick;
 
 public class MessageEditorView extends FrameLayout {
 
-    private OnTextListener onTextListenerListener;
+    private OnTextListener eventListener;
 
     public interface OnTextListener {
         void onTextSubmitted(String text);
 
         void onGifSelected(String gifText);
+
+        void onTapAttachment();
     }
 
     @BindView(R.id.messageEditText)
     EditText editText;
 
+    @OnClick(R.id.attachment)
+    public void onClickAttachment(ImageButton button) {
+        if (eventListener != null) {
+            eventListener.onTapAttachment();
+        }
+    }
+
     @OnClick(R.id.send_button)
     public void onSendClick() {
-        if (onTextListenerListener != null && !editText.getText().toString().isEmpty()) {
-            onTextListenerListener.onTextSubmitted(editText.getText().toString());
+        if (eventListener != null && !editText.getText().toString().isEmpty()) {
+            eventListener.onTextSubmitted(editText.getText().toString());
             editText.setText("");
         }
     }
@@ -86,7 +95,7 @@ public class MessageEditorView extends FrameLayout {
                     if (textStr.startsWith("@gif ")) {
                         String tokens[] = textStr.split("@gif ");
                         if (tokens.length > 0) {
-                            onTextListenerListener.onGifSelected(tokens[1]);
+                            eventListener.onGifSelected(tokens[1]);
                         }
                     }
                 }
@@ -103,7 +112,7 @@ public class MessageEditorView extends FrameLayout {
         editText.setText("");
     }
 
-    public void setOnTextListenerListener(OnTextListener onTextListenerListener) {
-        this.onTextListenerListener = onTextListenerListener;
+    public void setEventListener(OnTextListener eventListener) {
+        this.eventListener = eventListener;
     }
 }

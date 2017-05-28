@@ -4,13 +4,11 @@ import android.util.Log;
 
 import com.clpstudio.bsocial.core.dagger.FirebaseModule;
 import com.clpstudio.bsocial.core.firebase.AddValueEventSuccessListener;
-import com.clpstudio.bsocial.core.firebase.FirebaseConstants;
+import com.clpstudio.bsocial.core.firebase.FirebaseAddChildAddedListener;
 import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.disposables.CompositeDisposable;
 
 import static com.clpstudio.bsocial.core.firebase.FirebaseConstants.NODE_CONVERSATIONS;
 import static com.clpstudio.bsocial.core.firebase.FirebaseConstants.NODE_MEMBERS;
@@ -30,9 +27,6 @@ import static com.clpstudio.bsocial.core.firebase.FirebaseConstants.NODE_MEMBERS
  */
 
 public class ConversationService {
-
-
-    private static final String LOG_TAG = ConversationService.class.getSimpleName();
 
     @Inject
     @FirebaseModule.Conversations
@@ -45,52 +39,21 @@ public class ConversationService {
     @Inject
     FirebaseAuth firebaseAuth;
 
-    private CompositeDisposable compositeDisposable;
-
     @Inject
     public ConversationService() {
     }
 
     public Observable<Boolean> subscribeConversationAdded() {
-        return Observable.create(e -> usersRef
-                .child(firebaseAuth.getCurrentUser().getUid())
-                .child(FirebaseConstants.NODE_CONVERSATIONS)
-                .addChildEventListener(new ChildEventListener() {
+        return Observable.create(e -> conversationsRef
+                .addChildEventListener(new FirebaseAddChildAddedListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.d("luci", "onChildAdded");
-                        Log.d("luci", dataSnapshot.toString());
-                        String userId = dataSnapshot.getKey();
-                        if (firebaseAuth.getCurrentUser().getUid().equals(userId)) {
-                            Log.d("luci", "onChildAdded current user");
+                        Log.d("bSocial", "New Conversation added!");
+                        ConversationModel conversationModel = dataSnapshot.getValue(ConversationModel.class);
+                        if (conversationModel != null) {
+
                             e.onNext(true);
                         }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        Log.d("luci", "onChildChanged");
-                        Log.d("luci", dataSnapshot.toString());
-                        String userId = dataSnapshot.getKey();
-                        if (firebaseAuth.getCurrentUser().getUid().equals(userId)) {
-                            Log.d("luci", "onChildChanged current user");
-                            e.onNext(true);
-                        }
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
                     }
                 }));
     }
