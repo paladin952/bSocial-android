@@ -28,6 +28,8 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     private static final int TYPE_GIF_OTHERS = 3;
     private static final int TYPE_LINK_MINE = 4;
     private static final int TYPE_LINK_OTHERS = 5;
+    private static final int TYPE_PHOTO_MINE = 6;
+    private static final int TYPE_PHOTO_OTHERS = 7;
 
     private List<Message> data = new ArrayList<>();
     private String loggedUsername;
@@ -81,6 +83,12 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
             } else {
                 return TYPE_LINK_OTHERS;
             }
+        } else if (type == Message.TYPE_PHOTO) {
+            if (isMine(username)) {
+                return TYPE_PHOTO_MINE;
+            } else {
+                return TYPE_PHOTO_OTHERS;
+            }
         } else {
             if (isMine(username)) {
                 return TYPE_MESSAGE_MINE;
@@ -107,6 +115,11 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
         } else if (viewType == TYPE_LINK_OTHERS) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_message_others, parent, false);
             return new NormalMessageViewHolder(view, true);
+        } else if (viewType == TYPE_PHOTO_MINE || viewType == TYPE_PHOTO_OTHERS) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_photo, parent, false);
+
+            boolean isOthers = viewType == TYPE_PHOTO_OTHERS;
+
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_gif, parent, false);
             boolean isOthers = false;
