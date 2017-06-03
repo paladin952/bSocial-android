@@ -21,13 +21,10 @@ apt {
 
 dependencies {
     def daggerVersion = '2.5';
-    def supportAnnotations = '25.3.0';
+    def supportAnnotations = '25.3.1';
 
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     androidTestCompile 'com.squareup:javawriter:2.5.1'
     compile "com.android.support:appcompat-v7:$supportAnnotations"
 
@@ -106,7 +103,7 @@ dependencies {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.clpstudio.bsocial"
         minSdkVersion 17

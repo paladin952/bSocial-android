@@ -59,24 +59,6 @@ public class BSRxJava2CallAdapter implements CallAdapter<Object> {
 
     private Throwable wrapThrowable(Throwable throwable) {
         return throwable;
-//        if (throwable instanceof HttpException) {
-//            String message = null;
-//            String errorBody = null;
-//            try {
-//                Response response = ((HttpException) throwable).response();
-//                errorBody = response.errorBody().string();
-//                JSONObject jsonError = new JSONObject(errorBody);
-//                message = jsonError.optString("error_message");
-//            } catch (Exception ignore) {
-//            }
-//            Log.w(TAG, "HTTP error: " + ((HttpException) throwable).code() + " " + message);
-//            return new ApiException(message, errorBody, throwable);
-//        } else if (throwable instanceof IOException) {
-//            Log.w(TAG, throwable.getClass().getTitle());
-//        } else {
-//            Log.e(TAG, "Error caught by Rx", throwable);
-//        }
-//        return throwable;
     }
 }
 
