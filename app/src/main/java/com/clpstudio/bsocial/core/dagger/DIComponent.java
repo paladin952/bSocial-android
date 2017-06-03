@@ -11,8 +11,7 @@ import com.clpstudio.bsocial.presentation.profile.EditAvatarFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
 import com.clpstudio.bsocial.presentation.register.RegisterActivity;
 import com.clpstudio.bsocial.presentation.splashscreen.SplashScreen;
-import com.clpstudio.domainlib.dagger.FirebaseModule;
-import com.clpstudio.domainlib.dagger.RetrofitModule;
+import com.clpstudio.domainlib.dagger.LibraryModule;
 
 import javax.inject.Singleton;
 
@@ -21,8 +20,7 @@ import dagger.Component;
 @Component(
         modules = {
                 ApplicationModule.class,
-                FirebaseModule.class,
-                RetrofitModule.class
+                LibraryModule.class,
         }
 )
 @Singleton
