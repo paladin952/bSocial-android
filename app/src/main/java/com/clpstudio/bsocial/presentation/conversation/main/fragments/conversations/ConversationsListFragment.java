@@ -17,7 +17,7 @@ import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
-import com.clpstudio.domainlib.services.DatabaseService;
+import com.clpstudio.database.services.DatabaseService;
 
 import java.util.List;
 

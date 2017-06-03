@@ -24,7 +24,7 @@ import com.clpstudio.bsocial.BuildConfig;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.IOUtils;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.domainlib.services.ProfileService;
+import com.clpstudio.database.services.ProfileService;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;

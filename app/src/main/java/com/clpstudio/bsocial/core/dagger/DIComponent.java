@@ -11,7 +11,7 @@ import com.clpstudio.bsocial.presentation.profile.EditAvatarFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
 import com.clpstudio.bsocial.presentation.register.RegisterActivity;
 import com.clpstudio.bsocial.presentation.splashscreen.SplashScreen;
-import com.clpstudio.domainlib.dagger.LibraryModule;
+import com.clpstudio.database.dagger.LibraryModule;
 
 import javax.inject.Singleton;
 

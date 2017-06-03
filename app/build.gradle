@@ -100,7 +100,8 @@ dependencies {
     //sinch for calls
     compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
 
-    compile project(':database')
+    compile project(':domain')
+
 }
 
 android {

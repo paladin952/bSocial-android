@@ -19,7 +19,7 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
     @Inject
     Context context;
     @Inject
-    com.clpstudio.domainlib.services.ProfileService profileService;
+    com.clpstudio.database.services.ProfileService profileService;
 
     @Inject
     public ProfilePagePresenter() {

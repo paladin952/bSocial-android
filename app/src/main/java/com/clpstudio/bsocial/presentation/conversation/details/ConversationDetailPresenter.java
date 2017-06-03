@@ -9,18 +9,20 @@ import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
-import com.clpstudio.domainlib.models.Message;
-import com.clpstudio.domainlib.services.ConversationService;
-import com.clpstudio.domainlib.services.FirebaseStorageService;
-import com.clpstudio.domainlib.services.MessagesService;
+import com.clpstudio.database.models.DbMessageModel;
+import com.clpstudio.database.services.ConversationService;
+import com.clpstudio.database.services.FirebaseStorageService;
+import com.clpstudio.domain.usecases.MessageUseCases;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by clapalucian on 5/4/17.
@@ -33,9 +35,10 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     @Inject
     ConversationService conversationService;
     @Inject
-    MessagesService messagesService;
-    @Inject
     FirebaseStorageService firebaseStorageService;
+
+    @Inject
+    MessageUseCases messageUseCases;
 
     private String conversationId;
     private CompositeDisposable compositeDisposable;
@@ -57,8 +60,10 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     private void subscribeMessageAdded() {
-        Disposable disposable = messagesService.subscribeMessageAdded(conversationId)
+        Disposable disposable = messageUseCases.subscribeMessageAdded(conversationId)
                 .map(Mapper::toMessageViewModel)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(message -> {
                     view().appendData(message);
                     view().clearInput();
@@ -73,9 +78,11 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void getMessages() {
-        Disposable disposable = messagesService
+        Disposable disposable = messageUseCases
                 .getMessages(conversationId)
                 .map(Mapper::toMessageViewModels)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(messages -> {
                     view().showData(messages);
                 });
@@ -94,11 +101,11 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     private void sendMessage(String text, int type) {
         String avatarUrl = firebaseAuth.getCurrentUser().getPhotoUrl() != null ? firebaseAuth.getCurrentUser().getPhotoUrl().toString() : "";
 
-        Message messageViewModel = new Message(firebaseAuth.getCurrentUser().getEmail(),
+        DbMessageModel dbMessageModelViewModel = new DbMessageModel(firebaseAuth.getCurrentUser().getEmail(),
                 text, System.currentTimeMillis(), avatarUrl, type);
 
-        Disposable disposable = messagesService
-                .sendMessage(conversationId, messageViewModel).subscribe();
+        Disposable disposable = messageUseCases
+                .sendMessage(conversationId, dbMessageModelViewModel).subscribe();
         compositeDisposable.add(disposable);
     }
 

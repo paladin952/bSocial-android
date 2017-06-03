@@ -6,7 +6,7 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
-import com.clpstudio.domainlib.services.LoginService;
+import com.clpstudio.database.services.LoginService;
 
 import javax.inject.Inject;
 

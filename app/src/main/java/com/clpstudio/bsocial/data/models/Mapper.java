@@ -3,9 +3,9 @@ package com.clpstudio.bsocial.data.models;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
-import com.clpstudio.domainlib.models.ConversationModel;
-import com.clpstudio.domainlib.models.Message;
-import com.clpstudio.domainlib.models.RegisteredUser;
+import com.clpstudio.database.models.DbConversationModel;
+import com.clpstudio.database.models.DbRegisteredUserModel;
+import com.clpstudio.domain.models.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
 
 public class Mapper {
 
-    public static ConversationViewModel toConversationViewModel(ConversationModel model) {
+    public static ConversationViewModel toConversationViewModel(DbConversationModel model) {
         return new ConversationViewModel(model.getId(), model.getTitle(), model.getImageUrl());
     }
 
-    public static List<ConversationViewModel> toConversationViewModels(List<ConversationModel> data) {
+    public static List<ConversationViewModel> toConversationViewModels(List<DbConversationModel> data) {
         List<ConversationViewModel> result = new ArrayList<>();
-        for (ConversationModel model : data) {
+        for (DbConversationModel model : data) {
             result.add(toConversationViewModel(model));
         }
         return result;
@@ -42,18 +42,18 @@ public class Mapper {
         return result;
     }
 
-    public static RegisteredUser toRegisteredUser(RegisteredUserViewModel model) {
-        return new RegisteredUser(model.getUserId(), model.getEmail(), model.getImageUrl());
+    public static DbRegisteredUserModel toRegisteredUser(RegisteredUserViewModel model) {
+        return new DbRegisteredUserModel(model.getUserId(), model.getEmail(), model.getImageUrl());
     }
 
-    public static RegisteredUserViewModel toRegisteredUserViewModel(RegisteredUser model) {
+    public static RegisteredUserViewModel toRegisteredUserViewModel(DbRegisteredUserModel model) {
         return new RegisteredUserViewModel(model.getUserId(), model.getEmail(), model.getImageUrl());
     }
 
-    public static List<RegisteredUserViewModel> toRegisteredUserViewModels(List<RegisteredUser> data) {
+    public static List<RegisteredUserViewModel> toRegisteredUserViewModels(List<DbRegisteredUserModel> data) {
         List<RegisteredUserViewModel> result = new ArrayList<>();
 
-        for (RegisteredUser model : data) {
+        for (DbRegisteredUserModel model : data) {
             result.add(toRegisteredUserViewModel(model));
         }
 

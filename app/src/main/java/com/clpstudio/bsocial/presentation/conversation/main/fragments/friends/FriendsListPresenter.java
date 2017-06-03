@@ -7,8 +7,8 @@ import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
-import com.clpstudio.domainlib.services.ConversationService;
-import com.clpstudio.domainlib.services.DatabaseService;
+import com.clpstudio.database.services.ConversationService;
+import com.clpstudio.database.services.DatabaseService;
 
 import java.util.List;
 
