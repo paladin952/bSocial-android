@@ -8,18 +8,18 @@ import org.parceler.ParcelConstructor;
  */
 
 @Parcel
-public class RegisteredUser {
+public class RegisteredUserViewModel {
 
     String userId;
     String email;
     String imageUrl;
 
-    public RegisteredUser() {
+    public RegisteredUserViewModel() {
 
     }
 
     @ParcelConstructor
-    public RegisteredUser(String userId, String email, String imageUrl) {
+    public RegisteredUserViewModel(String userId, String email, String imageUrl) {
         this.email = email;
         this.userId = userId;
         this.imageUrl = imageUrl;
@@ -39,7 +39,7 @@ public class RegisteredUser {
 
     @Override
     public String toString() {
-        return "RegisteredUser{" +
+        return "RegisteredUserViewModel{" +
                 "userId='" + userId + '\'' +
                 ", email='" + email + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +

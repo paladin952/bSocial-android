@@ -9,9 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;
-import com.clpstudio.bsocial.data.models.LoginModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
+import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;
 
 import javax.inject.Inject;
 
@@ -34,8 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
     @OnClick(R.id.loginButton)
     public void onLoginClick() {
-        LoginModel loginModel = new LoginModel(usernameEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
-        presenter.login(loginModel);
+        presenter.login(usernameEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
     }
 
     public static void startActivity(Activity activity) {

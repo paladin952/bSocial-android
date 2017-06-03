@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
-import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ import butterknife.ButterKnife;
 
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> {
 
-    private List<RegisteredUser> data = new ArrayList<>();
-    private ClickListener<RegisteredUser> onClickListener;
+    private List<RegisteredUserViewModel> data = new ArrayList<>();
+    private ClickListener<RegisteredUserViewModel> onClickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,18 +45,18 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         return data.size();
     }
 
-    public void addAll(List<RegisteredUser> data) {
+    public void addAll(List<RegisteredUserViewModel> data) {
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void append(RegisteredUser model) {
+    public void append(RegisteredUserViewModel model) {
         this.data.add(model);
         notifyItemInserted(this.data.size());
     }
 
-    public void setOnClickListener(ClickListener<RegisteredUser> onClickListener) {
+    public void setOnClickListener(ClickListener<RegisteredUserViewModel> onClickListener) {
         this.onClickListener = onClickListener;
     }
 
@@ -73,7 +73,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(RegisteredUser model) {
+        public void bind(RegisteredUserViewModel model) {
             emailText.setText(model.getEmail());
 
             //TODO load profile image for each user

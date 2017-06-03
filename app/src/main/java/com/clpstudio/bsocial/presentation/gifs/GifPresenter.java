@@ -1,9 +1,9 @@
 package com.clpstudio.bsocial.presentation.gifs;
 
-import com.clpstudio.bsocial.bussiness.service.GiphyService;
-import com.clpstudio.bsocial.data.models.gifs.Data;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
+import com.clpstudio.domainlib.models.gifs.Data;
+import com.clpstudio.domainlib.services.GiphyService;
 
 import java.util.ArrayList;
 import java.util.List;

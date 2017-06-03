@@ -6,11 +6,13 @@ import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetai
 import com.clpstudio.bsocial.presentation.conversation.main.MainActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations.ConversationsListFragment;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.friends.FriendsListFragment;
+import com.clpstudio.bsocial.presentation.login.LoginActivity;
 import com.clpstudio.bsocial.presentation.profile.EditAvatarFragment;
 import com.clpstudio.bsocial.presentation.profile.ProfilePageActivity;
-import com.clpstudio.bsocial.presentation.splashscreen.SplashScreen;
-import com.clpstudio.bsocial.presentation.login.LoginActivity;
 import com.clpstudio.bsocial.presentation.register.RegisterActivity;
+import com.clpstudio.bsocial.presentation.splashscreen.SplashScreen;
+import com.clpstudio.domainlib.dagger.FirebaseModule;
+import com.clpstudio.domainlib.dagger.RetrofitModule;
 
 import javax.inject.Singleton;
 

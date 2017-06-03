@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.service.ProfileService;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +19,7 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
     @Inject
     Context context;
     @Inject
-    ProfileService profileService;
+    com.clpstudio.domainlib.services.ProfileService profileService;
 
     @Inject
     public ProfilePagePresenter() {

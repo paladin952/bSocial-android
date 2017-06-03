@@ -10,7 +10,7 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.ViewHelper;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.core.listeners.ClickListener;
-import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +45,12 @@ public class NormalMessageViewHolder extends BaseConversationViewHolder {
     }
 
     @Override
-    public void bindMessage(Message message) {
-        messageText.setText(message.getMessage());
+    public void bindMessage(MessageViewModel messageViewModel) {
+        messageText.setText(messageViewModel.getMessage());
         if (isUrl) {
-            ViewHelper.applyLink(messageText, message.getMessage(), element -> {
+            ViewHelper.applyLink(messageText, messageViewModel.getMessage(), element -> {
                 if (clickUrlListener != null) {
-                    clickUrlListener.click(message.getMessage());
+                    clickUrlListener.click(messageViewModel.getMessage());
                 }
             });
         } else {
@@ -58,7 +58,7 @@ public class NormalMessageViewHolder extends BaseConversationViewHolder {
         }
 
         Glide.with(itemView.getContext())
-                .load(message.getImageUrl())
+                .load(messageViewModel.getImageUrl())
                 .asBitmap()
                 .placeholder(R.drawable.default_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

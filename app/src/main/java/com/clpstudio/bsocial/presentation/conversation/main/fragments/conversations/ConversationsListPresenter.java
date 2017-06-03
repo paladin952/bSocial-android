@@ -3,10 +3,11 @@ package com.clpstudio.bsocial.presentation.conversation.main.fragments.conversat
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.clpstudio.bsocial.bussiness.service.ConversationService;
-import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
+import com.clpstudio.bsocial.data.models.Mapper;
+import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
+import com.clpstudio.domainlib.services.ConversationService;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -54,6 +55,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
             Log.d("bSocial", "Refresh conversation list, no progress!");
         }
         Disposable disposable = conversationService.getListOfConversations()
+                .map(Mapper::toConversationViewModels)
                 .subscribe(conversationNameModels -> {
                     view().hideProgress();
                     view().showData(conversationNameModels);
@@ -79,7 +81,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
 
     public interface View extends IProgressView {
 
-        void showData(List<ConversationModel> data);
+        void showData(List<ConversationViewModel> data);
 
     }
 }

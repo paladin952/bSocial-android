@@ -20,9 +20,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.clpstudio.bsocial.Henson;
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.data.models.conversations.ConversationModel;
-import com.clpstudio.bsocial.data.models.conversations.Message;
-import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
+import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.TakePhotoPresenter;
@@ -58,10 +58,10 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     @Nullable
     @InjectExtra
-    ConversationModel conversationModel;
+    ConversationViewModel conversationViewModel;
     @Nullable
     @InjectExtra("user")
-    RegisteredUser user;
+    RegisteredUserViewModel user;
 
     @Nullable
     @InjectExtra
@@ -103,16 +103,16 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     private ConversationDetailAdapter adapter;
 
-    public static void startActivity(Activity activity, ConversationModel conversationModel) {
+    public static void startActivity(Activity activity, ConversationViewModel conversationViewModel) {
         Intent intent = Henson.with(activity)
                 .gotoConversationDetailActivity()
-                .conversationModel(conversationModel)
+                .conversationViewModel(conversationViewModel)
                 .build();
 
         activity.startActivity(intent);
     }
 
-    public static void startActivity(Activity activity, RegisteredUser user) {
+    public static void startActivity(Activity activity, RegisteredUserViewModel user) {
         Intent intent = Henson.with(activity)
                 .gotoConversationDetailActivity()
                 .user(user)
@@ -140,7 +140,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         if (isNewConversation) {
             presenter.bindToNewConversation(user);
         } else {
-            presenter.setConversationId(conversationModel.getId());
+            presenter.setConversationId(conversationViewModel.getId());
             presenter.bindToOldConversation();
 
         }
@@ -193,19 +193,19 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
             String title = user.getEmail();
             actionBar.setTitle(title);
         } else {
-            actionBar.setTitle(conversationModel.getTitle());
+            actionBar.setTitle(conversationViewModel.getTitle());
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     @Override
-    public void showData(List<Message> data) {
+    public void showData(List<MessageViewModel> data) {
         adapter.addAll(data);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override
-    public void appendData(Message data) {
+    public void appendData(MessageViewModel data) {
         adapter.append(data);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }

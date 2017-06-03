@@ -3,14 +3,16 @@ package com.clpstudio.bsocial.presentation.conversation.details;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.clpstudio.bsocial.bussiness.service.ConversationService;
-import com.clpstudio.bsocial.bussiness.service.FirebaseStorageService;
-import com.clpstudio.bsocial.bussiness.service.MessagesService;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
-import com.clpstudio.bsocial.data.models.conversations.Message;
-import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.clpstudio.bsocial.data.models.Mapper;
+import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
+import com.clpstudio.domainlib.models.Message;
+import com.clpstudio.domainlib.services.ConversationService;
+import com.clpstudio.domainlib.services.FirebaseStorageService;
+import com.clpstudio.domainlib.services.MessagesService;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     private void subscribeMessageAdded() {
         Disposable disposable = messagesService.subscribeMessageAdded(conversationId)
+                .map(Mapper::toMessageViewModel)
                 .subscribe(message -> {
                     view().appendData(message);
                     view().clearInput();
@@ -70,27 +73,32 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void getMessages() {
-        Disposable disposable = messagesService.getMessages(conversationId).subscribe(messages -> {
-            view().showData(messages);
-        });
+        Disposable disposable = messagesService
+                .getMessages(conversationId)
+                .map(Mapper::toMessageViewModels)
+                .subscribe(messages -> {
+                    view().showData(messages);
+                });
         compositeDisposable.add(disposable);
     }
 
     public void onTextSubmited(String text) {
-        int type = Validator.isUrl(text) ? Message.TYPE_LINK : Message.TYPE_MESSAGE;
+        int type = Validator.isUrl(text) ? MessageViewModel.TYPE_LINK : MessageViewModel.TYPE_MESSAGE;
         sendMessage(text, type);
     }
 
     public void onGifSelected(String url) {
-        sendMessage(url, Message.TYPE_GIF);
+        sendMessage(url, MessageViewModel.TYPE_GIF);
     }
 
     private void sendMessage(String text, int type) {
         String avatarUrl = firebaseAuth.getCurrentUser().getPhotoUrl() != null ? firebaseAuth.getCurrentUser().getPhotoUrl().toString() : "";
 
-        Message message = new Message(firebaseAuth.getCurrentUser().getEmail(),
+        Message messageViewModel = new Message(firebaseAuth.getCurrentUser().getEmail(),
                 text, System.currentTimeMillis(), avatarUrl, type);
-        Disposable disposable = messagesService.sendMessage(conversationId, message).subscribe();
+
+        Disposable disposable = messagesService
+                .sendMessage(conversationId, messageViewModel).subscribe();
         compositeDisposable.add(disposable);
     }
 
@@ -98,8 +106,9 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         subscribeMessageAdded();
     }
 
-    public void bindToNewConversation(RegisteredUser friend) {
-        Disposable disposable = conversationService.createConversation(friend)
+    public void bindToNewConversation(RegisteredUserViewModel friend) {
+        Disposable disposable = conversationService
+                .createConversation(Mapper.toRegisteredUser(friend))
                 .subscribe(s -> {
                     conversationId = s;
                     subscribeMessageAdded();
@@ -114,7 +123,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     public void uploadImage(String filename, Uri path) {
         firebaseStorageService.uploadConversationDataAndGetLink(filename, path, conversationId)
                 .subscribe(link -> {
-                    sendMessage(link, Message.TYPE_PHOTO);
+                    sendMessage(link, MessageViewModel.TYPE_PHOTO);
                 }, err -> {
                     //TODO
                 });
@@ -122,9 +131,9 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     public interface View extends IBaseMvpPresenter.View {
 
-        void showData(List<Message> data);
+        void showData(List<MessageViewModel> data);
 
-        void appendData(Message data);
+        void appendData(MessageViewModel data);
 
         void clearInput();
 

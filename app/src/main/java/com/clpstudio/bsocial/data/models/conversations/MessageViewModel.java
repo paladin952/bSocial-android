@@ -4,7 +4,7 @@ package com.clpstudio.bsocial.data.models.conversations;
  * Created by clapalucian on 5/6/17.
  */
 
-public class Message {
+public class MessageViewModel {
 
     public static int TYPE_MESSAGE = 0;
     public static int TYPE_GIF = 1;
@@ -19,10 +19,10 @@ public class Message {
     String imageUrl;
     int type;
 
-    public Message() {
+    public MessageViewModel() {
     }
 
-    public Message(String userName, String message, long timestamp, String imageUrl, int type) {
+    public MessageViewModel(String userName, String message, long timestamp, String imageUrl, int type) {
         this.userName = userName;
         this.message = message;
         this.timestamp = timestamp;
@@ -52,7 +52,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
+        return "MessageViewModel{" +
                 "userName='" + userName + '\'' +
                 ", message='" + message + '\'' +
                 ", timestamp=" + timestamp +

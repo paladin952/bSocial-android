@@ -3,11 +3,12 @@ package com.clpstudio.bsocial.presentation.conversation.main.fragments.friends;
 import android.content.Context;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.service.ConversationService;
-import com.clpstudio.bsocial.bussiness.service.DatabaseService;
-import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.clpstudio.bsocial.data.models.Mapper;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
+import com.clpstudio.domainlib.services.ConversationService;
+import com.clpstudio.domainlib.services.DatabaseService;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
 
     public void loadData() {
         databaseService.getFriends()
+                .map(Mapper::toRegisteredUserViewModels)
                 .subscribe(friendsListItemModels -> {
                     view().showData(friendsListItemModels);
                 }, err -> {
@@ -59,7 +61,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
 
     public interface View extends IProgressView {
 
-        void showData(List<RegisteredUser> data);
+        void showData(List<RegisteredUserViewModel> data);
 
         void refreshData();
 

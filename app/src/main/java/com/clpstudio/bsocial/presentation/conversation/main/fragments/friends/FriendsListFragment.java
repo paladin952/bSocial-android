@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
     }
 
     public interface OnOpenConversationClicked {
-        void openConversation(RegisteredUser user);
+        void openConversation(RegisteredUserViewModel user);
     }
 
     @OnClick(R.id.add_friend_fb)
@@ -123,7 +123,7 @@ public class FriendsListFragment extends Fragment implements FriendsListPresente
     }
 
     @Override
-    public void showData(List<RegisteredUser> data) {
+    public void showData(List<RegisteredUserViewModel> data) {
         adapter.addAll(data);
     }
 

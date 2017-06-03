@@ -3,7 +3,7 @@ package com.clpstudio.bsocial.presentation.conversation.details.viewholders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 
 /**
  * Created by clapalucian on 5/6/17.
@@ -15,11 +15,11 @@ public class BaseConversationViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * Show a normal message
+     * Show a normal messageViewModel
      *
-     * @param message The message's text
+     * @param messageViewModel The messageViewModel's text
      */
-    public void bindMessage(Message message) {
+    public void bindMessage(MessageViewModel messageViewModel) {
         //override when needed
     }
 

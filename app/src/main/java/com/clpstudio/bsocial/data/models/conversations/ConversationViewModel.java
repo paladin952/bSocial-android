@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 @Parcel
-public class ConversationModel {
+public class ConversationViewModel {
 
     String id;
     String title;
@@ -18,11 +18,11 @@ public class ConversationModel {
     List<String> membersIds;
     long timestamp;
 
-    public ConversationModel() {
+    public ConversationViewModel() {
     }
 
     @ParcelConstructor
-    public ConversationModel(String id, String title, String imageUrl) {
+    public ConversationViewModel(String id, String title, String imageUrl) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;

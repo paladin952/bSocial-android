@@ -3,11 +3,10 @@ package com.clpstudio.bsocial.presentation.login;
 import android.content.Context;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.bussiness.service.LoginService;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
-import com.clpstudio.bsocial.data.models.LoginModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
+import com.clpstudio.domainlib.services.LoginService;
 
 import javax.inject.Inject;
 
@@ -23,17 +22,17 @@ public class LoginPresenter extends BaseMvpPresenter<LoginPresenter.View> {
     public LoginPresenter() {
     }
 
-    public void login(LoginModel model) {
-        if (Validator.isEmpty(model.getEmail())) {
+    public void login(String email, String password) {
+        if (Validator.isEmpty(email)) {
             view().showValidationError(context.getString(R.string.validation_empty_username));
-        } else if (Validator.isEmpty(model.getPassword())) {
+        } else if (Validator.isEmpty(password)) {
             view().showValidationError(context.getString(R.string.validation_empty_password));
         } else {
             view().showProgress();
-            loginService.login(model)
+            loginService.login(email, password)
                     .subscribe(() -> {
                         view().hideProgress();
-                        view().gotoSinchLoginActivity(model.getEmail());
+                        view().gotoSinchLoginActivity(email);
                     }, err -> {
                         view().hideProgress();
                         view().showLoginError(err.getMessage());

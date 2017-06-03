@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
-import com.clpstudio.bsocial.data.models.firebase.RegisteredUser;
+import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.conversations.ConversationsListFragment;
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements ConversationsActi
     }
 
     @Override
-    public void openConversation(RegisteredUser user) {
+    public void openConversation(RegisteredUserViewModel user) {
         if (adapter.getItem(MainPagerAdapter.CONVERSATIONS_POSITION) instanceof ConversationsListFragment) {
             ConversationsListFragment fragment = (ConversationsListFragment) adapter.getFragment(MainPagerAdapter.CONVERSATIONS_POSITION);
             fragment.openConversation(user);

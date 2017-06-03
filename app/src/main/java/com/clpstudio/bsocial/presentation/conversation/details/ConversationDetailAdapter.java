@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.data.models.conversations.Message;
+import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.presentation.conversation.details.viewholders.BaseConversationViewHolder;
 import com.clpstudio.bsocial.presentation.conversation.details.viewholders.GifMessageViewHolder;
 import com.clpstudio.bsocial.presentation.conversation.details.viewholders.NormalMessageViewHolder;
@@ -15,7 +15,7 @@ import com.clpstudio.bsocial.presentation.conversation.details.viewholders.Photo
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.clpstudio.bsocial.data.models.conversations.Message.TYPE_LINK;
+import static com.clpstudio.bsocial.data.models.conversations.MessageViewModel.TYPE_LINK;
 
 /**
  * Created by clapalucian on 5/6/17.
@@ -32,7 +32,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     private static final int TYPE_PHOTO_MINE = 6;
     private static final int TYPE_PHOTO_OTHERS = 7;
 
-    private List<Message> data = new ArrayList<>();
+    private List<MessageViewModel> data = new ArrayList<>();
     private String loggedUsername;
     private OnConversationMessagesClickListener clickListener;
 
@@ -51,17 +51,17 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Message> data) {
+    public void addAll(List<MessageViewModel> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void append(Message model) {
+    public void append(MessageViewModel model) {
         this.data.add(model);
         notifyItemInserted(this.data.size() - 1);
     }
 
-    public void append(List<Message> newData) {
+    public void append(List<MessageViewModel> newData) {
         int start = this.data.size();
         int end = start + newData.size() - 1;
         this.data.addAll(newData);
@@ -72,7 +72,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
     public int getItemViewType(int position) {
         String username = data.get(position).getUserName();
         int type = data.get(position).getType();
-        if (type == Message.TYPE_GIF) {
+        if (type == MessageViewModel.TYPE_GIF) {
             if (isMine(username)) {
                 return TYPE_GIF_MINE;
             } else {
@@ -84,7 +84,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
             } else {
                 return TYPE_LINK_OTHERS;
             }
-        } else if (type == Message.TYPE_PHOTO) {
+        } else if (type == MessageViewModel.TYPE_PHOTO) {
             if (isMine(username)) {
                 return TYPE_PHOTO_MINE;
             } else {
