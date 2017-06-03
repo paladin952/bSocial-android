@@ -41,4 +41,8 @@ public class BaseConversationViewHolder extends RecyclerView.ViewHolder {
         //override when needed
     }
 
+    public void bindPhoto(String url){
+        //override when needed
+    }
+
 }

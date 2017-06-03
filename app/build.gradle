@@ -30,6 +30,7 @@ dependencies {
     })
     androidTestCompile 'com.squareup:javawriter:2.5.1'
     compile "com.android.support:appcompat-v7:$supportAnnotations"
+
     testCompile 'junit:junit:4.12'
 
     compile 'com.google.android.gms:play-services-analytics:10.2.4'
