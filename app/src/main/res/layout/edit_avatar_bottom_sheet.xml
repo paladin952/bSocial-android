@@ -11,6 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:id="@+id/title"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:text="@string/edit_avatar_dialog_title"

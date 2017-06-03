@@ -28,6 +28,7 @@ import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.TakePhotoPresenter;
 import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
 import com.clpstudio.bsocial.presentation.gifs.GifPresenter;
+import com.clpstudio.bsocial.presentation.profile.EditAvatarDialogFragment;
 import com.clpstudio.bsocial.presentation.views.MessageEditorView;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
@@ -43,7 +44,8 @@ import butterknife.OnClick;
 
 import static com.clpstudio.bsocial.R.id.messageEditor;
 
-public class ConversationDetailActivity extends AppCompatActivity implements ConversationDetailPresenter.View, GifPresenter.View, TakePhotoPresenter.View {
+public class ConversationDetailActivity extends AppCompatActivity implements ConversationDetailPresenter.View, GifPresenter.View, TakePhotoPresenter.View,
+        EditAvatarDialogFragment.OnItemsClickListener {
 
     @Inject
     ConversationDetailPresenter presenter;
@@ -176,8 +178,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
             @Override
             public void onTapAttachment() {
-                Log.d("luci", "attachment tapped!");
-                takePhotoPresenter.selectPhoto(ConversationDetailActivity.this);
+                EditAvatarDialogFragment.showFromConversationDetail(getSupportFragmentManager(), getString(R.string.conversation_select_attachment), true);
             }
         });
     }
@@ -272,5 +273,15 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     @Override
     public void showError(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickTakePhoto() {
+        takePhotoPresenter.takePhoto(ConversationDetailActivity.this);
+    }
+
+    @Override
+    public void onClickSelectPhoto() {
+        takePhotoPresenter.selectPhoto(ConversationDetailActivity.this);
     }
 }
