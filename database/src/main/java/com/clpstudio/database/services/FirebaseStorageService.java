@@ -8,8 +8,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
@@ -36,11 +34,10 @@ public class FirebaseStorageService {
     }
 
     private Completable uploadDataToStorage(String filename, Uri uri, String conversationId) {
-        File file = new File(uri.toString());
         return Completable.create(e -> {
             StorageReference reference = firebaseStorage.getReference();
             StorageReference imageFileRef = reference.child(FirebaseStorageContants.CONVERSATION_DATA_PATH + conversationId + "/" + filename);
-            UploadTask uploadTask = imageFileRef.putFile(Uri.parse(file.getAbsolutePath()));
+            UploadTask uploadTask = imageFileRef.putFile(uri);
             uploadTask
                     .addOnFailureListener(e::onError)
                     .addOnSuccessListener(taskSnapshot -> e.onComplete());
