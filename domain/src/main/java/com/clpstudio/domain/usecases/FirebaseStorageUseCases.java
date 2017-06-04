@@ -6,7 +6,6 @@ import com.clpstudio.database.services.FirebaseStorageService;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -23,16 +22,8 @@ public class FirebaseStorageUseCases {
     }
 
 
-    public Single<String> uploadConversationDataAndGetLink(String filename, Uri path, String conversationId) {
-        return firebaseStorageService.uploadConversationDataAndGetLink(filename, path, conversationId);
-    }
-
-    public Completable uploadDataToStorage(String filename, Uri uri, String conversationId) {
-        return firebaseStorageService.uploadDataToStorage(filename, uri, conversationId);
-    }
-
-    public Single<String> getDownloadLink(String filename, String conversationId) {
-        return firebaseStorageService.getDownloadLink(filename, conversationId);
+    public Single<String> uploadConversationDataAndGetLink(String filename, Uri uri, String conversationId) {
+        return firebaseStorageService.uploadConversationDataAndGetLink(filename, uri, conversationId);
     }
 
 }

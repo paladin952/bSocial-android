@@ -9,9 +9,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import javax.inject.Inject;
 
@@ -33,29 +30,24 @@ public class FirebaseStorageService {
     public FirebaseStorageService() {
     }
 
-    public Single<String> uploadConversationDataAndGetLink(String filename, Uri path, String conversationId) {
-        return uploadDataToStorage(filename, path, conversationId)
+    public Single<String> uploadConversationDataAndGetLink(String filename, Uri uri, String conversationId) {
+        return uploadDataToStorage(filename, uri, conversationId)
                 .andThen(getDownloadLink(filename, conversationId));
     }
 
-    public Completable uploadDataToStorage(String filename, Uri uri, String conversationId) {
+    private Completable uploadDataToStorage(String filename, Uri uri, String conversationId) {
+        File file = new File(uri.toString());
         return Completable.create(e -> {
-            File file = new File(uri.getPath());
             StorageReference reference = firebaseStorage.getReference();
             StorageReference imageFileRef = reference.child(FirebaseStorageContants.CONVERSATION_DATA_PATH + conversationId + "/" + filename);
-            try {
-                InputStream stream = new FileInputStream(file);
-                UploadTask uploadTask = imageFileRef.putStream(stream);
-                uploadTask
-                        .addOnFailureListener(e::onError)
-                        .addOnSuccessListener(taskSnapshot -> e.onComplete());
-            } catch (FileNotFoundException err) {
-                e.onError(err);
-            }
+            UploadTask uploadTask = imageFileRef.putFile(Uri.parse(file.getAbsolutePath()));
+            uploadTask
+                    .addOnFailureListener(e::onError)
+                    .addOnSuccessListener(taskSnapshot -> e.onComplete());
         });
     }
 
-    public Single<String> getDownloadLink(String filename, String conversationId) {
+    private Single<String> getDownloadLink(String filename, String conversationId) {
         return Single.create(e -> {
             StorageReference reference = firebaseStorage.getReference();
             String path = FirebaseStorageContants.CONVERSATION_DATA_PATH + conversationId + "/" + filename;

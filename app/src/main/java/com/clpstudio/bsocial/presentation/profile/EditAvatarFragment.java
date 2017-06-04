@@ -97,7 +97,6 @@ public class EditAvatarFragment extends Fragment {
     }
 
     public void selectPhoto() {
-
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(IMAGE_TYPE_WILDCARD);
