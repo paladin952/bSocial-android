@@ -94,10 +94,9 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         public void openLink(String url) {
             BrowserViewActivity.startActivity(ConversationDetailActivity.this, url);
         }
-
         @Override
-        public void showPhoto(String path) {
-
+        public void showPhoto(String url) {
+            ZoomablePictureActivity.startActivity(ConversationDetailActivity.this, url);
         }
     };
 

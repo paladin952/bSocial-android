@@ -10,7 +10,7 @@ import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.presentation.conversation.details.viewholders.BaseConversationViewHolder;
 import com.clpstudio.bsocial.presentation.conversation.details.viewholders.GifMessageViewHolder;
 import com.clpstudio.bsocial.presentation.conversation.details.viewholders.NormalMessageViewHolder;
-import com.clpstudio.bsocial.presentation.conversation.details.viewholders.PhotoMessageViewHolderJ;
+import com.clpstudio.bsocial.presentation.conversation.details.viewholders.PhotoMessageViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +120,7 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_photo, parent, false);
 
             boolean isOthers = viewType == TYPE_PHOTO_OTHERS;
-            return new PhotoMessageViewHolderJ(view, isOthers);
+            return new PhotoMessageViewHolder(view, isOthers);
 
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_conversation_list_item_gif, parent, false);
@@ -145,8 +145,10 @@ public class ConversationDetailAdapter extends RecyclerView.Adapter<BaseConversa
             });
         } else if (holder instanceof GifMessageViewHolder) {
             holder.bindGiphyView(message);
-        } else if (holder instanceof PhotoMessageViewHolderJ) {
+        } else if (holder instanceof PhotoMessageViewHolder) {
             holder.bindPhoto(message);
+            ((PhotoMessageViewHolder) holder).setClickListener(url -> clickListener.showPhoto(url));
+
         }
     }
 

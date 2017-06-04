@@ -7,6 +7,7 @@ apply plugin: 'me.tatarka.retrolambda'
 repositories {
     mavenCentral()
     jcenter()
+    maven { url "https://jitpack.io" }
 
     flatDir {
         dirs 'libs'
@@ -99,6 +100,9 @@ dependencies {
 
     //sinch for calls
     compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
+
+    //zoomable image
+    compile 'com.github.chrisbanes:PhotoView:2.0.0'
 
     compile project(':domain')
 

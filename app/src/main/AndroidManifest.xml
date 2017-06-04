@@ -87,15 +87,22 @@
             android:name=".presentation.calling.PlaceCallSinchActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".presentation.browser.BrowserViewActivity"
+        <activity
+            android:name=".presentation.browser.BrowserViewActivity"
             android:screenOrientation="portrait"
             />
 
         <activity android:name=".presentation.calling.VideoCallScreenActivity"/>
-        <activity android:name=".presentation.conversation.main.MainActivity"
-                  android:screenOrientation="portrait"
+        <activity
+            android:name=".presentation.conversation.main.MainActivity"
+            android:screenOrientation="portrait"
             />
         <activity android:name=".presentation.calling.IncomingVideoCallSinchActivity"/>
+
+        <activity
+            android:name=".presentation.conversation.details.ZoomablePictureActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!--SERVICES-->
         <service android:name=".core.sinch.SinchService"/>
