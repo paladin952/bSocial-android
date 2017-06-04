@@ -7,7 +7,7 @@ import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
-import com.clpstudio.database.services.ConversationService;
+import com.clpstudio.domain.usecases.ConversationUseCases;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     @Inject
     FirebaseAuth firebaseAuth;
     @Inject
-    ConversationService conversationService;
+    ConversationUseCases conversationUseCases;
 
     private CompositeDisposable compositeDisposable;
 
@@ -54,7 +54,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
         } else {
             Log.d("bSocial", "Refresh conversation list, no progress!");
         }
-        Disposable disposable = conversationService.getListOfConversations()
+        Disposable disposable = conversationUseCases.getListOfConversations()
                 .map(Mapper::toConversationViewModels)
                 .subscribe(conversationNameModels -> {
                     view().hideProgress();
@@ -67,7 +67,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     }
 
     public void subscribeConversationAdded() {
-        Disposable disposable = conversationService.subscribeConversationAdded()
+        Disposable disposable = conversationUseCases.subscribeConversationAdded()
                 .subscribe(message -> {
                     showData(false);
                 });

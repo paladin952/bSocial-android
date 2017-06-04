@@ -6,7 +6,7 @@ import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
-import com.clpstudio.database.services.LoginService;
+import com.clpstudio.domain.usecases.LoginUseCases;
 
 import javax.inject.Inject;
 
@@ -16,7 +16,7 @@ public class LoginPresenter extends BaseMvpPresenter<LoginPresenter.View> {
     Context context;
 
     @Inject
-    LoginService loginService;
+    LoginUseCases loginUseCases;
 
     @Inject
     public LoginPresenter() {
@@ -29,7 +29,7 @@ public class LoginPresenter extends BaseMvpPresenter<LoginPresenter.View> {
             view().showValidationError(context.getString(R.string.validation_empty_password));
         } else {
             view().showProgress();
-            loginService.login(email, password)
+            loginUseCases.login(email, password)
                     .subscribe(() -> {
                         view().hideProgress();
                         view().gotoSinchLoginActivity(email);

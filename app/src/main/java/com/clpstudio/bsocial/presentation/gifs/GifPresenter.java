@@ -3,7 +3,7 @@ package com.clpstudio.bsocial.presentation.gifs;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.clpstudio.database.models.gifs.Data;
-import com.clpstudio.database.services.GiphyService;
+import com.clpstudio.domain.usecases.GifUseCases;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
 public class GifPresenter extends BaseMvpPresenter<GifPresenter.View> {
 
     @Inject
-    GiphyService giphyService;
+    GifUseCases gifUseCases;
 
     private Disposable disposable;
 
@@ -32,7 +32,7 @@ public class GifPresenter extends BaseMvpPresenter<GifPresenter.View> {
             disposable.dispose();
         }
 
-        disposable = giphyService.getGifs(text)
+        disposable = gifUseCases.getGifs(text)
                 .map(giphyResponse -> {
                     List<String> strings = new ArrayList<>();
                     for (Data data : giphyResponse.getData()) {

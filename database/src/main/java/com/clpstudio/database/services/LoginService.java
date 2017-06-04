@@ -16,7 +16,7 @@ public class LoginService {
     FirebaseAuth firebaseAuth;
 
     @Inject
-    DatabaseService databaseService;
+    UserService userService;
 
     @Inject
     public LoginService() {
@@ -43,6 +43,6 @@ public class LoginService {
                             e.onError(task.getException());
                         }
                     });
-        }).andThen(databaseService.addUserInRegisteredList(email));
+        }).andThen(userService.addUserInRegisteredList(email));
     }
 }

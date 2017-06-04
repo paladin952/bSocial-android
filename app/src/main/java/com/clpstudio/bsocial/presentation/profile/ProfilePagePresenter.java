@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
+import com.clpstudio.domain.usecases.ProfileUseCases;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,7 +20,7 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
     @Inject
     Context context;
     @Inject
-    com.clpstudio.database.services.ProfileService profileService;
+    ProfileUseCases profileUseCases;
 
     @Inject
     public ProfilePagePresenter() {
@@ -44,7 +45,7 @@ public class ProfilePagePresenter extends BaseMvpPresenter<ProfilePagePresenter.
 
     public void updateNickname(String nickname) {
         view().setNickname(nickname);
-        profileService.updateNickname(nickname)
+        profileUseCases.updateNickname(nickname)
                 .subscribe(
                         () -> view().showToast(context.getString(R.string.nickname_updated_successfuly)),
                         err -> {

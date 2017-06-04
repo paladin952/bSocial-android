@@ -1,8 +1,10 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
@@ -10,8 +12,8 @@ import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.clpstudio.database.models.DbMessageModel;
-import com.clpstudio.database.services.ConversationService;
-import com.clpstudio.database.services.FirebaseStorageService;
+import com.clpstudio.domain.usecases.ConversationUseCases;
+import com.clpstudio.domain.usecases.FirebaseStorageUseCases;
 import com.clpstudio.domain.usecases.MessageUseCases;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,11 +33,13 @@ import io.reactivex.schedulers.Schedulers;
 public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDetailPresenter.View> {
 
     @Inject
+    Context context;
+    @Inject
     FirebaseAuth firebaseAuth;
     @Inject
-    ConversationService conversationService;
+    ConversationUseCases conversationUseCases;
     @Inject
-    FirebaseStorageService firebaseStorageService;
+    FirebaseStorageUseCases storageUseCases;
 
     @Inject
     MessageUseCases messageUseCases;
@@ -114,7 +118,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void bindToNewConversation(RegisteredUserViewModel friend) {
-        Disposable disposable = conversationService
+        Disposable disposable = conversationUseCases
                 .createConversation(Mapper.toRegisteredUser(friend))
                 .subscribe(s -> {
                     conversationId = s;
@@ -128,11 +132,11 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void uploadImage(String filename, Uri path) {
-        firebaseStorageService.uploadConversationDataAndGetLink(filename, path, conversationId)
+        storageUseCases.uploadConversationDataAndGetLink(filename, path, conversationId)
                 .subscribe(link -> {
                     sendMessage(link, MessageViewModel.TYPE_PHOTO);
                 }, err -> {
-                    //TODO
+                    view().showError(context.getString(R.string.unknown_error));
                 });
     }
 
@@ -143,6 +147,8 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         void appendData(MessageViewModel data);
 
         void clearInput();
+
+        void showError(String error);
 
     }
 

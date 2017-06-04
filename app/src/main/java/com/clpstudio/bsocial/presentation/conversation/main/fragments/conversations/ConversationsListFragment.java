@@ -17,7 +17,6 @@ import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
-import com.clpstudio.database.services.DatabaseService;
 
 import java.util.List;
 
@@ -35,8 +34,6 @@ public class ConversationsListFragment extends Fragment implements Conversations
 
     private static final int GRID_NR_OF_ITEMS = 2;
 
-    @Inject
-    DatabaseService databaseService;
     @Inject
     ConversationsListPresenter presenter;
 

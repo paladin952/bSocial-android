@@ -24,7 +24,7 @@ import com.clpstudio.bsocial.BuildConfig;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.IOUtils;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
-import com.clpstudio.database.services.ProfileService;
+import com.clpstudio.domain.usecases.ProfileUseCases;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -50,11 +50,13 @@ public class EditAvatarFragment extends Fragment {
     public static final String FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
     @Inject
-    ProfileService profileService;
+    ProfileUseCases profileUseCases;
+
 
     private Uri imageToCrop;
     private Uri imageToUpload;
     private RefreshImageListener refreshImageListener;
+
 
     public interface RefreshImageListener {
         void refreshProfileImage();
@@ -103,7 +105,7 @@ public class EditAvatarFragment extends Fragment {
     }
 
     public void removeAvatar() {
-        profileService.removeProfilePicture()
+        profileUseCases.removeProfilePicture()
                 .subscribe(() -> {
                     if (isAdded()) {
                         refreshImageListener.refreshProfileImage();
@@ -227,7 +229,7 @@ public class EditAvatarFragment extends Fragment {
             //TODO: copy uri to file
         }
 
-        profileService.upload(new File(imageToUpload.getPath())).subscribe(() -> {
+        profileUseCases.upload(new File(imageToUpload.getPath())).subscribe(() -> {
             if (isAdded()) {
                 progressDialog.dismiss();
                 finishWithMessage(R.string.edit_avatar_uploaded);

@@ -7,8 +7,8 @@ import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
-import com.clpstudio.database.services.ConversationService;
-import com.clpstudio.database.services.DatabaseService;
+import com.clpstudio.domain.usecases.ConversationUseCases;
+import com.clpstudio.domain.usecases.UserUseCases;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ import javax.inject.Inject;
 public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.View> {
 
     @Inject
-    ConversationService conversationService;
+    ConversationUseCases conversationUseCases;
     @Inject
-    DatabaseService databaseService;
+    UserUseCases userUseCases;
     @Inject
     Context context;
 
@@ -32,7 +32,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
     }
 
     public void loadData() {
-        databaseService.getFriends()
+        userUseCases.getFriends()
                 .map(Mapper::toRegisteredUserViewModels)
                 .subscribe(friendsListItemModels -> {
                     view().showData(friendsListItemModels);
@@ -46,7 +46,7 @@ public class FriendsListPresenter extends BaseMvpPresenter<FriendsListPresenter.
     }
 
     public void addFriendIfExists(String email) {
-        databaseService
+        userUseCases
                 .addFriend(email)
                 .subscribe(() -> {
                     String successText = context.getString(R.string.friend_added_successfuly);

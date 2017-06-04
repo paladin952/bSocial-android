@@ -25,7 +25,7 @@ import static com.clpstudio.database.utils.FirebaseConstants.FIELD_FRIENDS;
  * Created by clapalucian on 14/05/2017.
  */
 
-public class DatabaseService {
+public class UserService {
 
 
     @Inject
@@ -35,7 +35,7 @@ public class DatabaseService {
     FirebaseAuth firebaseAuth;
 
     @Inject
-    public DatabaseService() {
+    public UserService() {
     }
 
     public Completable addUserInRegisteredList(String email) {
