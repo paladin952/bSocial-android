@@ -91,7 +91,7 @@ public class UserService {
                 .toList();
     }
 
-    private Observable<DbRegisteredUserModel> getUserDetails(String userId) {
+    public Observable<DbRegisteredUserModel> getUserDetails(String userId) {
         return Observable.create(e -> usersRef.child(userId).addValueEventListener(new AddValueEventSuccessListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

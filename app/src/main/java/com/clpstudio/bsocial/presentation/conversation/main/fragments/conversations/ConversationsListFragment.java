@@ -17,6 +17,7 @@ import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -36,6 +37,8 @@ public class ConversationsListFragment extends Fragment implements Conversations
 
     @Inject
     ConversationsListPresenter presenter;
+    @Inject
+    FirebaseAuth firebaseAuth;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -79,7 +82,7 @@ public class ConversationsListFragment extends Fragment implements Conversations
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         gridLayoutManager = new GridLayoutManager(getActivity(), GRID_NR_OF_ITEMS);
-        adapter = new ConversationsListAdapter();
+        adapter = new ConversationsListAdapter(firebaseAuth.getCurrentUser().getEmail());
         adapter.setClickListener(element -> ConversationDetailActivity.startActivity(getActivity(), element));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);

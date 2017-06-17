@@ -18,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.Henson;
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
@@ -77,6 +79,8 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     MessageEditorView messageEditorView;
     @BindView(R.id.gif_list)
     GifHorizontalListView gifList;
+    @BindView(R.id.avatar)
+    ImageView avatarImage;
 
     @OnClick(R.id.toolbar_call)
     public void onCallClick() {
@@ -94,6 +98,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         public void openLink(String url) {
             BrowserViewActivity.startActivity(ConversationDetailActivity.this, url);
         }
+
         @Override
         public void showPhoto(String url) {
             ZoomablePictureActivity.startActivity(ConversationDetailActivity.this, url);
@@ -139,7 +144,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         if (isNewConversation) {
             presenter.bindToNewConversation(user);
         } else {
-            presenter.setConversationId(conversationViewModel.getId());
+            presenter.setConversation(conversationViewModel);
             presenter.bindToOldConversation();
 
         }
@@ -188,12 +193,6 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
 
-        if (isNewConversation) {
-            String title = user.getEmail();
-            actionBar.setTitle(title);
-        } else {
-            actionBar.setTitle(conversationViewModel.getTitle());
-        }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
@@ -272,6 +271,26 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     @Override
     public void showError(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showAvatar(String url) {
+        Glide.with(this)
+                .load(url)
+                .asBitmap()
+                .placeholder(R.drawable.default_avatar)
+                .error(R.drawable.default_avatar)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(new GlideRoundedImageTarget(avatarImage));
+    }
+
+    @Override
+    public void setTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 
     @Override

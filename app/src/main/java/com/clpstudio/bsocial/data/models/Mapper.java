@@ -17,7 +17,7 @@ import java.util.List;
 public class Mapper {
 
     public static ConversationViewModel toConversationViewModel(DbConversationModel model) {
-        return new ConversationViewModel(model.getId(), model.getTitle(), model.getImageUrl());
+        return new ConversationViewModel(model.getId(), model.getTitle(), model.getImageUrl(), model.getMembersIds(), toRegisteredUserViewModels(model.getUsers()));
     }
 
     public static List<ConversationViewModel> toConversationViewModels(List<DbConversationModel> data) {

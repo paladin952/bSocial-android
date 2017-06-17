@@ -56,7 +56,8 @@ public class PhotoMessageViewHolder extends BaseConversationViewHolder {
         Glide.with(itemView.getContext())
                 .load(url)
                 .error(R.drawable.default_avatar)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(0.1f)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(photo);
     }
 

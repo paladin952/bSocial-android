@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
 import com.clpstudio.bsocial.data.models.Mapper;
+import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
@@ -44,7 +45,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     @Inject
     MessageUseCases messageUseCases;
 
-    private String conversationId;
+    private ConversationViewModel conversation;
     private CompositeDisposable compositeDisposable;
 
     @Inject
@@ -64,7 +65,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     private void subscribeMessageAdded() {
-        Disposable disposable = messageUseCases.subscribeMessageAdded(conversationId)
+        Disposable disposable = messageUseCases.subscribeMessageAdded(conversation.getId())
                 .map(Mapper::toMessageViewModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -77,13 +78,13 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         compositeDisposable.add(disposable);
     }
 
-    public void setConversationId(String id) {
-        this.conversationId = id;
+    public void setConversation(ConversationViewModel conversation) {
+        this.conversation = conversation;
     }
 
     public void getMessages() {
         Disposable disposable = messageUseCases
-                .getMessages(conversationId)
+                .getMessages(conversation.getId())
                 .map(Mapper::toMessageViewModels)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,19 +110,35 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 text, System.currentTimeMillis(), avatarUrl, type);
 
         Disposable disposable = messageUseCases
-                .sendMessage(conversationId, dbMessageModelViewModel).subscribe();
+                .sendMessage(conversation.getId(), dbMessageModelViewModel).subscribe();
         compositeDisposable.add(disposable);
     }
 
     public void bindToOldConversation() {
+        showAvatarFromConversation();
+
         subscribeMessageAdded();
     }
 
+    private void showAvatarFromConversation() {
+        for (RegisteredUserViewModel user : conversation.getUserViewModels()) {
+            if (!user.getEmail().equals(firebaseAuth.getCurrentUser().getEmail())) {
+                view().showAvatar(user.getImageUrl());
+                view().setTitle(user.getEmail());
+                break;
+            }
+        }
+
+    }
+
     public void bindToNewConversation(RegisteredUserViewModel friend) {
+        view().showAvatar(friend.getImageUrl());
+        view().setTitle(friend.getEmail());
+
         Disposable disposable = conversationUseCases
                 .createConversation(Mapper.toRegisteredUser(friend))
                 .subscribe(s -> {
-                    conversationId = s;
+                    conversation.setId(s);
                     subscribeMessageAdded();
                 });
         compositeDisposable.add(disposable);
@@ -132,7 +149,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
     }
 
     public void uploadImage(String filename, Uri path) {
-        storageUseCases.uploadConversationDataAndGetLink(filename, path, conversationId)
+        storageUseCases.uploadConversationDataAndGetLink(filename, path, conversation.getId())
                 .subscribe(link -> {
                     sendMessage(link, MessageViewModel.TYPE_PHOTO);
                 }, err -> {
@@ -149,6 +166,10 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         void clearInput();
 
         void showError(String error);
+
+        void showAvatar(String url);
+
+        void setTitle(String title);
 
     }
 

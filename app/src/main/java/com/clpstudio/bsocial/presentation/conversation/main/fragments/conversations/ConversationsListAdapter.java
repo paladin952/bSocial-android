@@ -29,6 +29,11 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
 
     private List<ConversationViewModel> data = new ArrayList<>();
     private ClickListener<ConversationViewModel> clickListener;
+    private String currentUserEmail;
+
+    public ConversationsListAdapter(String currentUserEmail) {
+        this.currentUserEmail = currentUserEmail;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,7 +63,7 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
 
     public ConversationViewModel getConversation(RegisteredUserViewModel user) {
         for (ConversationViewModel model : data) {
-            if (model.getMembersIds().contains(user.getUserId())) {
+            if (model.getMembersIds() != null && model.getMembersIds().contains(user.getUserId())) {
                 return model;
             }
         }
@@ -82,16 +87,24 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
         }
 
         public void bind(ConversationViewModel model) {
-            titleText.setText(model.getTitle());
-
-            Glide.with(itemView.getContext())
-                    .load(model.getImageUrl())
-                    .asBitmap()
-                    .placeholder(R.drawable.default_avatar)
-                    .error(R.drawable.default_avatar)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontAnimate()
-                    .into(new GlideRoundedImageTarget(imageView));
+            RegisteredUserViewModel otherUser = null;
+            for (RegisteredUserViewModel user : model.getUserViewModels()) {
+                if (!user.getEmail().equals(currentUserEmail)) {
+                    otherUser = user;
+                    break;
+                }
+            }
+            if (otherUser != null) {
+                titleText.setText(otherUser.getEmail());
+                Glide.with(itemView.getContext())
+                        .load(otherUser.getImageUrl())
+                        .asBitmap()
+                        .placeholder(R.drawable.default_avatar)
+                        .error(R.drawable.default_avatar)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate()
+                        .into(new GlideRoundedImageTarget(imageView));
+            }
         }
     }
 

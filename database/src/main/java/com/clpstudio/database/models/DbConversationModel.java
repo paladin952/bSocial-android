@@ -4,6 +4,7 @@ package com.clpstudio.database.models;
  * Created by clapalucian on 03/06/2017.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbConversationModel {
@@ -11,7 +12,8 @@ public class DbConversationModel {
     String id;
     String title;
     String imageUrl;
-    List<String> membersIds;
+    List<String> membersIds = new ArrayList<>();
+    List<DbRegisteredUserModel> users = new ArrayList<>();
     long timestamp;
 
     public DbConversationModel() {
@@ -21,6 +23,14 @@ public class DbConversationModel {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
+    }
+
+    public List<DbRegisteredUserModel> getUsers() {
+        return users;
+    }
+
+    public void addUser(DbRegisteredUserModel model) {
+        users.add(model);
     }
 
     public long getTimestamp() {
