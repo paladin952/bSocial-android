@@ -147,6 +147,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         setupMessageEditor();
         setupList();
         setupGifList();
+        takePhotoPresenter.bindView(this);
     }
 
     @Override
@@ -159,9 +160,20 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
             presenter.bindToOldConversation(conversationViewModel);
         }
         gifPresenter.bindView(this);
-        takePhotoPresenter.bindView(this);
     }
 
+    @Override
+    public void onStop() {
+        presenter.unbindView();
+        gifPresenter.unbindView();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        takePhotoPresenter.unbindView();
+        super.onDestroy();
+    }
 
     private void setupList() {
         adapter = new ConversationDetailAdapter(firebaseAuth.getCurrentUser().getEmail());
@@ -236,15 +248,6 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     public void appendData(MessageViewModel data) {
         adapter.append(data);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-    }
-
-
-    @Override
-    public void onStop() {
-        presenter.unbindView();
-        gifPresenter.unbindView();
-        takePhotoPresenter.unbindView();
-        super.onStop();
     }
 
     @Override
