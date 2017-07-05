@@ -65,8 +65,8 @@ public class FirebaseWaitingService extends Service {
                     if (rxBus.hasConversationObservers()) {
                         Log.d("rxbus", "Send New conversation!");
                         rxBus.sendConversation(conversationViewModel);
-                        registerMessageListener(conversationViewModel.getId());
                     }
+                    registerMessageListener(conversationViewModel.getId());
                 });
     }
 
