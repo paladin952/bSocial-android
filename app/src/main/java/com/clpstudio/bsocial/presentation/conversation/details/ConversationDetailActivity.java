@@ -227,7 +227,9 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     @Override
     public void showData(List<MessageViewModel> data) {
         adapter.addAll(data);
-        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        if (adapter.getItemCount() > 0) {
+            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        }
     }
 
     @Override

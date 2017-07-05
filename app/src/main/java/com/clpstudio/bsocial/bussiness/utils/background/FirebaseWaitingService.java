@@ -58,8 +58,9 @@ public class FirebaseWaitingService extends Service {
 
         conversationUseCases
                 .subscribeConversationAdded()
+                .flatMap(dbConversationModel -> conversationUseCases.getConversationDetails(dbConversationModel.getId()))
                 .subscribe(conversation -> {
-                    Log.d("rxbus", "Conversation has observables = " + rxBus.hasObservers());
+                    Log.d("rxbus", "Conversation has observables = " + rxBus.hasConversationObservers());
                     ConversationViewModel conversationViewModel = Mapper.toConversationViewModel(conversation);
                     if (rxBus.hasConversationObservers()) {
                         Log.d("rxbus", "Send New conversation!");

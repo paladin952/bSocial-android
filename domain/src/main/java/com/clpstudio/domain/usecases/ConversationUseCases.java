@@ -65,11 +65,17 @@ public class ConversationUseCases {
                                         }
                                     }
                                 }
-
                                 return dbConversationModels;
                             })
                             .toObservable();
-                }).flatMap(Observable::fromIterable);
+                })
+                .map(dbConversationModels -> {
+                    if (dbConversationModels.isEmpty()) {
+                        throw new RuntimeException("Empty");
+                    }
+                    return dbConversationModels;
+                })
+                .flatMap(Observable::fromIterable);
     }
 
     public Observable<DbConversationModel> getConversationDetails(String conversationId) {
