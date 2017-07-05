@@ -7,7 +7,7 @@ import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
-import com.clpstudio.bsocial.rxbus.RxBus;
+import com.clpstudio.bsocial.core.rxbus.RxBus;
 import com.clpstudio.domain.usecases.ConversationUseCases;
 import com.google.firebase.auth.FirebaseAuth;
 

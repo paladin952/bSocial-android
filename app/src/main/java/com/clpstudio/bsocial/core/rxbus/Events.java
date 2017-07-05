@@ -1,4 +1,4 @@
-package com.clpstudio.bsocial.rxbus;
+package com.clpstudio.bsocial.core.rxbus;
 
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 

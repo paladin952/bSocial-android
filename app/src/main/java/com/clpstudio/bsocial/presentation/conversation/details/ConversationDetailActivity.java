@@ -1,6 +1,7 @@
 package com.clpstudio.bsocial.presentation.conversation.details;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clpstudio.bsocial.Henson;
 import com.clpstudio.bsocial.R;
+import com.clpstudio.bsocial.bussiness.utils.background.FirebaseWaitingService;
 import com.clpstudio.bsocial.core.glide.GlideRoundedImageTarget;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
@@ -106,6 +108,13 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     private ConversationDetailAdapter adapter;
 
+    public static Intent getStartIntent(Context activity, ConversationViewModel conversationViewModel) {
+        return Henson.with(activity)
+                .gotoConversationDetailActivity()
+                .conversationViewModel(conversationViewModel)
+                .build();
+    }
+
     public static void startActivity(Activity activity, ConversationViewModel conversationViewModel) {
         Intent intent = Henson.with(activity)
                 .gotoConversationDetailActivity()
@@ -148,7 +157,6 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
             presenter.bindToNewConversation(user);
         } else {
             presenter.bindToOldConversation(conversationViewModel);
-
         }
         gifPresenter.bindView(this);
         takePhotoPresenter.bindView(this);
@@ -207,6 +215,13 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     @Override
     public void clearList() {
         adapter.clear();
+    }
+
+    @Override
+    public void bindFirebaseService(String conversationId) {
+        Intent intent = new Intent(this, FirebaseWaitingService.class);
+        intent.putExtra(FirebaseWaitingService.BUNDLE_KEY_CONVERSATION, conversationId);
+        startService(intent);
     }
 
     @Override

@@ -33,55 +33,13 @@ public class ConversationUseCases {
         return conversationService
                 .subscribeConversationAdded()
                 .delay(1, TimeUnit.SECONDS)
-                .flatMap(dbConversationModel -> conversationService.getConversationDetails(dbConversationModel.getId()))
-                .flatMap(dbConversationModel -> {
-                    List<Observable<DbRegisteredUserModel>> userStreams = new ArrayList<>();
-                    for (String id : dbConversationModel.getMembersIds()) {
-                        userStreams.add(userService.getUserDetails(id));
-                    }
-
-                    return Observable
-                            .fromIterable(userStreams)
-                            .flatMap(dbRegisteredUserModelObservable -> dbRegisteredUserModelObservable)
-                            .toList()
-                            .map(dbRegisteredUserModels -> {
-                                for (DbRegisteredUserModel model : dbRegisteredUserModels) {
-                                    if (dbConversationModel.getMembersIds().indexOf(model.getUserId()) != -1) {
-                                        dbConversationModel.addUser(model);
-                                    }
-                                }
-
-                                return dbConversationModel;
-                            })
-                            .toObservable();
-                });
+                .flatMap(dbConversationModel -> conversationService.getConversationDetails(dbConversationModel.getId()));
     }
 
     public Observable<DbConversationModel> createConversation(DbRegisteredUserModel friend) {
         return conversationService.createConversation(friend)
                 .toObservable()
-                .flatMap(s -> conversationService.getConversationDetails(s))
-                .flatMap(dbConversationModel -> {
-                    List<Observable<DbRegisteredUserModel>> userStreams = new ArrayList<>();
-                    for (String id : dbConversationModel.getMembersIds()) {
-                        userStreams.add(userService.getUserDetails(id));
-                    }
-
-                    return Observable
-                            .fromIterable(userStreams)
-                            .flatMap(dbRegisteredUserModelObservable -> dbRegisteredUserModelObservable)
-                            .toList()
-                            .map(dbRegisteredUserModels -> {
-                                for (DbRegisteredUserModel model : dbRegisteredUserModels) {
-                                    if (dbConversationModel.getMembersIds().indexOf(model.getUserId()) != -1) {
-                                        dbConversationModel.addUser(model);
-                                    }
-                                }
-
-                                return dbConversationModel;
-                            })
-                            .toObservable();
-                });
+                .flatMap(s -> conversationService.getConversationDetails(s));
     }
 
     public Observable<DbConversationModel> getListOfConversations() {
@@ -114,8 +72,29 @@ public class ConversationUseCases {
                 }).flatMap(Observable::fromIterable);
     }
 
-    public Observable<DbConversationModel> getConversationDetails(String id) {
-        return conversationService.getConversationDetails(id);
+    public Observable<DbConversationModel> getConversationDetails(String conversationId) {
+        return conversationService.getConversationDetails(conversationId)
+                .flatMap(dbConversationModel -> {
+                    List<Observable<DbRegisteredUserModel>> userStreams = new ArrayList<>();
+                    for (String id : dbConversationModel.getMembersIds()) {
+                        userStreams.add(userService.getUserDetails(id));
+                    }
+
+                    return Observable
+                            .fromIterable(userStreams)
+                            .flatMap(dbRegisteredUserModelObservable -> dbRegisteredUserModelObservable)
+                            .toList()
+                            .map(dbRegisteredUserModels -> {
+                                for (DbRegisteredUserModel model : dbRegisteredUserModels) {
+                                    if (dbConversationModel.getMembersIds().indexOf(model.getUserId()) != -1) {
+                                        dbConversationModel.addUser(model);
+                                    }
+                                }
+
+                                return dbConversationModel;
+                            })
+                            .toObservable();
+                });
     }
 
 }

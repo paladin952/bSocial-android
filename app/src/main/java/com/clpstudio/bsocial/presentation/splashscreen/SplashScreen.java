@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.background.FirebaseWaitingService;
+import com.clpstudio.bsocial.bussiness.utils.background.FirebaseWaitingService;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity;
 import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;

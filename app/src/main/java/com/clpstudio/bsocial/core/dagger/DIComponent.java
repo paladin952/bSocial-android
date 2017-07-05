@@ -1,6 +1,6 @@
 package com.clpstudio.bsocial.core.dagger;
 
-import com.clpstudio.bsocial.background.FirebaseWaitingService;
+import com.clpstudio.bsocial.bussiness.utils.background.FirebaseWaitingService;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;

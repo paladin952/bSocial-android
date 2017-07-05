@@ -13,7 +13,7 @@ import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
-import com.clpstudio.bsocial.rxbus.RxBus;
+import com.clpstudio.bsocial.core.rxbus.RxBus;
 import com.clpstudio.database.models.DbMessageModel;
 import com.clpstudio.domain.usecases.ConversationUseCases;
 import com.clpstudio.domain.usecases.FirebaseStorageUseCases;
@@ -68,20 +68,6 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         super.unbindView();
     }
 
-//    private void subscribeMessageAdded() {
-//        Disposable disposable = messageUseCases.subscribeMessageAdded(conversation.getId())
-//                .map(Mapper::toMessageViewModel)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(message -> {
-//                    view().appendData(message);
-//                    view().clearInput();
-//                }, err -> {
-//                    //TODO
-//                });
-//        compositeDisposable.add(disposable);
-//    }
-
     public void getMessages() {
         view().clearList();
         Disposable disposable = messageUseCases
@@ -91,6 +77,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(messages -> {
                     view().showData(messages);
+                    view().bindFirebaseService(conversation.getId());
                     registerEventBus();
                 });
         compositeDisposable.add(disposable);
@@ -120,7 +107,6 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         this.conversation = conversation;
         showAvatarFromConversation();
         getMessages();
-//        subscribeMessageAdded();
     }
 
     private void showAvatarFromConversation() {
@@ -144,7 +130,6 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 .subscribe(s -> {
                     conversation = s;
                     getMessages();
-//                    subscribeMessageAdded();
                 });
         compositeDisposable.add(disposable);
     }
@@ -202,6 +187,8 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         void call(String userEmail);
 
         void clearList();
+
+        void bindFirebaseService(String conversationId);
 
     }
 

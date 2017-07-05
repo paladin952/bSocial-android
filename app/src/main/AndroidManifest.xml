@@ -107,7 +107,7 @@
         <!--SERVICES-->
         <service android:name=".core.sinch.SinchService"/>
 
-        <service android:name=".background.FirebaseWaitingService"/>
+        <service android:name=".bussiness.utils.background.FirebaseWaitingService"/>
 
         <!--PROVIDERS-->
         <provider
