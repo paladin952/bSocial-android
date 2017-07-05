@@ -60,11 +60,10 @@ public class FirebaseWaitingService extends Service {
                 .subscribeConversationAdded()
                 .subscribe(conversation -> {
                     Log.d("rxbus", "Conversation has observables = " + rxBus.hasObservers());
+                    ConversationViewModel conversationViewModel = Mapper.toConversationViewModel(conversation);
                     if (rxBus.hasConversationObservers()) {
                         Log.d("rxbus", "Send New conversation!");
-                        ConversationViewModel conversationViewModel = Mapper.toConversationViewModel(conversation);
                         rxBus.sendConversation(conversationViewModel);
-                        conversations.add(conversationViewModel);
                         registerMessageListener(conversationViewModel.getId());
                     }
                 });
@@ -80,7 +79,10 @@ public class FirebaseWaitingService extends Service {
                 .subscribe(message -> {
                     if (rxBus.hasMessageObservers(message.getConversationId())) {
                         rxBus.sendMessage(message);
+//                        Toast.makeText(this, "send message", Toast.LENGTH_LONG).show();
+
                     } else {
+//                        Toast.makeText(this, "notification", Toast.LENGTH_LONG).show();
                         messageNotification(message);
                         Log.d("rxbus", "NOTIFICATION");
                     }
@@ -98,11 +100,11 @@ public class FirebaseWaitingService extends Service {
                                     "New message", messageViewModel.getMessage(), ""
                             );
                 });
-
     }
 
     @Override
     public void onDestroy() {
+//        Toast.makeText(this, "destoyed", Toast.LENGTH_LONG).show();
         compositeDisposable.clear();
         compositeDisposable.dispose();
         disposableMap.values().forEach(Disposable::dispose);
@@ -111,11 +113,24 @@ public class FirebaseWaitingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String conversationId = intent.getStringExtra(BUNDLE_KEY_CONVERSATION);
-        if (!TextUtils.isEmpty(conversationId)) {
-            registerMessageListener(conversationId);
+//        Toast.makeText(this, "start = " + disposableMap.size(), Toast.LENGTH_LONG).show();
+        if (intent != null) {
+            String conversationId = intent.getStringExtra(BUNDLE_KEY_CONVERSATION);
+            if (!TextUtils.isEmpty(conversationId)) {
+                registerMessageListener(conversationId);
+            }
+            Log.d("luci", "conversations size = " + conversations.size());
+        } else {
+            conversationUseCases
+                    .getListOfConversations()
+                    .subscribe(dbConversationModel -> registerMessageListener(dbConversationModel.getId()));
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
+    }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+//        Toast.makeText(this, "on task remove = " + disposableMap.size(), Toast.LENGTH_LONG).show();
+        super.onTaskRemoved(rootIntent);
     }
 }
