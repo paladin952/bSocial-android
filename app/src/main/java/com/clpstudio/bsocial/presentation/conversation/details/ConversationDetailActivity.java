@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +26,7 @@ import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
+import com.clpstudio.bsocial.presentation.calling.PlaceCallSinchActivity;
 import com.clpstudio.bsocial.presentation.conversation.main.TakePhotoPresenter;
 import com.clpstudio.bsocial.presentation.gifs.GifHorizontalListView;
 import com.clpstudio.bsocial.presentation.gifs.GifPresenter;
@@ -84,8 +84,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
 
     @OnClick(R.id.toolbar_call)
     public void onCallClick() {
-        //TODO
-        Log.d("luci", "call clicked!");
+        presenter.callClicked();
     }
 
     @OnClick(R.id.avatar)
@@ -139,18 +138,22 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         setupMessageEditor();
         setupList();
         setupGifList();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         presenter.bindView(this);
         if (isNewConversation) {
             presenter.bindToNewConversation(user);
         } else {
-            presenter.setConversation(conversationViewModel);
-            presenter.bindToOldConversation();
+            presenter.bindToOldConversation(conversationViewModel);
 
         }
         gifPresenter.bindView(this);
         takePhotoPresenter.bindView(this);
     }
+
 
     private void setupList() {
         adapter = new ConversationDetailAdapter(firebaseAuth.getCurrentUser().getEmail());
@@ -197,6 +200,16 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
     }
 
     @Override
+    public void call(String userEmail) {
+        PlaceCallSinchActivity.startActivity(this, userEmail, true);
+    }
+
+    @Override
+    public void clearList() {
+        adapter.clear();
+    }
+
+    @Override
     public void showData(List<MessageViewModel> data) {
         adapter.addAll(data);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
@@ -208,12 +221,13 @@ public class ConversationDetailActivity extends AppCompatActivity implements Con
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
         presenter.unbindView();
         gifPresenter.unbindView();
         takePhotoPresenter.unbindView();
+        super.onStop();
     }
 
     @Override

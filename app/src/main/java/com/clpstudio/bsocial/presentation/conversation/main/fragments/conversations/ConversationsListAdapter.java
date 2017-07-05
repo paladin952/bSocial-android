@@ -55,9 +55,8 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
         return data.size();
     }
 
-    public void addAll(List<ConversationViewModel> data) {
-        this.data.clear();
-        this.data.addAll(data);
+    public void append(ConversationViewModel data) {
+        this.data.add(data);
         notifyDataSetChanged();
     }
 
@@ -72,6 +71,11 @@ public class ConversationsListAdapter extends RecyclerView.Adapter<Conversations
 
     public void setClickListener(ClickListener<ConversationViewModel> clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void clear() {
+        data.clear();
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

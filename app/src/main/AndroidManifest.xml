@@ -107,6 +107,8 @@
         <!--SERVICES-->
         <service android:name=".core.sinch.SinchService"/>
 
+        <service android:name=".background.FirebaseWaitingService"/>
+
         <!--PROVIDERS-->
         <provider
             android:name="android.support.v4.content.FileProvider"

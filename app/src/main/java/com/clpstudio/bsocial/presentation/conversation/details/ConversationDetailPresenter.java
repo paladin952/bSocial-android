@@ -3,6 +3,7 @@ package com.clpstudio.bsocial.presentation.conversation.details;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
@@ -12,6 +13,7 @@ import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
+import com.clpstudio.bsocial.rxbus.RxBus;
 import com.clpstudio.database.models.DbMessageModel;
 import com.clpstudio.domain.usecases.ConversationUseCases;
 import com.clpstudio.domain.usecases.FirebaseStorageUseCases;
@@ -44,6 +46,8 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     @Inject
     MessageUseCases messageUseCases;
+    @Inject
+    RxBus rxBus;
 
     private ConversationViewModel conversation;
     private CompositeDisposable compositeDisposable;
@@ -60,29 +64,26 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
     @Override
     public void unbindView() {
-        super.unbindView();
         compositeDisposable.dispose();
+        super.unbindView();
     }
 
-    private void subscribeMessageAdded() {
-        Disposable disposable = messageUseCases.subscribeMessageAdded(conversation.getId())
-                .map(Mapper::toMessageViewModel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(message -> {
-                    view().appendData(message);
-                    view().clearInput();
-                }, err -> {
-                    //TODO
-                });
-        compositeDisposable.add(disposable);
-    }
-
-    public void setConversation(ConversationViewModel conversation) {
-        this.conversation = conversation;
-    }
+//    private void subscribeMessageAdded() {
+//        Disposable disposable = messageUseCases.subscribeMessageAdded(conversation.getId())
+//                .map(Mapper::toMessageViewModel)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(message -> {
+//                    view().appendData(message);
+//                    view().clearInput();
+//                }, err -> {
+//                    //TODO
+//                });
+//        compositeDisposable.add(disposable);
+//    }
 
     public void getMessages() {
+        view().clearList();
         Disposable disposable = messageUseCases
                 .getMessages(conversation.getId())
                 .map(Mapper::toMessageViewModels)
@@ -90,6 +91,7 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(messages -> {
                     view().showData(messages);
+                    registerEventBus();
                 });
         compositeDisposable.add(disposable);
     }
@@ -114,10 +116,11 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         compositeDisposable.add(disposable);
     }
 
-    public void bindToOldConversation() {
+    public void bindToOldConversation(ConversationViewModel conversation) {
+        this.conversation = conversation;
         showAvatarFromConversation();
-
-        subscribeMessageAdded();
+        getMessages();
+//        subscribeMessageAdded();
     }
 
     private void showAvatarFromConversation() {
@@ -137,9 +140,11 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
 
         Disposable disposable = conversationUseCases
                 .createConversation(Mapper.toRegisteredUser(friend))
+                .map(Mapper::toConversationViewModel)
                 .subscribe(s -> {
-                    conversation.setId(s);
-                    subscribeMessageAdded();
+                    conversation = s;
+                    getMessages();
+//                    subscribeMessageAdded();
                 });
         compositeDisposable.add(disposable);
     }
@@ -157,6 +162,29 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
                 });
     }
 
+    public void callClicked() {
+        for (RegisteredUserViewModel user : conversation.getUserViewModels()) {
+            if (!user.getEmail().equals(firebaseAuth.getCurrentUser().getEmail())) {
+                view().call(user.getEmail());
+                break;
+            }
+        }
+    }
+
+    private void registerEventBus() {
+        compositeDisposable.add(
+                rxBus.messageAsFlowable(conversation.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(o -> {
+                            if (o instanceof MessageViewModel) {
+                                MessageViewModel model = (MessageViewModel) o;
+                                Log.d("rxbus", "Message received = " + o.toString());
+                                view().appendData(model);
+                            }
+                        })
+        );
+    }
+
     public interface View extends IBaseMvpPresenter.View {
 
         void showData(List<MessageViewModel> data);
@@ -170,6 +198,10 @@ public class ConversationDetailPresenter extends BaseMvpPresenter<ConversationDe
         void showAvatar(String url);
 
         void setTitle(String title);
+
+        void call(String userEmail);
+
+        void clearList();
 
     }
 

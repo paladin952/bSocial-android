@@ -18,6 +18,7 @@ public class DbMessageModel {
     long timestamp;
     String imageUrl;
     int type;
+    String conversationId;
 
     public DbMessageModel() {
     }
@@ -48,6 +49,14 @@ public class DbMessageModel {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.clpstudio.bsocial.core.dagger;
 
+import com.clpstudio.bsocial.background.FirebaseWaitingService;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.browser.BrowserViewActivity;
 import com.clpstudio.bsocial.presentation.conversation.details.ConversationDetailActivity;
@@ -46,4 +47,6 @@ public interface DIComponent {
     void inject(MainActivity activity);
 
     void inject(BrowserViewActivity activity);
+
+    void inject(FirebaseWaitingService activity);
 }

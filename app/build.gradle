@@ -104,6 +104,9 @@ dependencies {
     //zoomable image
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    //RxBus
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+
     compile project(':domain')
 
 }

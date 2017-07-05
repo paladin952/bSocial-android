@@ -30,7 +30,7 @@ public class Mapper {
 
 
     public static MessageViewModel toMessageViewModel(Message message) {
-        return new MessageViewModel(message.getUserName(), message.getMessage(), message.getTimestamp(), message.getImageUrl(), message.getType());
+        return new MessageViewModel(message.getUserName(), message.getMessage(), message.getTimestamp(), message.getImageUrl(), message.getType(), message.getConversationId());
     }
 
     public static List<MessageViewModel> toMessageViewModels(List<Message> data) {

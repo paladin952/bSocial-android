@@ -1,5 +1,7 @@
 package com.clpstudio.bsocial.presentation.splashscreen;
 
+import android.support.annotation.NonNull;
+
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,12 @@ public class SplashScreenPresenter extends BaseMvpPresenter<SplashScreenPresente
 
     }
 
+    @Override
+    public void bindView(@NonNull View view) {
+        super.bindView(view);
+        view().startFirebaseServiceListener();
+    }
+
     public void checkLoginStatus() {
         if (firebaseAuth.getCurrentUser() != null) {
             view().gotoSinchLogin(firebaseAuth.getCurrentUser().getEmail());
@@ -31,6 +39,8 @@ public class SplashScreenPresenter extends BaseMvpPresenter<SplashScreenPresente
         void gotoAuthenticateActivity();
 
         void gotoSinchLogin(String userEmail);
+
+        void startFirebaseServiceListener();
     }
 
 }

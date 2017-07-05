@@ -69,6 +69,7 @@ public class MessagesService {
                         dbMessageModel = dataSnapshot.getValue(DbMessageModel.class);
                         if (dbMessageModel != null) {
                             Log.d(LOG_TAG, "New dbMessageModel = " + dbMessageModel.toString());
+                            dbMessageModel.setConversationId(conversationId);
                             e.onNext(dbMessageModel);
                         }
                     }

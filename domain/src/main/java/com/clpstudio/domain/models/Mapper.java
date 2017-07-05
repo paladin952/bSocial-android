@@ -27,7 +27,7 @@ public class Mapper {
 
 
     public static Message toMessage(DbMessageModel message) {
-        return new Message(message.getUserName(), message.getMessage(), message.getTimestamp(), message.getImageUrl(), message.getType());
+        return new Message(message.getUserName(), message.getMessage(), message.getTimestamp(), message.getImageUrl(), message.getType(), message.getConversationId());
     }
 
     public static List<Message> toMessages(List<DbMessageModel> data) {

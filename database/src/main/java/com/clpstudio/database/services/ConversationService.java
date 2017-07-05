@@ -43,16 +43,15 @@ public class ConversationService {
     public ConversationService() {
     }
 
-    public Observable<Boolean> subscribeConversationAdded() {
-        return Observable.create(e -> conversationsRef
-                .addChildEventListener(new FirebaseAddChildAddedListener() {
+    public Observable<DbConversationModel> subscribeConversationAdded() {
+        return Observable.create(e ->
+                conversationsRef.addChildEventListener(new FirebaseAddChildAddedListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Log.d("bSocial", "New Conversation added!");
                         DbConversationModel dbConversationModel = dataSnapshot.getValue(DbConversationModel.class);
                         if (dbConversationModel != null) {
-
-                            e.onNext(true);
+                            e.onNext(dbConversationModel);
                         }
                     }
                 }));
@@ -71,6 +70,7 @@ public class ConversationService {
             //add data into users node
             usersRef.child(firebaseAuth.getCurrentUser().getUid()).child(NODE_CONVERSATIONS).child(conversationId).setValue(true);
             usersRef.child(friend.getUserId()).child(NODE_CONVERSATIONS).child(conversationId).setValue(true);
+
             e.onSuccess(conversationId);
         });
     }
@@ -81,7 +81,7 @@ public class ConversationService {
                 .map(strings -> {
                     List<Observable<DbConversationModel>> conversationsSingles = new ArrayList<>();
                     for (String id : strings) {
-                        conversationsSingles.add(getConversation(id));
+                        conversationsSingles.add(getConversationDetails(id));
                     }
                     return conversationsSingles;
                 })
@@ -90,7 +90,7 @@ public class ConversationService {
                 .toList();
     }
 
-    private Observable<DbConversationModel> getConversation(String id) {
+    public Observable<DbConversationModel> getConversationDetails(String id) {
         return Observable.create(e -> conversationsRef.child(id).addValueEventListener(new AddValueEventSuccessListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

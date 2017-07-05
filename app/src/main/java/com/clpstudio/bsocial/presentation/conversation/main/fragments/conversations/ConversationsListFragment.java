@@ -19,8 +19,6 @@ import com.clpstudio.bsocial.presentation.conversation.main.GoToPageListener;
 import com.clpstudio.bsocial.presentation.conversation.main.fragments.MainPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -86,7 +84,7 @@ public class ConversationsListFragment extends Fragment implements Conversations
         adapter.setClickListener(element -> ConversationDetailActivity.startActivity(getActivity(), element));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
-        presenter.bindView(this);
+
     }
 
     @Override
@@ -98,14 +96,16 @@ public class ConversationsListFragment extends Fragment implements Conversations
     @Override
     public void onStart() {
         super.onStart();
+        presenter.bindView(this);
         presenter.onStart();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
         presenter.unbindView();
+        super.onStop();
     }
+
 
     @Override
     public void showProgress() {
@@ -118,8 +118,13 @@ public class ConversationsListFragment extends Fragment implements Conversations
     }
 
     @Override
-    public void showData(List<ConversationViewModel> data) {
-        adapter.addAll(data);
+    public void appendData(ConversationViewModel data) {
+        adapter.append(data);
+    }
+
+    @Override
+    public void clearData() {
+        adapter.clear();
     }
 
     public void openConversation(RegisteredUserViewModel user) {

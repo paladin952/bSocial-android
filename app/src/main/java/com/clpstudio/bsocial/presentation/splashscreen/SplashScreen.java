@@ -1,13 +1,15 @@
 package com.clpstudio.bsocial.presentation.splashscreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.clpstudio.bsocial.R;
-import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;
+import com.clpstudio.bsocial.background.FirebaseWaitingService;
 import com.clpstudio.bsocial.presentation.BSocialApplication;
 import com.clpstudio.bsocial.presentation.authenticate.AuthenticateActivity;
+import com.clpstudio.bsocial.presentation.calling.LoginSinchActivity;
 
 import javax.inject.Inject;
 
@@ -46,5 +48,10 @@ public class SplashScreen extends AppCompatActivity implements SplashScreenPrese
     public void gotoSinchLogin(String email) {
         LoginSinchActivity.startActivity(this, email);
         finishAffinity();
+    }
+
+    @Override
+    public void startFirebaseServiceListener() {
+        startService(new Intent(this, FirebaseWaitingService.class));
     }
 }

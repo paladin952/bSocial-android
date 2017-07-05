@@ -18,16 +18,22 @@ public class MessageViewModel {
     long timestamp;
     String imageUrl;
     int type;
+    String conversationId;
 
     public MessageViewModel() {
     }
 
-    public MessageViewModel(String userName, String message, long timestamp, String imageUrl, int type) {
+    public MessageViewModel(String userName, String message, long timestamp, String imageUrl, int type, String conversationId) {
         this.userName = userName;
         this.message = message;
         this.timestamp = timestamp;
         this.imageUrl = imageUrl;
         this.type = type;
+        this.conversationId = conversationId;
+    }
+
+    public String getConversationId() {
+        return conversationId;
     }
 
     public int getType() {

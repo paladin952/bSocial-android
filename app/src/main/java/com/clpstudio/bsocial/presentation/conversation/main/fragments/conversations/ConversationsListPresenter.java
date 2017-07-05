@@ -7,13 +7,13 @@ import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IProgressView;
+import com.clpstudio.bsocial.rxbus.RxBus;
 import com.clpstudio.domain.usecases.ConversationUseCases;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -27,6 +27,8 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     FirebaseAuth firebaseAuth;
     @Inject
     ConversationUseCases conversationUseCases;
+    @Inject
+    RxBus rxBus;
 
     private CompositeDisposable compositeDisposable;
 
@@ -38,13 +40,24 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     public void bindView(@NonNull View view) {
         super.bindView(view);
         compositeDisposable = new CompositeDisposable();
-        subscribeConversationAdded();
+        compositeDisposable.add(
+                rxBus.conversationAsFlowable()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(o -> {
+                            if (o instanceof ConversationViewModel) {
+                                ConversationViewModel model = (ConversationViewModel) o;
+                                view().appendData(model);
+                                Log.d("luci", "Append 2");
+                            }
+                        })
+        );
     }
 
     @Override
     public void unbindView() {
-        super.unbindView();
+        compositeDisposable.clear();
         compositeDisposable.dispose();
+        super.unbindView();
     }
 
     private void showData(boolean progress) {
@@ -54,11 +67,13 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
         } else {
             Log.d("bSocial", "Refresh conversation list, no progress!");
         }
+        view().clearData();
         Disposable disposable = conversationUseCases.getListOfConversations()
-                .map(Mapper::toConversationViewModels)
-                .subscribe(conversationNameModels -> {
+                .map(Mapper::toConversationViewModel)
+                .subscribe(conversationNameModel -> {
                     view().hideProgress();
-                    view().showData(conversationNameModels);
+                    view().appendData(conversationNameModel);
+                    Log.d("luci", "append");
                 }, err -> {
                     view().hideProgress();
                     //todo
@@ -69,6 +84,7 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
     public void subscribeConversationAdded() {
         Disposable disposable = conversationUseCases.subscribeConversationAdded()
                 .subscribe(message -> {
+                    view().clearData();
                     showData(false);
                 });
         compositeDisposable.add(disposable);
@@ -81,7 +97,9 @@ public class ConversationsListPresenter extends BaseMvpPresenter<ConversationsLi
 
     public interface View extends IProgressView {
 
-        void showData(List<ConversationViewModel> data);
+        void appendData(ConversationViewModel model);
+
+        void clearData();
 
     }
 }
