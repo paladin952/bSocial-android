@@ -7,13 +7,13 @@ import android.util.Log;
 
 import com.clpstudio.bsocial.R;
 import com.clpstudio.bsocial.bussiness.utils.Validator;
+import com.clpstudio.bsocial.core.rxbus.RxBus;
 import com.clpstudio.bsocial.data.models.Mapper;
 import com.clpstudio.bsocial.data.models.conversations.ConversationViewModel;
 import com.clpstudio.bsocial.data.models.conversations.MessageViewModel;
 import com.clpstudio.bsocial.data.models.firebase.RegisteredUserViewModel;
 import com.clpstudio.bsocial.presentation.general.mvp.BaseMvpPresenter;
 import com.clpstudio.bsocial.presentation.general.mvp.IBaseMvpPresenter;
-import com.clpstudio.bsocial.core.rxbus.RxBus;
 import com.clpstudio.database.models.DbMessageModel;
 import com.clpstudio.domain.usecases.ConversationUseCases;
 import com.clpstudio.domain.usecases.FirebaseStorageUseCases;
